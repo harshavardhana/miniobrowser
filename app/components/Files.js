@@ -1,31 +1,9 @@
 import React from 'react';
 import Path from 'path';
 
-import { FaveActions } from './actions/FaveActions';
-import { FaveStore } from './stores/FaveStore';
 import { FileActions } from './actions/FileActions';
 import { FileStore, updateDir } from './stores/FileStore';
 import { pushPath } from './Header';
-
-class FaveButton extends React.Component {
-  _addFave() {
-    FaveActions.addItem(this.props.dirName, this.props.dirPath);
-  }
-  _removeFave() {
-    FaveActions.removeItem(this.props.dirName);
-  }
-  render() {
-    if (this.props.favorited) {
-      return (
-        <i className='fa fa-star fa-lg' onClick={this._removeFave}></i>
-      )
-    } else {
-      return (
-        <i className='fa fa-star-o fa-lg' onClick={this._addFave}></i>
-      )
-    }
-  }
-}
 
 class File extends React.Component {
   _openFile() {
@@ -57,24 +35,12 @@ class File extends React.Component {
 }
 
 class Directory extends React.Component {
-  componentDidMount() {
-    FaveStore.addChangeListener(this._onChange);
-  }
-  componentWillUnmount() {
-    FaveStore.removeChangeListener(this._onChange);
-  }
   _setSelected() {
     var index = this.props.index;
     this.props.highlight(index);
   }
   _openDir() {
     this.props.openDir(this.props.filePath);
-  }
-  _onChange() {
-    var favorited = false;
-    if (FaveStore.getList().indexOf(this.props.fileName) !== -1)
-      favorited = true;
-    this.setState({ favorited: favorited });
   }
   render() {
     var size = '';
@@ -85,11 +51,8 @@ class Directory extends React.Component {
     else
       size = this.props.fileSize + ' B'; // Bytes
 
-    // Add favorites icon to directory
-    var star = <FaveButton dirName={this.props.fileName} dirPath={this.props.filePath} favorited={this.props.favorited}/>;
     return (
       <div className='files' onDoubleClick={this._openDir} onClick={this._setSelected}>
-      <div className='filename'> {star} {this.props.fileName}</div>
       <div className='filesize'>{size}</div>
       <div className='filetype'>{this.props.fileType}</div>
       <div className='filemodified'>{this.props.fileModified}</div>
@@ -117,11 +80,9 @@ class FilesLayout extends React.Component {
     }.bind(this));
 
     FileStore.addChangeListener(this._onChange);
-    FaveStore.addChangeListener(this._onFaveChange);
   }
   componentWillUnmount() {
     FileStore.removeChangeListener(this._onChange);
-    FaveStore.removeChangeListener(this._onFaveChange);
   }
   _highlight(index) {
     if (this.state.selected !== -1) {
@@ -144,18 +105,13 @@ class FilesLayout extends React.Component {
   _onChange() {
     this.setState({filesData: FileStore.getList()});
   }
-  _onFaveChange() {
-    this.forceUpdate();
-  }
   render() {
     var index = 0;
     var fileList = this.state.filesData.map(function(fileInfo) {
       if (fileInfo.fileType === 'File')
 	return <File {...fileInfo} ref={'file' + index} index={index++} highlight={this._highlight}/>;
       else {
-	var favorited = FaveStore.getPath(fileInfo.fileName) === fileInfo.filePath;
-
-	return <Directory {...fileInfo} ref={'file' + index} index={index++} highlight={this._highlight} openDir={this._updateLayout} favorited={favorited}/>
+	return <Directory {...fileInfo} ref={'file' + index} index={index++} highlight={this._highlight} openDir={this._updateLayout} />
       }
     }.bind(this));
 
