@@ -14,7 +14,8 @@
     "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
-    "build": "./node_modules/.bin/gulp build"
+    "build": "./node_modules/.bin/gulp build",
+    "start": "./node_modules/.bin/gulp serve"
   },
   "dependencies": {
     "bluebird": "^3.0.5",
