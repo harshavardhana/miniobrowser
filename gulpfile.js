@@ -15,7 +15,7 @@ gulp.task('clean', function() {
 });
 
 gulp.task('font', function() {
-  return gulp.src(['app/fonts/**/*'])
+  return gulp.src(['node_modules/font-awesome/fonts/*'])
     .pipe(gulp.dest('dist/fonts'))
 });
 
@@ -32,10 +32,11 @@ gulp.task('html', function() {
     .pipe(gulp.dest('dist'))
 });
 
+var normalizeCssPath = require('node-normalize-scss').includePaths;
 gulp.task('sass', function () {
   gulp.src('./app/stylesheets/main.scss')
     .pipe(sass({
-      includePaths: require('node-normalize-scss').includePaths
+      includePaths: normalizeCssPath.concat(["node_modules/font-awesome/scss"])
     }).on('error', sass.logError))
     .pipe(gulp.dest('dist'));
 });

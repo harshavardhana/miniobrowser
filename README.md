@@ -1,25 +1,24 @@
 # Minio Explorer
+<blockquote>
+This project is still a work in progress - it is not usable yet.
+</blockquote>
 
 ``me`` (Minio Explorer) provides minimal set of UI to manage buckets and objects on ``minio`` server. ``me`` is written in javascript and released under [Apache license v2](./LICENSE).
-
-<blockquote>
-Minio Explorer has borrowed some ideas from - https://github.com/timotius02/electron-file-explorer.
-</blockquote>
 
 ## Installation
 
 ```sh
-$ git clone https://github.com/minio/minio-bucket-explorer
+$ git clone https://github.com/minio/me
 $ npm install
 ```
 
 ```sh
 $ npm start
 
-> @ start /Users/harsha/Repositories/minio-bucket-explorer
+> @ start /Users/harsha/Repositories/me
 > gulp serve
 
-[23:09:13] Using gulpfile ~/Repositories/minio-bucket-explorer/gulpfile.js
+[23:09:13] Using gulpfile ~/Repositories/me/gulpfile.js
 [23:09:13] Starting 'sass'...
 [23:09:13] Finished 'sass' after 14 ms
 [23:09:13] Starting 'font'...

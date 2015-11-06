@@ -9,9 +9,10 @@
     "gulp-sass": "^2.1.0",
     "gulp-util": "^3.0.4",
     "gulp-webserver": "^0.9.1",
-    "node-normalize-scss": "^1.0.3",
     "vinyl-map": "^1.0.1",
-    "vinyl-source-stream": "^1.1.0"
+    "vinyl-source-stream": "^1.1.0",
+    "font-awesome": "^4.4.0",
+    "node-normalize-scss": "^1.0.3"
   },
   "scripts": {
     "build": "./node_modules/.bin/gulp build",
