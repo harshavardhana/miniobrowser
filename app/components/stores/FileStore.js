@@ -1,72 +1,72 @@
+import Fs from 'fs';
+import Path from 'path';
+import Promise from 'bluebird';
+
 import { FileDispatcher } from '../dispatcher/FileDispatcher';
 import { FileConstants } from '../constants/FileConstants';
-var objectAssign = require('react/lib/Object.assign');
-var EventEmitter = require('events').EventEmitter;
-var CHANGE_EVENT = 'change';
+import { EventEmitter } from 'events';
 
-var fs = require('fs');
-var path = require('path');
-var Promise = require('bluebird');
+var CHANGE_EVENT = 'change';
 var join = Promise.join;
-Promise.promisifyAll(fs);
+Promise.promisifyAll(Fs);
 
 export var updateDir = function(dirPath, cb) {
-    var res = fs.readdirAsync(dirPath)
-        .filter(function(file) {
-            return file.substring(0, 1) !== '.';
-        })
-        .map(function(file) {
-            var filePath = path.join(dirPath, file);
-            return fs.statAsync(filePath)
-                .then(function(stats) {
-                    return {
-                        fileName: file,
-                        fileSize: stats.size,
-                        fileType: stats.isFile() ? 'File' : 'Directory',
-                        fileModified: stats.mtime.toLocaleString(),
-                        filePath: filePath
-                    };
-                });
+  var res = Fs.readdirAsync(dirPath)
+              .filter(function(file) {
+                return file.substring(0, 1) !== '.';
+              })
+              .map(function(file) {
+                var filePath = Path.join(dirPath, file);
+                return Fs.statAsync(filePath)
+                         .then(function(stats) {
+                           return {
+                             fileName: file,
+                             fileSize: stats.size,
+                             fileType: stats.isFile() ? 'File' : 'Directory',
+                             fileModified: stats.mtime.toLocaleString(),
+                             filePath: filePath
+                           };
+                         });
 
-        })
-        .then(function(res) {
-            if (cb)
-                cb(res);
-        });
+              })
+              .then(function(res) {
+                if (cb)
+                  cb(res);
+              });
 }
 
 
 var _fileStore = {
-    list: []
+  list: []
 };
 
 
 var newDir = function(newDir){
-	_fileStore.list = newDir;
+  _fileStore.list = newDir;
 }
 
-export var FileStore = objectAssign({}, EventEmitter.prototype, {
-    addChangeListener: function(cb) {
-        this.on(CHANGE_EVENT, cb);
-    },
-    removeChangeListener: function(cb) {
-        this.removeListener(CHANGE_EVENT, cb);
-    },
-    getList: function() {
-        return _fileStore.list;
-    }
+export var FileStore = Object.assign({}, EventEmitter.prototype, {
+  addChangeListener: function(cb) {
+    this.on(CHANGE_EVENT, cb);
+  },
+  removeChangeListener: function(cb) {
+    this.removeListener(CHANGE_EVENT, cb);
+  },
+  getList: function() {
+    return _fileStore.list;
+  }
 });
 
 FileStore.setMaxListeners(0);
 
 FileDispatcher.register(function(payload) {
-    var action = payload.action;
-    switch (action.actionType) {
-        case FileConstants.NEW_DIR:
-            newDir(action.data);
-            FileStore.emit(CHANGE_EVENT);
-            break;
-        default:
-            return true;
-    }
+  var action = payload.action;
+  switch (action.actionType) {
+    case FileConstants.NEW_DIR:
+      newDir(action.data);
+      FileStore.emit(CHANGE_EVENT);
+      break;
+    default:
+      return true;
+  }
 });

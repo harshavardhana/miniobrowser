@@ -50,7 +50,6 @@ class Directory extends React.Component {
       size = Math.floor(this.props.fileSize / 1000) + ' K'; // Kilobytes
     else
       size = this.props.fileSize + ' B'; // Bytes
-
     return (
       <div className='files' onDoubleClick={this._openDir} onClick={this._setSelected}>
       <div className='filesize'>{size}</div>
