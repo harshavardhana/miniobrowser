@@ -23,6 +23,6 @@ export class Back extends React.Component {
     }
   }
   render() {
-    return <i className='fa fa-arrow-left fa-2x' onClick={this._back}></i>;
+    return <i className='zmdi zmdi-arrow-back' onClick={this._back}></i>;
   }
 }
