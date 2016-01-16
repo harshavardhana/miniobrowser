@@ -1,21 +1,21 @@
-# Minio Explorer
+# Minio File Browser
 <blockquote>
 This project is still a work in progress - it is not usable yet.
 </blockquote>
 
-``me`` (Minio Explorer) provides minimal set of UI to manage buckets and objects on ``minio`` server. ``me`` is written in javascript and released under [Apache license v2](./LICENSE).
+``me`` (Minio File Browser) provides minimal set of UI to manage buckets and objects on ``minio`` server. ``me`` is written in javascript and released under [Apache license v2](./LICENSE).
 
 ## Installation
 
 ```sh
-$ git clone https://github.com/minio/me
+$ git clone https://github.com/minio/FileBrowser
 $ npm install
 ```
 
 ```sh
 $ npm start
 
-> @ start /Users/harsha/Repositories/me
+> @ start /Users/harsha/Repositories/FileBrowser
 > gulp serve
 
 [23:09:13] Using gulpfile ~/Repositories/me/gulpfile.js
