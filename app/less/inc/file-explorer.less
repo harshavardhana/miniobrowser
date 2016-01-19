@@ -1,0 +1,164 @@
+/*------------------------------
+   	Layout
+--------------------------------*/
+.file-explorer {
+	background-color: #fff;
+	min-height: 500px;
+	position: relative;
+	height: 100%;
+}
+
+.fe-body {
+	padding: 45px 45px 40px @fe-sidebar-width + 45;   
+	min-height:100%; 
+	overflow: auto;
+}
+
+
+/*------------------------------
+    Create and Upload Button
+--------------------------------*/
+.feb-actions {
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	
+	.dropdown-menu {
+		min-width: 55px;
+		width: 55px;
+		text-align: center;
+		background: transparent;
+		box-shadow: none;
+		margin: 0;
+	}
+	
+	&.open {
+		.feba-btn {
+			-webkit-transform: scale(1);
+			transform: scale(1);
+			
+			&:first-child {
+				-webkit-animation: feba-btn-anim 500ms;
+				animation: feba-btn-anim 500ms;
+			}
+			
+			&:last-child {
+				-webkit-animation: feba-btn-anim 250ms;
+				animation: feba-btn-anim 250ms;
+			}
+		}
+		
+		.feba-toggle {
+			background: #D23327;
+			
+			i {
+				-webkit-transform: rotate(135deg);
+			}
+		}
+	}
+}
+
+.feba-toggle { 
+	width: 55px;
+	height: 55px;
+	border-radius: 50%;
+	background: #F44336;
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.35);
+	display: inline-block;
+	text-align: center;
+	
+	
+	i {
+		color: #fff;
+		font-size: 17px;
+		line-height: 56px;
+		.transition(all);
+		.transition-duration(250ms);
+	}
+}
+
+.feba-btn {
+	width: 40px;
+	margin-bottom: 10px;
+	height: 40px;
+	border-radius: 50%;
+	text-align: center;
+	display: inline-block;
+	color: #fff;
+    line-height: 40px;
+	box-shadow: 0 3px 4px rgba(0, 0, 0, 0.15);
+	-webkit-transform: scale(0);
+	transform: scale(0);
+	position: relative;
+	
+	&:hover .febab-tooltip {
+		opacity: 1;
+	}
+	
+	&:hover,
+	&:focus {
+		color: #fff;
+	}
+}
+
+.febab-tooltip {
+	opacity: 0;
+    position: absolute;
+    left: -210px;
+    top: 0;
+    text-align: right;
+    width: 200px;
+	
+	span {
+		background: #333;
+		padding: 5px 10px;
+		border-radius: 2px;
+		font-size: 12px;
+		color: #fff;
+		line-height: 100%;
+		position: relative;
+		
+		&:before {
+			content: "";
+			width: 0;
+			height: 0;
+			border-style: solid;
+			border-width: 6px 0 6px 10px;
+			border-color: transparent transparent transparent #333;
+			position: absolute;
+			right: -6px;
+			top: 6px; 
+		}
+	}
+}
+
+.feba-bucket {
+	background: @orange;
+}
+
+.feba-upload {
+	background: @yellow;
+}
+
+/*--------------------------
+    Button Animation
+----------------------------*/
+@-webkit-keyframes feba-btn-anim {
+	from {
+		.scale(0);
+	}
+	to {
+		.scale(1);
+	}
+}
+
+@keyframes feba-btn-anim {
+    from {
+		.scale(0);
+	}
+	to {
+		.scale(1);
+	}
+}
+
+

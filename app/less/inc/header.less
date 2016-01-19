@@ -1,0 +1,96 @@
+/*--------------------------
+    Header
+----------------------------*/
+.fe-header {
+	margin-bottom: 55px;
+	color: @blue-gray;
+	position: relative;
+
+	& > h2 {
+		margin-bottom: 0;
+	}
+
+	& > p {
+		color: @text-muted-color;
+		margin-top: 7px;
+	}
+}
+
+/*--------------------------
+    Header Actions
+----------------------------*/
+.feh-actions {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    
+    & > li {
+        display: inline-block;
+        text-align: right;
+        vertical-align: top;
+        margin-left: 10px;
+        
+        & > a {
+            display: block;
+            height: 50px;
+            min-width: 50px;
+            text-align: center;
+            line-height: 49px;
+            font-size: 30px;
+            color: #fff;
+            background: #F44336;
+            border-radius: 2px;
+            .transition(all);
+            .transition-duration(300ms);
+        }
+    }
+}
+
+.feh-actions > li.open > a,
+.feh-actions > li > a:hover {
+    background: darken(#F44336, 10%);
+}
+
+/*--------------------------
+    Header Action - Search
+----------------------------*/
+.feha-search {
+    position: relative;
+    
+	&:before {
+		color: #808080;
+        font-family: @font-family-icon;
+        content: '\f002';
+        position: absolute;
+        top: 14px;
+        font-size: 18px;
+        left: 20px;
+	}
+	
+	input[type="text"] {
+		border: 0;
+		width: 350px;
+		background: #F3F3F3;
+        .transition(all);
+        .transition-duration(300ms);
+		 padding: 15px 20px 17px 55px;
+        border-radius: 2px;
+        margin: 0 0 15px;
+        
+		&::-webkit-input-placeholder { color: #808080; }
+        &::-moz-placeholder { color: #808080; }
+        &:-ms-input-placeholder { color: #808080; }
+		
+		&:focus {
+            box-shadow: 0 0 1px -2px #EAEAEA;
+			background: #EAEAEA;
+            width: 500px;
+        }
+        
+	}
+}
+
+

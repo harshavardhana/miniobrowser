@@ -1,0 +1,157 @@
+/*--------------------------
+    Row
+----------------------------*/
+.fesl-row {
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-between;
+}
+
+header.fesl-row {
+	margin-bottom: 20px;
+	border-bottom: 1px solid lighten(@text-muted-color, 20%);
+	
+	.fesl-item,
+	.fesli-sort {
+		.transition(all);
+		.transition-duration(300ms);
+	}
+	
+	.fesl-item {
+		cursor: pointer;
+		
+		& > .fesli-sort {
+			float: right;
+			margin: 3px 7px 0;
+			.opacity(0);
+			color: @dark-gray;
+		}
+		
+		&:hover {
+			background: lighten(@text-muted-color, 22%);
+			color: @dark-gray;
+			
+			& > .fesli-sort {
+				.opacity(1);
+			}
+		}
+	}
+}
+
+div.fesl-row {
+	padding: 5px 45px 2px;
+    margin: 0 -45px;
+	border-bottom: 1px solid transparent;
+	cursor: default;
+	
+	&:nth-child(even) {
+		background-color: #F7F7F7;
+	}
+	
+	&.context-menu-active,
+	&.ui-selected,
+	&.ui-selecting{
+		background-color: #03A9F4;
+		color: #fff;
+		
+		.fesl-item:before {
+			color: #fff;
+		}
+	}
+	
+	&.ui-selected {
+		
+		&:nth-child(even) {
+			background-color: #03A9F4;
+		}
+	}
+	
+}
+
+/*--------------------------
+    Files and Folders
+----------------------------*/
+.fesl-item {
+    padding: 10px 15px;
+    
+	&:first-child {
+		flex: 3;
+	}
+
+	&:not(:first-child) {
+		flex: 1;
+	}
+
+	&[data-type]:before {
+		width: 24px;
+		height: 28px;
+		display: inline-block;
+		vertical-align: top;
+		margin-right: 15px;
+		margin-top: -2px;
+		font-family: @font-family-icon;
+		font-size: 20px;
+		text-align: center;
+	}
+    
+    /*--------------------------
+        Icons
+    ----------------------------*/
+	&[data-type=folder]:before {
+		content: '\f114';
+        color: @blue;
+	}
+
+	&[data-type=pdf]:before {
+		content: "\f1c1";
+        color: @red;
+	}
+	
+	&[data-type=zip]:before {
+		content: "\f1c6";
+        color: @blue-gray;
+	}
+	
+	&[data-type=audio]:before {
+		content: "\f1c7";
+        color: @green;
+	}
+	
+	&[data-type=code]:before {
+		content: "\f1c9";
+        color: @brown;
+	}
+	
+	&[data-type=excel]:before {
+		content: "\f1c3";
+        color: @teal;
+	}
+	
+	&[data-type=image]:before {
+		content: "\f1c5";
+        color: @purple;
+	}
+	
+	&[data-type=movie]:before {
+		content: "\f1c8";
+        color: @yellow;
+	}
+	
+	&[data-type=other]:before {
+		content: "\f016";
+	}
+	
+	&[data-type=text]:before {
+		content: "\f0f6";
+	}
+	
+	&[data-type=doc]:before {
+		content: "\f1c2";
+        color: @blue;
+	}
+	
+	&[data-type=presentation]:before {
+		content: "\f1c4";
+        color: @orange;
+	}
+}
