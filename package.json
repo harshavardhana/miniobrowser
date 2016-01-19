@@ -4,7 +4,7 @@
   "description": "Minio Browser",
   "scripts": {
     "build": "webpack",
-    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base dist"
+    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base dist --history-api-fallback"
   },
   "repository": {
     "type": "git",
@@ -28,14 +28,22 @@
     "html-webpack-plugin": "^1.7.0",
     "less": "^2.5.3",
     "less-loader": "^2.2.2",
+    "moment": "^2.11.1",
     "react": "^0.14.6",
+    "react-bootstrap": "^0.28.2",
+    "react-redux": "^4.0.6",
     "react-router": "^1.0.3",
+    "redux": "^3.0.5",
+    "redux-thunk": "^1.0.3",
     "style-loader": "^0.13.0",
+    "superagent": "^1.7.1",
+    "superagent-es6-promise": "^1.0.0",
     "url-loader": "^0.5.7",
     "webpack": "^1.12.11",
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "humanize": "0.0.9",
     "react-dom": "^0.14.6"
   }
 }

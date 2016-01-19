@@ -19,6 +19,8 @@ header.fesl-row {
 	
 	.fesl-item {
 		cursor: pointer;
+		color: #32393F;
+		font-size: 13px;
 		
 		& > .fesli-sort {
 			float: right;
@@ -50,11 +52,12 @@ div.fesl-row {
 	
 	&.context-menu-active,
 	&.ui-selected,
-	&.ui-selecting{
+	&.ui-selecting {
 		background-color: #03A9F4;
 		color: #fff;
 		
-		.fesl-item:before {
+		.fesl-item:before,
+		a {
 			color: #fff;
 		}
 	}
@@ -72,7 +75,11 @@ div.fesl-row {
     Files and Folders
 ----------------------------*/
 .fesl-item {
-    padding: 10px 15px;
+	padding: 10px 15px;
+
+	a {
+		color: @text-color;
+	}
     
 	&:first-child {
 		flex: 3;
@@ -92,6 +99,11 @@ div.fesl-row {
 		font-family: @font-family-icon;
 		font-size: 20px;
 		text-align: center;
+	}
+
+	&.fesli-action {
+		flex: 0.1;
+		text-align: right;
 	}
     
     /*--------------------------

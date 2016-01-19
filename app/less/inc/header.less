@@ -3,10 +3,30 @@
 ----------------------------*/
 .fe-header {
 	margin-bottom: 55px;
-	color: @blue-gray;
 	position: relative;
 
 	& > h2 {
+        & > span {
+            & > a {
+                color: #337ab7;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            &:not(.main) {
+                font-size: 17px;
+            }
+
+            &:not(:first-child) {
+                &:before {
+                    content: '/';
+                    margin: 0 5px 0 -1px;
+                    color: #C1C1C1;
+                }
+            }
+        }
 		margin-bottom: 0;
 	}
 
@@ -14,6 +34,22 @@
 		color: @text-muted-color;
 		margin-top: 7px;
 	}
+}
+
+.fe-breadcrumb {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    & > li {
+        display: inline-block;
+
+        & > a {
+            display: block;
+            font-size: 10px;
+        }
+    }
 }
 
 /*--------------------------
@@ -26,32 +62,32 @@
     position: absolute;
     right: 0;
     top: 0;
-    
+
     & > li {
         display: inline-block;
         text-align: right;
         vertical-align: top;
         margin-left: 10px;
-        
+
         & > a {
             display: block;
-            height: 50px;
-            min-width: 50px;
+            height: 54px;
+            min-width: 54px;
             text-align: center;
-            line-height: 49px;
-            font-size: 30px;
-            color: #fff;
-            background: #F44336;
+            line-height: 53px;
+            font-size: 22px;
+            border: 1px solid #F3F3F3;
+            color: #969696;
             border-radius: 2px;
             .transition(all);
             .transition-duration(300ms);
+
+            &:hover {
+                background: #F3F3F3;
+                color: #F44336;
+            }
         }
     }
-}
-
-.feh-actions > li.open > a,
-.feh-actions > li > a:hover {
-    background: darken(#F44336, 10%);
 }
 
 /*--------------------------
@@ -59,7 +95,7 @@
 ----------------------------*/
 .feha-search {
     position: relative;
-    
+
 	&:before {
 		color: #808080;
         font-family: @font-family-icon;
@@ -69,7 +105,7 @@
         font-size: 18px;
         left: 20px;
 	}
-	
+
 	input[type="text"] {
 		border: 0;
 		width: 350px;
@@ -79,18 +115,16 @@
 		 padding: 15px 20px 17px 55px;
         border-radius: 2px;
         margin: 0 0 15px;
-        
+
 		&::-webkit-input-placeholder { color: #808080; }
         &::-moz-placeholder { color: #808080; }
         &:-ms-input-placeholder { color: #808080; }
-		
+
 		&:focus {
             box-shadow: 0 0 1px -2px #EAEAEA;
 			background: #EAEAEA;
             width: 500px;
         }
-        
+
 	}
 }
-
-

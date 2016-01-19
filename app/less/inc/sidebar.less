@@ -10,7 +10,7 @@
 	height: 100%;
 	overflow: hidden;
 	color: @white;
-	padding: 40px;
+	padding: 40px 35px;
 
 	a {
 		color: rgba(255, 255, 255, 0.58);
@@ -94,16 +94,18 @@
     List
 ----------------------------*/
 .fes-list {
-	& > ul {
-		padding: 0;
+	ul {
 		list-style: none;
-		min-height: 200px;
+		height: ~"calc(100vh - 260px)";
+		overflow: auto;
+		padding: 0;
+		margin: 0 -35px;
 
 		& li {
 			& > a {
 				display: block;
-				margin: 0 -40px;
-				padding: 13px 40px 15px;
+				padding: 10px 20px 12px 35px;
+				.text-overflow();
 
 				&:before {
 					font-family: FontAwesome;
@@ -140,7 +142,7 @@
     font-size: 20px;
     font-weight: 400;
     width: @fe-sidebar-width;
-    padding: 20px 20px 20px 40px;
+    padding: 20px 20px 20px 34px;
     
     & > i {
         margin-right: 10px;

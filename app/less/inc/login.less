@@ -41,7 +41,7 @@
 
 .lc-item {
     position: relative;
-    
+
     &:not(:last-child) {
         margin-bottom: 50px;
     }
@@ -50,7 +50,7 @@
 .lci-label {
     position: absolute;
     text-align: center;
-    .translate3d(0,-37px,0);
+    bottom: 7px;
     left: 50%;
     width: 120px;
     margin-left: -60px;
@@ -133,17 +133,38 @@
 
 .lci-text:focus + .lci-label,
 .lc-item.toggled .lci-label {
-    .translate3d(0,-65px,0);
+    bottom: 40px;
     font-size: 13px;
 }
 
-
 .lci-error {
-    position: absolute;
-    right: 18px;
-    bottom: 16px;
-    font-size: 25px;
-    color: rgba(255, 255, 255, 0.53);
+    .lci-label {
+        color: #E23F3F;
+    }
+
+    .lci-helpers i {
+        &:first-child,
+        &:first-child:before,
+        &:first-child:after {
+            background: rgba(226, 63, 63, 0.43);
+        }
+
+        &:last-child,
+        &:last-child:before,
+        &:last-child:after {
+            background: #E23F3F !important;
+        }
+    }
+
+    &:after {
+        content: "\f05a";
+        font-family: FontAwesome;
+        position: absolute;
+        top: 17px;
+        right: 9px;
+        font-size: 20px;
+        color: #D33D3E;
+    }
 }
 
 .server-info {
