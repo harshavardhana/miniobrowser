@@ -1,0 +1,24 @@
+{
+  "name": "webrpc",
+  "version": "0.0.1",
+  "description": "Isomorphic Javascript library for Minio Browser JSON-RPC API",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Minio Inc",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "moment": "^2.11.1",
+    "superagent-es6-promise": "^1.0.0",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.1",
+    "gulp-jshint": "^1.11.2",
+    "gulp-notify": "^2.2.0",
+    "gulp-sourcemaps": "^1.5.2",
+    "jshint-stylish": "^2.0.1"
+  }
+}
