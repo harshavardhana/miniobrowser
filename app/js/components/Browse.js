@@ -31,11 +31,15 @@ BucketList = connect(state => state)(BucketList)
 
 let ObjectsList = ({objects, currentPath, selectPrefix, dataType }) => {
   const list = objects.map((object, i) => {
-    let size = object.name.endsWith('/') ? '' : humanize.filesize(object.size)
-    let lastModified = object.name.endsWith('/') ? '' : Moment(object.lastModified).format('lll')
+    let size = object.name.endsWith('/') ? '-' : humanize.filesize(object.size)
+    let lastModified = object.name.endsWith('/') ? '-' : Moment(object.lastModified).format('lll')
     return (
       <div key={i} className="fesl-row">
-          <div className="fesl-item" data-type={dataType(object.name)}><a href="" onClick={(e) => selectPrefix(e, `${currentPath}${object.name}`)}>{object.name}</a></div>
+          <div className="fesl-item" data-type={dataType(object.name)}>
+	    <a href="" onClick={(e) => selectPrefix(e, `${currentPath}${object.name}`)}>
+	       {object.name}
+	    </a>
+	  </div>
           <div className="fesl-item">{size}</div>
           <div className="fesl-item">{lastModified}</div>
       </div>
@@ -107,7 +111,9 @@ export default class Browse extends React.Component {
     if (prefix.endsWith('/') || prefix === '') {
       dispatch(actions.selectPrefix(prefix))
     } else {
-      web.GetObjectURL({bucketName: currentBucket, objectName: prefix})
+      web.GetObjectURL({targetHost: window.location.host,
+			bucketName: currentBucket,
+                        objectName: prefix})
         .then(res => window.location = res)
     }
   }
@@ -164,7 +170,7 @@ export default class Browse extends React.Component {
                   <ul className="feh-actions">
                       <li>
                           <a href="" onClick={this.logout.bind(this)}>
-                              <i className="fa fa-power-off"></i>
+                              <i className="fa fa-sign-out"></i>
                           </a>
                       </li>
                   </ul>
@@ -199,11 +205,11 @@ export default class Browse extends React.Component {
               <Modal bsSize="small" aria-labelledby="contained-modal-title-sm" show={showMakeBucketModal}
                 onHide={this.hideMakeBucketModal.bind(this)}>
                 <ModalHeader>
-                  Enter the bucket name to be created
+                  Enter your bucket name to be created
                 </ModalHeader>
                 <ModalBody>
                   <form onSubmit={this.makeBucket.bind(this)}>
-                    <input type="text" className="form-control" autofocus ref="makeBucketRef" placeholder="BucketName"/>
+                    <input type="text" className="form-control" autofocus ref="makeBucketRef" placeholder="my-bucketname"/>
                   </form>
                 </ModalBody>
               </Modal>
