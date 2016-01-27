@@ -1,0 +1,99 @@
+[class*="context-menu-icon-"]:before {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    width: 28px; 
+    font-family: @font-family-icon;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    text-align: center;
+    -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+         -o-transform: translateY(-50%);
+            transform: translateY(-50%);
+}
+
+.context-menu-icon-download:before {
+    content: "\f0ed";
+}
+
+.context-menu-icon-add:before {
+    content: "\f067";
+}
+
+.context-menu-icon-copy:before {
+    content: "\f0c5";
+}
+
+.context-menu-icon-cut:before {
+    content: "\f0c4";
+}
+
+.context-menu-icon-delete:before {
+    content: "\f1f8";
+}
+
+.context-menu-icon-edit:before {
+    content: "\f044";
+}
+
+.context-menu-icon-paste:before {
+    content: "\f0ea";
+}
+
+.context-menu-list {
+    position: absolute; 
+    display: inline-block;
+    min-width: 180px;
+    max-width: 360px;
+    padding: 10px 0;
+    margin-top: -5px;
+    list-style-type: none;
+    background: #fff;
+    border-radius: 2px;
+    box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    .transition(opacity);
+    .transition-duration(300ms);
+    opacity: 0;
+    height: auto !important;
+}
+
+#context-menu-layer + .context-menu-list {
+    opacity: 1;
+}
+
+.context-menu-item {
+    position: relative;
+    padding: 7px 8px 7px 45px;
+    .user-select(none);
+    background-color: #fff;
+    font-size: 14px;
+    color: #555555;
+}
+
+.context-menu-separator {
+    padding: 0; 
+    margin: 5px 0;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.context-menu-item > label > input,
+.context-menu-item > label > textarea {
+    .user-select(none);
+}
+
+.context-menu-item.context-menu-hover {
+    background-color: #f5f5f5;
+}
+
+.context-menu-item.context-menu-disabled {
+    color: #626262; 
+    background-color: #fff;
+}
+
+.context-menu-input.context-menu-hover,
+.context-menu-item.context-menu-disabled.context-menu-hover {
+    cursor: default; 
+    background-color: #eee;
+}
