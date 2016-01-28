@@ -17,23 +17,31 @@
 import React, { PropTypes } from 'react'
 import logo from '../../img/logo.svg'
 
+import * as actions from '../actions'
+
 export default class Login extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
-    const { web } = this.props
+    const { web, dispatch } = this.props
     web.Login({username: this.refs.accessKey.value, password: this.refs.secretKey.value})
       .then((res) => {
         this.props.history.pushState(null, '/browse')
       })
+      .catch(e => {
+        console.log('logn errr')
+        dispatch(actions.setLoginError())
+      })
   }
   render() {
+    const { loginError } = this.props
+    let errClass = loginError ? 'lc-item lci-error' : 'lc-item'
     return (
       <div>
       <div className="login">
       <div className="l-content">
         <div className="lc-wrap">
           <form onSubmit={this.handleSubmit.bind(this)}>
-            <div className="lc-item">
+            <div className={errClass}>
                 <input ref="accessKey" className="lci-text" type="text" spellCheck="false"/>
                 <label className="lci-label">Access Key</label>
 
@@ -41,7 +49,7 @@ export default class Login extends React.Component {
                     <i></i><i></i>
                 </div>
             </div>
-            <div className="lc-item">
+            <div className={errClass}>
                 <input ref="secretKey" className="lci-text" type="password" spellCheck="false"/>
                 <label className="lci-label">Secret Key</label>
 

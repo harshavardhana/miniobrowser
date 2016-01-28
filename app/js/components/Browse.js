@@ -5,6 +5,10 @@ import Moment from 'moment'
 import Modal from 'react-bootstrap/lib/Modal'
 import ModalHeader from 'react-bootstrap/lib/ModalHeader'
 import ModalBody from 'react-bootstrap/lib/ModalBody'
+import ProgressBar from 'react-bootstrap/lib/ProgressBar'
+import Alert from 'react-bootstrap/lib/Alert'
+import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger'
+import Tooltip from 'react-bootstrap/lib/Tooltip'
 
 import logo from '../../img/logo.svg'
 
@@ -21,9 +25,11 @@ let BucketList = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets }
           <input type="text" onChange={searchBuckets} placeholder="Search Buckets..."/>
           <i></i>
       </div>
-      <ul>
+      <div style={{position: 'relative'}}>
+      <ul style={{position: 'absolute', left: '36px'}}>
           {list}
       </ul>
+      </div>
     </div>
   )
 }
@@ -111,9 +117,7 @@ export default class Browse extends React.Component {
     if (prefix.endsWith('/') || prefix === '') {
       dispatch(actions.selectPrefix(prefix))
     } else {
-      web.GetObjectURL({targetHost: window.location.host,
-			bucketName: currentBucket,
-                        objectName: prefix})
+      web.GetObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName: prefix})
         .then(res => window.location = res)
     }
   }
@@ -125,6 +129,10 @@ export default class Browse extends React.Component {
     this.hideMakeBucketModal()
     web.MakeBucket({bucketName})
        .then(() => dispatch(actions.addBucket(bucketName)))
+       .catch(message => dispatch(actions.showAlert({
+         type: 'danger',
+         message
+       })))
   }
   hideMakeBucketModal() {
     const { dispatch } = this.props
@@ -134,6 +142,22 @@ export default class Browse extends React.Component {
     e.preventDefault()
     const { dispatch } = this.props
     dispatch(actions.showMakeBucketModal())
+  }
+  uploadFile(e) {
+    e.preventDefault()
+    const { dispatch, upload } = this.props
+    if (upload.inProgress) {
+      dispatch(actions.showAlert({
+        type: 'danger',
+        message: 'An upload already in progress'
+      }))
+    }
+    let file = e.target.files[0]
+    dispatch(actions.uploadFile(file))
+  }
+  hideAlert() {
+    const { dispatch } = this.props
+    dispatch(actions.hideAlert())
   }
   dataType(name) {
     if (name.endsWith('/')) return 'folder'
@@ -147,7 +171,22 @@ export default class Browse extends React.Component {
   }
   render() {
     const { total, free } = this.props.diskInfo
-    const showMakeBucketModal = this.props.showMakeBucketModal
+    const {showMakeBucketModal, upload, alert } = this.props
+    let progressBar = ''
+    if (upload.inProgress) {
+      progressBar = <div style={{width:'70%', position:'fixed', bottom:0, padding: '20px', background: 'white'}}>
+                      <ProgressBar active now={upload.percent} />
+                    </div>
+    }
+    let alertBox = ''
+    if (alert.show) {
+      alertBox = <Alert style={{position: 'fixed', top: 0, width: '70%'}} bsStyle={alert.type} onDismiss={this.hideAlert.bind(this)}>
+        <div className='text-center'>{alert.message}</div>
+      </Alert>
+    }
+    let signoutTooltip = <Tooltip>Sign out</Tooltip>
+    let uploadTooltip = <Tooltip>Upload file</Tooltip>
+    let makeBucketTooltip = <Tooltip>Create bucket</Tooltip>
     return (
       <div className="file-explorer">
           <div className="fe-sidebar">
@@ -155,7 +194,7 @@ export default class Browse extends React.Component {
                   <img src={logo} alt=""/>
                   <h2 className="fe-h2">Minio Browser</h2>
               </div>
-              <div className="fes-list fe-scroll-list">
+              <div className="fes-list">
                 <BucketList searchBuckets={this.searchBuckets.bind(this)} selectBucket={this.selectBucket.bind(this)} />
               </div>
               <div className="fes-host">
@@ -164,14 +203,17 @@ export default class Browse extends React.Component {
           </div>
 
           <div className="fe-body">
+              {alertBox}
               <header className="fe-header">
                   <Path selectPrefix={this.selectPrefix.bind(this)} />
                   <p>Total: {humanize.filesize(total)} &nbsp;|&nbsp; Free: {humanize.filesize(free)}</p>
                   <ul className="feh-actions">
                       <li>
-                          <a href="" onClick={this.logout.bind(this)}>
+                        <OverlayTrigger placement="left" overlay={signoutTooltip}>
+                          <a href="" onClick={this.logout.bind(this)} data-toggle="tooltip" title="" data-placement="left" data-original-title="Sign Out">
                               <i className="fa fa-sign-out"></i>
                           </a>
+                        </OverlayTrigger>
                       </li>
                   </ul>
               </header>
@@ -186,20 +228,24 @@ export default class Browse extends React.Component {
               <div className="feb-container">
                 <ObjectsList dataType={this.dataType.bind(this)} selectPrefix={this.selectPrefix.bind(this)}/>
               </div>
-
+              {progressBar}
               <div className="dropup feb-actions">
                   <a href="" data-toggle="dropdown" className="feba-toggle"><i className="fa fa-plus"></i></a>
 
                   <div className="dropdown-menu">
-                      <a href="" className="feba-btn feba-upload">
-                          <i className="fa fa-cloud-upload"></i>
-
-                          <div className="febab-tooltip"><span>Upload Files & Folders</span></div>
+                    <OverlayTrigger placement="left" overlay={uploadTooltip}>
+                      <a href="#" className="feba-btn feba-upload">
+                          <input type="file" onChange={this.uploadFile.bind(this)} style={{display:'none'}} id="file-input"></input>
+                          <label htmlFor="file-input">
+                            <i style={{cursor:'pointer'}} className="fa fa-cloud-upload"></i>
+                          </label>
                       </a>
-                      <a id="make-bucket" href="#" className="feba-btn feba-bucket" onClick={this.showMakeBucketModal.bind(this)}>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="left" overlay={makeBucketTooltip}>
+                      <a href="#" className="feba-btn feba-bucket" onClick={this.showMakeBucketModal.bind(this)}>
                           <i className="fa fa-hdd-o"></i>
-                          <div className="febab-tooltip"><span>Create Bucket</span></div>
                       </a>
+                    </OverlayTrigger>
                   </div>
               </div>
               <Modal bsSize="small" aria-labelledby="contained-modal-title-sm" show={showMakeBucketModal}
