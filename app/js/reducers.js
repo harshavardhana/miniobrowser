@@ -17,7 +17,8 @@
 import * as actions from './actions'
 
 export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{}, currentBucket: '',
-                currentPath: '', showMakeBucketModal: false}, action) => {
+                currentPath: '', showMakeBucketModal: false, upload: {},
+                alert: {show: false, type: '', message: ''}, loginError : false}, action) => {
   var newState = Object.assign({}, state)
   switch(action.type) {
     case actions.SET_WEB:
@@ -47,6 +48,19 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
       break
     case actions.SHOW_MAKEBUCKET_MODAL:
       newState.showMakeBucketModal = action.showMakeBucketModal
+      break
+    case actions.ADD_OBJECT:
+      newState.objects = [action.object, ...newState.objects]
+      break
+    case actions.SET_UPLOAD:
+      newState.upload = action.upload
+      break
+    case actions.SET_ALERT:
+      newState.alert = action.alert
+      break
+    case actions.SET_LOGIN_ERROR:
+      newState.loginError = true
+      break
   }
   return newState
 }

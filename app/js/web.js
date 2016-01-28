@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+import SuperAgent from 'superagent-es6-promise';
 import JSONrpc from './jsonrpc'
+import fileReaderStream from 'filereader-stream'
 
 export default class Web {
   constructor(endpoint) {
@@ -55,6 +57,9 @@ export default class Web {
   }
   GetObjectURL(args) {
     return this.makeCall('GetObjectURL', args)
+  }
+  PutObjectURL(args) {
+    return this.makeCall('PutObjectURL', args)
   }
   MakeBucket(args) {
     return this.makeCall('MakeBucket', args)
