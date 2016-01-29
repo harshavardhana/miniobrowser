@@ -1,0 +1,28 @@
+{
+  "name": "Minio Browser",
+  "authors": [
+    "Minio Inc."
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MIT",
+  "homepage": "http://minio.io",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "font-awesome": "fontawesome#~4.5.0",
+    "jQuery-contextMenu": "~2.0.1",
+    "jquery-ui": "jqueryui#~1.11.4",
+    "lato-font": "~1.1.1",
+    "malihu-custom-scrollbar-plugin": "~3.1.3"
+  }
+}
