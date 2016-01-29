@@ -56,6 +56,7 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
       newState.upload = action.upload
       break
     case actions.SET_ALERT:
+      if (newState.alert.alertTimeout) clearTimeout(newState.alert.alertTimeout)
       newState.alert = action.alert
       break
     case actions.SET_LOGIN_ERROR:
