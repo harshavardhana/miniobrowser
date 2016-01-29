@@ -82,9 +82,20 @@ export const hideAlert = () => {
 }
 
 export const showAlert = alert => {
-  return {
-    type: SET_ALERT,
-    alert: Object.assign({}, alert, {show: true})
+  return (dispatch, getState) => {
+    let alertTimeout = setTimeout(() => {
+      dispatch({
+        type: SET_ALERT,
+        alert: {show: false}
+      })
+    }, 5000)
+    dispatch({
+      type: SET_ALERT,
+      alert: Object.assign({}, alert, {
+        show: true,
+        alertTimeout
+      })
+    })
   }
 }
 
@@ -189,39 +200,40 @@ export const uploadFile = (file) => {
     const objectName = `${currentPath}${file.name}`
     web.PutObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName})
        .then(signedurl => {
-         var reqOptions = url.parse(signedurl)
-         reqOptions.method = 'PUT'
-         reqOptions.withCredentials = false
-         var req = http.request(reqOptions, (e, res) => {
-           dispatch(addObject({name: objectName, size: file.size, lastModified: new Date()}))
-         })
-         let completed = 0
-         dispatch(setUpload({inProgress: true, percent: 0}))
-         fileReaderStream(file)
-          .pipe(Through2(function(chunk, enc, cb) {
-            completed += chunk.length
-            let percent = completed*100/file.size
-            dispatch(setUpload({inProgress: true, percent}))
-            let retval = this.push(chunk)
-            cb()
-            return retval
-          }, (cb) => {
-            dispatch(setUpload({inProgress: false, percent: 0}))
-            dispatch(showAlert({
-              type: 'success',
-              message: 'uploaded successfully'
-            }))
-            cb()
+        var parsedUrl = url.parse(signedurl)
+        let xhr = new XMLHttpRequest()
+        xhr.withCredentials = false
+        xhr.open('PUT', signedurl, true)
+        dispatch(setUpload({inProgress: true, percent: 0}))
+        xhr.upload.addEventListener('error', event => {
+          dispatch(showAlert({
+            type: 'danger',
+            message: 'error during upload'
           }))
-          .pipe(req)
-          req.on('error', (e) => {
-            console.log('error during upload', e)
-            dispatch(setUpload({inProgress: false, percent: 0}))
-          })
+          dispatch(setUpload({inProgress: false, percent: 0}))
+        })
+        xhr.upload.addEventListener('progress', event => {
+          if (event.lengthComputable) {
+            let percent = event.loaded / event.total * 100
+            dispatch(setUpload({inProgress: true, percent}))
+            if (percent === 100) {
+              dispatch(setUpload({inProgress: false, percent: 0}))
+              dispatch(addObject({name: objectName, size: file.size, lastModified: new Date()}))
+              dispatch(showAlert({
+                type: 'success',
+                message: 'file uploaded successfully'
+              }))
+            }
+          }
+        })
+        xhr.send(file)
        })
-       .catch(message => dispatch(showAlert({
-         type: 'danger',
-         message
-       })))
+       .catch(message => {
+         dispatch(setUpload({inProgress: false, percent: 0}))
+         dispatch(showAlert({
+           type: 'danger',
+           message
+         }))
+       })
   }
 }
