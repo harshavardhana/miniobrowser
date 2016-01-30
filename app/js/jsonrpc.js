@@ -92,11 +92,6 @@ export default class JSONrpc {
         if (!res.text)
           throw new Error("res.text not set in the response")
         return JSON.parse(res.text).result
-      }, function(error) {
-        console.log(error)
-        if (error.res && error.res.text)
-          throw JSON.parse(error.res.text).error
-        throw error
       })
   }
 }

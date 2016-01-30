@@ -9,6 +9,7 @@ import ProgressBar from 'react-bootstrap/lib/ProgressBar'
 import Alert from 'react-bootstrap/lib/Alert'
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger'
 import Tooltip from 'react-bootstrap/lib/Tooltip'
+import { Scrollbars } from 'react-custom-scrollbars';
 
 import logo from '../../img/logo.svg'
 
@@ -69,31 +70,26 @@ Path = connect(state => state)(Path)
 
 export default class Browse extends React.Component {
   componentDidMount() {
-    const { web, dispatch } = this.props
-    // $('.fe-scroll-list').mCustomScrollbar({
-    //     theme: 'minimal-dark',
-    //     scrollInertia: 100,
-    //     axis:'y',
-    //     mouseWheel: {
-    //         enable: true,
-    //         axis: 'y',
-    //         preventDefault: true
-    //     }
-    // });
-    web.ListBuckets().then(buckets => buckets.map(bucket => bucket.name))
-                      .then(buckets => {
-                        dispatch(actions.setBuckets(buckets))
-                        dispatch(actions.setVisibleBuckets(buckets))
-                      })
-    web.DiskInfo().then(diskInfo => {
-      var diskInfo_ = Object.assign({}, {
-        total: diskInfo.Total,
-        free: diskInfo.Free,
-        fstype: diskInfo.FSType,
+    const { web, dispatch, history } = this.props
+    web.ListBuckets()
+      .then(buckets => buckets.map(bucket => bucket.name))
+      .then(buckets => {
+        dispatch(actions.setBuckets(buckets))
+        dispatch(actions.setVisibleBuckets(buckets))
+        return web.DiskInfo()
       })
-      diskInfo_.used = diskInfo_.total - diskInfo_.free
-      dispatch(actions.setDiskInfo(diskInfo_))
-    })
+      .then(diskInfo => {
+        var diskInfo_ = Object.assign({}, {
+          total: diskInfo.Total,
+          free: diskInfo.Free,
+          fstype: diskInfo.FSType,
+        })
+        diskInfo_.used = diskInfo_.total - diskInfo_.free
+        dispatch(actions.setDiskInfo(diskInfo_))
+      })
+      .catch(err => {
+        dispatch(actions.showAlert({type: 'danger', message: err.message}))
+      })
   }
   selectBucket(e, bucket) {
     e.preventDefault()
@@ -123,9 +119,9 @@ export default class Browse extends React.Component {
     this.hideMakeBucketModal()
     web.MakeBucket({bucketName})
        .then(() => dispatch(actions.addBucket(bucketName)))
-       .catch(message => dispatch(actions.showAlert({
+       .catch(err => dispatch(actions.showAlert({
          type: 'danger',
-         message
+         message: err.message
        })))
   }
   hideMakeBucketModal() {
@@ -145,8 +141,10 @@ export default class Browse extends React.Component {
         type: 'danger',
         message: 'An upload already in progress'
       }))
+      return
     }
     let file = e.target.files[0]
+    e.target.value = null
     dispatch(actions.uploadFile(file))
   }
   hideAlert() {
