@@ -15,7 +15,7 @@
  */
 
 import '../bower_components/font-awesome/css/font-awesome.css'
-import '../bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css'
+import '../bower_components/animate.css/animate.min.css'
 import './less/main.less'
 
 import React from 'react'
