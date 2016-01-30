@@ -25,11 +25,9 @@ let BucketList = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets }
           <input type="text" onChange={searchBuckets} placeholder="Search Buckets..."/>
           <i></i>
       </div>
-      <div style={{position: 'relative'}}>
-      <ul style={{position: 'absolute', left: '36px'}}>
+      <ul>
           {list}
       </ul>
-      </div>
     </div>
   )
 }
@@ -41,11 +39,7 @@ let ObjectsList = ({objects, currentPath, selectPrefix, dataType }) => {
     let lastModified = object.name.endsWith('/') ? '-' : Moment(object.lastModified).format('lll')
     return (
       <div key={i} className="fesl-row">
-          <div className="fesl-item" data-type={dataType(object.name)}>
-	    <a href="" onClick={(e) => selectPrefix(e, `${currentPath}${object.name}`)}>
-	       {object.name}
-	    </a>
-	  </div>
+          <div className="fesl-item" data-type={dataType(object.name)}><a href="" onClick={(e) => selectPrefix(e, `${currentPath}${object.name}`)}>{object.name}</a></div>
           <div className="fesl-item">{size}</div>
           <div className="fesl-item">{lastModified}</div>
       </div>
@@ -251,11 +245,11 @@ export default class Browse extends React.Component {
               <Modal bsSize="small" aria-labelledby="contained-modal-title-sm" show={showMakeBucketModal}
                 onHide={this.hideMakeBucketModal.bind(this)}>
                 <ModalHeader>
-                  Enter your bucket name to be created
+                  Enter the bucket name to be created
                 </ModalHeader>
                 <ModalBody>
                   <form onSubmit={this.makeBucket.bind(this)}>
-                    <input type="text" className="form-control" autofocus ref="makeBucketRef" placeholder="my-bucketname"/>
+                    <input type="text" className="form-control" autofocus ref="makeBucketRef" placeholder="BucketName"/>
                   </form>
                 </ModalBody>
               </Modal>
