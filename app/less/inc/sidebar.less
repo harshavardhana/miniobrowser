@@ -11,6 +11,7 @@
 	overflow: hidden;
 	color: @white;
 	padding: 40px 35px;
+	overflow: hidden;
 
 	a {
 		color: rgba(255, 255, 255, 0.58);
@@ -26,16 +27,16 @@
 ----------------------------*/
 .fes-header {
 	margin-bottom: 40px;
-	
+
 	img,
 	h2 {
 		float: left;
 	}
-    
+
 	h2 {
 		margin: 13px 0 0 10px;
 	}
-	
+
 	img {
 		width: 32px;
 	}
@@ -47,30 +48,30 @@
 .fesb-search {
 	position: relative;
 	margin-bottom: 20px;
-	
-    &:before {
-        color: rgba(255, 255, 255, 0.4);
-        font-family: @font-family-icon;
-        content: '\f002';
-        top: 1px;
-        font-size: 15px;
+
+	&:before {
+		color: rgba(255, 255, 255, 0.4);
+		font-family: @font-family-icon;
+		content: '\f002';
+		top: 1px;
+		font-size: 15px;
 		position: absolute;
 		left: 0;
-    }
-	
+	}
+
 	& > i {
 		position: absolute;
 		left: 0;
 		bottom: 0;
 		content: "";
-		height: 2px;
+		height: 1px;
 		width: 0;
 		background: #fff;
 		.transition(all);
 		.transition-duration(250ms);
 	}
-    
-    input[type=text] {
+
+	input[type=text] {
 		width: 100%;
 		color: #fff;
 		background: transparent;
@@ -78,16 +79,16 @@
 		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 		padding: 0px 2px 10px 25px;
 		font-size: 14px;
-		
-        &::-webkit-input-placeholder { color: rgba(255,255,255,0.4); }
-        &::-moz-placeholder { color: rgba(255,255,255,0.4); }
-        &:-ms-input-placeholder { color: rgba(255,255,255,0.4); }
-		
+
+		&::-webkit-input-placeholder { color: rgba(255,255,255,0.4); }
+		&::-moz-placeholder { color: rgba(255,255,255,0.4); }
+		&:-ms-input-placeholder { color: rgba(255,255,255,0.4); }
+
 		&:focus + i {
 			width: 100%;
 		}
-		
-    }
+
+	}
 }
 
 /*--------------------------
@@ -99,12 +100,12 @@
 		height: ~"calc(100vh - 260px)";
 		overflow: auto;
 		padding: 0;
-		margin: 0 -35px;
+		margin: 0 -55px 0 -35px;
 
 		& li {
 			& > a {
 				display: block;
-				padding: 10px 20px 12px 35px;
+				padding: 10px 40px 12px 35px;
 				.text-overflow();
 
 				&:before {
@@ -133,20 +134,20 @@
     Host
 ----------------------------*/
 .fes-host {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    z-index: 1;
-    background: @dark-gray;
-    color: rgba(255, 255, 255, 0.4);
-    font-size: 20px;
-    font-weight: 400;
-    width: @fe-sidebar-width;
-    padding: 20px 20px 20px 34px;
-    
-    & > i {
-        margin-right: 10px;
-    }
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	z-index: 1;
+	background: @dark-gray;
+	color: rgba(255, 255, 255, 0.4);
+	font-size: 20px;
+	font-weight: 400;
+	width: @fe-sidebar-width;
+	padding: 20px 20px 20px 34px;
+
+	& > i {
+		margin-right: 10px;
+	}
 }
 
 

@@ -174,7 +174,7 @@ export default class Browse extends React.Component {
     }
     let alertBox = ''
     if (alert.show) {
-      alertBox = <Alert style={{position: 'fixed', top: 0, width: '70%'}} bsStyle={alert.type} onDismiss={this.hideAlert.bind(this)}>
+      alertBox = <Alert className="feb-alert animated fadeInDown" bsStyle={alert.type} onDismiss={this.hideAlert.bind(this)}>
         <div className='text-center'>{alert.message}</div>
       </Alert>
     }
@@ -213,9 +213,9 @@ export default class Browse extends React.Component {
               </header>
               <div className="feb-container">
                   <header className="fesl-row" data-type="folder">
-                      <div className="fesl-item" data-sort="name">Name <i className="fesli-sort zmdi zmdi-sort-asc"></i></div>
-                      <div className="fesl-item" data-sort="size">Size <i className="fesli-sort zmdi zmdi-sort-amount-asc"></i></div>
-                      <div className="fesl-item" data-sort="last-modified"> <i className="fesli-sort zmdi zmdi-sort-amount-asc"></i>Last Modified</div>
+                      <div className="fesl-item" data-sort="name">Name <i className="fesli-sort fa fa-sort"></i></div>
+                      <div className="fesl-item" data-sort="size">Size <i className="fesli-sort fa fa-sort"></i></div>
+                      <div className="fesl-item" data-sort="last-modified"> <i className="fesli-sort fa fa-sort"></i>Last Modified</div>
                   </header>
               </div>
 
@@ -242,17 +242,18 @@ export default class Browse extends React.Component {
                     </OverlayTrigger>
                   </div>
               </div>
-              <Modal bsSize="small" aria-labelledby="contained-modal-title-sm" show={showMakeBucketModal}
-                onHide={this.hideMakeBucketModal.bind(this)}>
-                <ModalHeader>
-                  Enter the bucket name to be created
-                </ModalHeader>
+              <Modal className="feb-modal" aria-labelledby="contained-modal-title-sm" show={showMakeBucketModal}
+      onHide={this.hideMakeBucketModal.bind(this)}>
+
                 <ModalBody>
-                  <form onSubmit={this.makeBucket.bind(this)}>
-                    <input type="text" className="form-control" autofocus ref="makeBucketRef" placeholder="BucketName"/>
-                  </form>
+                    <form onSubmit={this.makeBucket.bind(this)}>
+                        <div className="create-bucket">
+                            <input type="text" autofocus ref="makeBucketRef" placeholder="Bucket Name"/>
+                            <i></i>
+                        </div>
+                    </form>
                 </ModalBody>
-              </Modal>
+             </Modal>
           </div>
       </div>
     )

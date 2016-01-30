@@ -2,10 +2,10 @@
     Header
 ----------------------------*/
 .fe-header {
-	margin-bottom: 55px;
-	position: relative;
+    margin-bottom: 55px;
+    position: relative;
 
-	& > h2 {
+    & > h2 {
         & > span {
             & > a {
                 color: #337ab7;
@@ -22,18 +22,18 @@
             &:not(:first-child) {
                 &:before {
                     content: '/';
-                    margin: 0 5px 0 -1px;
+                    margin: 0 4px;
                     color: #C1C1C1;
                 }
             }
         }
-		margin-bottom: 0;
-	}
+        margin-bottom: 0;
+    }
 
-	& > p {
-		color: @text-muted-color;
-		margin-top: 7px;
-	}
+    & > p {
+        color: @text-muted-color;
+        margin-top: 7px;
+    }
 }
 
 .fe-breadcrumb {
@@ -74,7 +74,7 @@
             height: 54px;
             min-width: 54px;
             text-align: center;
-            line-height: 53px;
+            line-height: 52px;
             font-size: 22px;
             border: 1px solid #F3F3F3;
             color: #969696;
@@ -96,35 +96,35 @@
 .feha-search {
     position: relative;
 
-	&:before {
-		color: #808080;
+    &:before {
+        color: #808080;
         font-family: @font-family-icon;
         content: '\f002';
         position: absolute;
         top: 14px;
         font-size: 18px;
         left: 20px;
-	}
+    }
 
-	input[type="text"] {
-		border: 0;
-		width: 350px;
-		background: #F3F3F3;
+    input[type="text"] {
+        border: 0;
+        width: 350px;
+        background: #F3F3F3;
         .transition(all);
         .transition-duration(300ms);
-		 padding: 15px 20px 17px 55px;
+        padding: 15px 20px 17px 55px;
         border-radius: 2px;
         margin: 0 0 15px;
 
-		&::-webkit-input-placeholder { color: #808080; }
+        &::-webkit-input-placeholder { color: #808080; }
         &::-moz-placeholder { color: #808080; }
         &:-ms-input-placeholder { color: #808080; }
 
-		&:focus {
+        &:focus {
             box-shadow: 0 0 1px -2px #EAEAEA;
-			background: #EAEAEA;
+            background: #EAEAEA;
             width: 500px;
         }
 
-	}
+    }
 }
