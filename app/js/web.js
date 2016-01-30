@@ -16,11 +16,12 @@
 
 import SuperAgent from 'superagent-es6-promise';
 import JSONrpc from './jsonrpc'
-import fileReaderStream from 'filereader-stream'
+import createBrowserHistory from 'history/lib/createBrowserHistory'
 
 export default class Web {
-  constructor(endpoint) {
+  constructor(endpoint, history) {
     var namespace = 'Web'
+    this.history = history
     this.JSONrpc = new JSONrpc({
       endpoint, namespace
     })
@@ -29,6 +30,17 @@ export default class Web {
     return this.JSONrpc.call(method, {
       params: [options]
     }, localStorage.token)
+    .then(data => data, err => {
+      if (err.status === 401) {
+        delete(localStorage.token)
+        this.history.pushState(null, '/')
+      }
+      if (err.res && err.res.text) {
+        let errjson  = JSON.parse(err.res.text)
+        throw new Error(errjson.error)
+      }
+      throw err
+    })
   }
   LoggedIn() {
     return !!localStorage.token

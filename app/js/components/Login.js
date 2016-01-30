@@ -28,7 +28,6 @@ export default class Login extends React.Component {
         this.props.history.pushState(null, '/browse')
       })
       .catch(e => {
-        console.log('logn errr')
         dispatch(actions.setLoginError())
       })
   }
