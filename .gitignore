@@ -6,3 +6,4 @@ Thumbs.db
 /dist
 *~
 *.log
+.idea

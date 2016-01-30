@@ -1,3 +1,4 @@
+
 .login {
     height: 100vh;
     background: @dark-gray;
@@ -7,7 +8,7 @@
     position: absolute;
     bottom: 40px;
     right: 40px;
-    
+
     img {
         width: 40px;
     }
@@ -16,7 +17,7 @@
 .l-content {
     height: 100%;
     text-align: center;
-    
+
     &:before {
         height: 100%;
         width: 1px;
@@ -33,7 +34,7 @@
 .lc-wrap {
     width: 450px;
     margin-top: -50px;
-    
+
     &.toggled {
         display: inline-block;
     }
@@ -72,7 +73,7 @@
             background: rgba(255, 255, 255, 0.2);
             display: block;
         }
-        
+
         &:last-child {
             position: absolute;
             height: 1px;
@@ -87,7 +88,7 @@
             -webkit-transform: scale(0);
             -moz-transform: scale(0);
         }
-        
+
         &:before,
         &:after {
             content: "";
@@ -97,11 +98,11 @@
             width: 1px;
             height: 10px;
         }
-        
+
         &:before {
             left: 0;
         }
-        
+
         &:after {
             right: 0;
         }
@@ -117,11 +118,11 @@
     color: #fff;
     position: relative;
     z-index: 1;
-    
+
     &:focus + label + .lci-helpers i  {
         &:last-child {
             .scale(1);
-            
+
             &:before,
             &:after {
                 width: 1px;
@@ -182,18 +183,58 @@
         width: 80%;
         margin-top: -100px;
     }
-    
+
     .l-logo {
         right: 50%;
         margin-right: -25px;
         bottom: 50px;
     }
-    
+
     .server-info {
         width: 100%;
         left: 0;
         bottom: 20px;
         font-size: 15px;
         text-align: center;
+    }
+}
+
+.lci-login {
+    width: 50px;
+    height: 50px;
+    border: 1px solid #fff;
+    display: inline-block;
+    border-radius: 50%;
+    line-height: 50px;
+    font-size: 22px;
+    color: #fff;
+    .transition(all);
+    .transition-duration(300ms);
+    opacity: 0.3;
+    background-color: transparent;
+    line-height: 45px;
+
+
+    &:hover {
+        color: #fff;
+        opacity: 0.8;
+        border-color: #fff;
+    }
+}
+
+.lci-login-text {
+    padding: 5px 20px 7px;
+    border-radius: 2px;
+    border: 1px solid #5B6165;
+    color: #A2A5A8;
+    position: relative;
+    .transition(all);
+    .transition-duration(300ms);
+
+
+    &:hover {
+        color: #fff;
+
+        border-color: #fff;
     }
 }

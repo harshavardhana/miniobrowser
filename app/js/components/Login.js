@@ -34,7 +34,7 @@ export default class Login extends React.Component {
   }
   render() {
     const { loginError } = this.props
-    let errClass = loginError ? 'lc-item lci-error' : 'lc-item'
+    let errClass = loginError ? 'lc-item lci-error toggled' : 'lc-item'
     return (
       <div>
       <div className="login">
@@ -57,9 +57,11 @@ export default class Login extends React.Component {
                     <i></i><i></i>
                 </div>
             </div>
-            <button className="btn btn-default" type="submit">
-              <i className="fa fa-sign-in"></i> Login
-            </button>
+            <div className="lc-item">
+                <button className="lci-login" type="submit">
+                    <i className="fa fa-sign-in"></i>
+                </button>
+            </div>
           </form>
         </div>
       </div>
