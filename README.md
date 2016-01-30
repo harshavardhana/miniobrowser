@@ -13,5 +13,9 @@ $ npm install
 $ bower install
 ```
 
-## Start
-$ NODE_ENV=dev npm run dev
+## For regular development builds
+$ npm run dev
+
+## For production builds
+$ npm run prod
+

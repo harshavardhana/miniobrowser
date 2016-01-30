@@ -3,7 +3,8 @@ bower_components
 .DS_Store
 .idea
 Thumbs.db
-/dist
+/dev
+/production
 *~
 *.log
 .idea

@@ -1,5 +1,5 @@
 /*
- * Isomorphic Javascript library for Minio Browser JSON-RPC API, (C) 2016 Minio, Inc.
+ * Minio Browser (C) 2016 Minio, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ export default class Web {
     .then(data => data, err => {
       if (err.status === 401) {
         delete(localStorage.token)
-        this.history.pushState(null, '/')
+        this.history.pushState(null, '/login')
       }
       if (err.res && err.res.text) {
         let errjson  = JSON.parse(err.res.text)
