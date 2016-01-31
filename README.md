@@ -30,8 +30,10 @@ $ npm run dev
 
 ### Now generate `assetfs.go` for development.
 
+The supplied resource is already compressed. Doing it again would not add any value and may even increase the size of the data, use `nocompress` flag to avoid it.
+
 ```sh
-$ go-bindata-assetfs dev/...
+$ go-bindata-assetfs -nocompress dev/...
 ```
 
 ## For production builds
@@ -42,7 +44,9 @@ $ npm run prod
 
 ### Now generate `assetfs.go` for production.
 
+The supplied resource is already compressed. Doing it again would not add any value and may even increase the size of the data, use `nocompress` flag to avoid it.
+
 ```sh
-$ go-bindata-assetfs production/...
+$ go-bindata-assetfs -nocompress production/...
 ```
 
