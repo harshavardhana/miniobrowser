@@ -19,8 +19,8 @@ import * as actions from './actions'
 export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{}, currentBucket: '',
                 currentPath: '', showMakeBucketModal: false, upload: {},
                 alert: {show: false, type: '', message: ''}, loginError : false}, action) => {
-  var newState = Object.assign({}, state)
-  switch(action.type) {
+  let newState = Object.assign({}, state)
+  switch (action.type) {
     case actions.SET_WEB:
       newState.web = action.web
       break

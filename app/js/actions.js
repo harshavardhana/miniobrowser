@@ -205,7 +205,7 @@ export const uploadFile = (file) => {
     const objectName = `${currentPath}${file.name}`
     web.PutObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName})
         .then(signedurl => {
-          var parsedUrl = url.parse(signedurl)
+          let parsedUrl = url.parse(signedurl)
           let xhr = new XMLHttpRequest()
           xhr.withCredentials = false
           xhr.open('PUT', signedurl, true)
