@@ -33,7 +33,7 @@ export default class Web {
     .then(data => data, err => {
       if (err.status === 401) {
         delete(localStorage.token)
-        this.history.pushState(null, '/')
+        this.history.pushState(null, '/login')
       }
       if (err.res && err.res.text) {
         let errjson  = JSON.parse(err.res.text)

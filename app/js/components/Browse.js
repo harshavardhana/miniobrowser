@@ -174,7 +174,7 @@ export default class Browse extends React.Component {
     const { web, history } = this.props
     e.preventDefault()
     web.Logout()
-    history.pushState(null, '/')
+    history.pushState(null, '/login')
   }
   render() {
     const { total, free } = this.props.diskInfo
