@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "Minio Browser",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --progress --colors",
     "dev": "NODE_ENV=dev webpack-dev-server --devtool eval --progress --colors --hot --content-base dev --history-api-fallback",
     "prod": "NODE_ENV=production webpack -p --config webpack.production.config.js"
   },

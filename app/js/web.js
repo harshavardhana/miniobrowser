@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-import SuperAgent from 'superagent-es6-promise';
-import JSONrpc from './jsonrpc'
-import createBrowserHistory from 'history/lib/createBrowserHistory'
+import JSONrpc from './jsonrpc';
 
 export default class Web {
   constructor(endpoint, history) {
-    var namespace = 'Web'
+    const namespace = 'Web'
     this.history = history
     this.JSONrpc = new JSONrpc({
       endpoint, namespace
@@ -36,7 +34,7 @@ export default class Web {
         this.history.pushState(null, '/login')
       }
       if (err.res && err.res.text) {
-        let errjson  = JSON.parse(err.res.text)
+        const errjson = JSON.parse(err.res.text)
         throw new Error(errjson.error)
       }
       throw err
@@ -72,8 +70,5 @@ export default class Web {
   }
   PutObjectURL(args) {
     return this.makeCall('PutObjectURL', args)
-  }
-  MakeBucket(args) {
-    return this.makeCall('MakeBucket', args)
   }
 }

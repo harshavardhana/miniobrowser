@@ -19,7 +19,6 @@ import { connect } from 'react-redux'
 import humanize from 'humanize'
 import Moment from 'moment'
 import Modal from 'react-bootstrap/lib/Modal'
-import ModalHeader from 'react-bootstrap/lib/ModalHeader'
 import ModalBody from 'react-bootstrap/lib/ModalBody'
 import ProgressBar from 'react-bootstrap/lib/ProgressBar'
 import Alert from 'react-bootstrap/lib/Alert'
@@ -95,7 +94,7 @@ export default class Browse extends React.Component {
         return web.DiskInfo()
       })
       .then(diskInfo => {
-        var diskInfo_ = Object.assign({}, {
+        let diskInfo_ = Object.assign({}, {
           total: diskInfo.Total,
           free: diskInfo.Free,
           fstype: diskInfo.FSType,

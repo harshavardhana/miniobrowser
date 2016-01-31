@@ -23,7 +23,7 @@ import ReactDOM from 'react-dom'
 import createBrowserHistory from 'history/lib/createBrowserHistory'
 import thunkMiddleware from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
-import { Route, Router, DefaultRoute } from 'react-router'
+import { Route, Router } from 'react-router'
 import { Provider, connect } from 'react-redux'
 
 import * as actions from './js/actions.js'
@@ -35,10 +35,10 @@ import _Browse from './js/components/Browse.js'
 import Web from './js/web'
 window.Web = Web
 
-let store =  applyMiddleware(thunkMiddleware)(createStore)(reducer)
-let Browse = connect(state => state)(_Browse)
-let Login = connect(state => state)(_Login)
-let history = createBrowserHistory()
+const store = applyMiddleware(thunkMiddleware)(createStore)(reducer)
+const Browse = connect(state => state)(_Browse)
+const Login = connect(state => state)(_Login)
+const history = createBrowserHistory()
 
 let web = new Web(`${window.location.protocol}//${window.location.host}/rpc`, history)
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import logo from '../../img/logo.svg'
 
 import * as actions from '../actions'
