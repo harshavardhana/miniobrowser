@@ -91,6 +91,7 @@ export default class Browse extends React.Component {
       .then(buckets => {
         dispatch(actions.setBuckets(buckets))
         dispatch(actions.setVisibleBuckets(buckets))
+        dispatch(actions.selectBucket(buckets[0]))
         return web.DiskInfo()
       })
       .then(diskInfo => {
