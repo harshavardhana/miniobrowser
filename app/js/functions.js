@@ -1,5 +1,5 @@
 /*
- * Isomorphic Javascript library for Minio Browser JSON-RPC API, (C) 2016 Minio, Inc.
+ * Minio Browser (C) 2016 Minio, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,11 +18,11 @@ $(document).ready(function() {
     /*--------------------------
         Login
     ----------------------------*/
-    $('.lci-text').blur(function () {
+    $('.lci-text').blur(function() {
         var x = $(this).val();
         var p = $(this).closest('.lc-item')
 
-        p[ x.length > 0 ? 'addClass' : 'removeClass' ]('toggled');
+        p[x.length > 0 ? 'addClass' : 'removeClass']('toggled');
     });
 
 

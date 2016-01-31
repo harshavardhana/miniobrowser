@@ -1,5 +1,5 @@
 /*
- * Isomorphic Javascript library for Minio Browser JSON-RPC API, (C) 2016 Minio, Inc.
+ * Minio Browser (C) 2016 Minio, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ export default class Login extends React.Component {
     const { web, dispatch } = this.props
     web.Login({username: this.refs.accessKey.value, password: this.refs.secretKey.value})
       .then((res) => {
-        this.props.history.pushState(null, '/browse')
+        this.props.history.pushState(null, '/')
       })
       .catch(e => {
         dispatch(actions.setLoginError())
