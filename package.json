@@ -46,6 +46,7 @@
   },
   "dependencies": {
     "humanize": "0.0.9",
+    "react-custom-scrollbars": "^2.2.2",
     "react-dom": "^0.14.6"
   }
 }
