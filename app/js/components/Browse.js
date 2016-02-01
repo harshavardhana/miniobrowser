@@ -61,7 +61,7 @@ let ObjectsList = ({objects, currentPath, selectPrefix, dataType }) => {
     let lastModified = object.name.endsWith('/') ? '-' : Moment(object.lastModified).format('lll')
     return (
       <div key={i} className="fesl-row">
-          <div className="fesl-item" data-type={dataType(object.name)}><a href="" onClick={(e) => selectPrefix(e, `${currentPath}${object.name}`)}>{object.name}</a></div>
+          <div className="fesl-item" data-type={dataType(object.name, object.contentType)}><a href="" onClick={(e) => selectPrefix(e, `${currentPath}${object.name}`)}>{object.name}</a></div>
           <div className="fesl-item">{size}</div>
           <div className="fesl-item">{lastModified}</div>
       </div>
@@ -180,8 +180,15 @@ export default class Browse extends React.Component {
     const { dispatch } = this.props
     dispatch(actions.hideAlert())
   }
-  dataType(name) {
+  dataType(name, contentType) {
     if (name.endsWith('/')) return 'folder'
+    // Handle some special cases.
+    if (contentType === 'application/pdf') return 'pdf'
+    if (contentType === 'text/html') return 'code'
+    if (contentType === 'application/octet-stream') return 'other'
+    if (contentType === 'application/zip') return 'zip'
+    if (contentType === 'application/gzip') return 'zip'
+    if (contentType) return contentType.split('/')[0]
     return 'other'
   }
   logout(e) {
