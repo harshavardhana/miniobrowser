@@ -160,7 +160,14 @@ export default class Browse extends React.Component {
     }
     let file = e.target.files[0]
     e.target.value = null
-    dispatch(actions.uploadFile(file))
+    this.xhr = new XMLHttpRequest()
+    dispatch(actions.uploadFile(file, this.xhr))
+  }
+  uploadAbort(e) {
+    e.preventDefault()
+    const { dispatch } = this.props
+    this.xhr.abort()
+    dispatch(actions.setUpload({inProgress: false, percent: 0}))
   }
   hideAlert() {
     const { dispatch } = this.props
@@ -180,8 +187,16 @@ export default class Browse extends React.Component {
     const { total, free } = this.props.diskInfo
     const {showMakeBucketModal, upload, alert } = this.props
     let progressBar = ''
+    let abortUploadTooltip = <Tooltip>Abort Upload</Tooltip>
     if (upload.inProgress) {
       progressBar = <div style={{width:'70%', position:'fixed', bottom:0, padding: '20px', background: 'white'}}>
+                      <div className="clearfix">
+                        <OverlayTrigger placement="left" overlay={abortUploadTooltip}>
+                        <a className="pull-right" href="" onClick={this.uploadAbort.bind(this)}>
+                          <i className="fa fa-remove" ></i>
+                        </a>
+                        </OverlayTrigger>
+                      </div>
                       <ProgressBar active now={upload.percent} />
                     </div>
     }
