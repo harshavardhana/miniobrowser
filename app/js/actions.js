@@ -199,14 +199,13 @@ export const setLoginError = () => {
   }
 }
 
-export const uploadFile = (file) => {
+export const uploadFile = (file, xhr) => {
   return (dispatch, getState) => {
     const { currentBucket, currentPath, web } = getState()
     const objectName = `${currentPath}${file.name}`
     web.PutObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName})
         .then(signedurl => {
           let parsedUrl = url.parse(signedurl)
-          let xhr = new XMLHttpRequest()
           xhr.withCredentials = false
           xhr.open('PUT', signedurl, true)
           dispatch(setUpload({inProgress: true, percent: 0}))
@@ -223,7 +222,7 @@ export const uploadFile = (file) => {
               dispatch(setUpload({inProgress: true, percent}))
               if (percent === 100) {
                 dispatch(setUpload({inProgress: false, percent: 0}))
-                dispatch(addObject({name: objectName, size: file.size, lastModified: new Date()}))
+                dispatch(addObject({name: file.name, size: file.size, lastModified: new Date()}))
                 dispatch(showAlert({
                   type: 'success',
                   message: 'file uploaded successfully'

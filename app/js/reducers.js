@@ -50,6 +50,8 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
       newState.showMakeBucketModal = action.showMakeBucketModal
       break
     case actions.ADD_OBJECT:
+      let idx = newState.objects.findIndex(object => object.name === action.object.name)
+      if (idx > -1) newState.objects.splice(idx, 1)
       newState.objects = [action.object, ...newState.objects]
       break
     case actions.SET_UPLOAD:
