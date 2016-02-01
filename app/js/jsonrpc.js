@@ -1,5 +1,5 @@
 /*
- * Isomorphic Javascript library for Minio Browser JSON-RPC API, (C) 2016 Minio, Inc.
+ * Minio Browser (C) 2016 Minio, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ export default class JSONrpc {
     this.endpoint = params.endpoint
     this.namespace = params.namespace
     this.version = '2.0';
-    var parsedUrl = url.parse(this.endpoint)
+    const parsedUrl = url.parse(this.endpoint)
     this.host = parsedUrl.hostname
     this.path = parsedUrl.path
     this.port = parsedUrl.port
@@ -39,7 +39,7 @@ export default class JSONrpc {
     case 'https:': {
       this.scheme = 'https'
       if (parsedUrl.port === 0) {
-        port = 443
+        this.port = 443
       }
       break
     }
@@ -59,14 +59,13 @@ export default class JSONrpc {
     if (!options.params) {
       options.params = [];
     }
-    var dataObj = {
+    const dataObj = {
       id: options.id,
       jsonrpc: this.version,
       params: options.params ? options.params : [],
       method: this.namespace ? this.namespace + '.' + method : method
     }
-    var payload = JSON.stringify(dataObj)
-    var requestParams = {
+    let requestParams = {
       host: this.host,
       port: this.port,
       path: this.path,
@@ -82,8 +81,8 @@ export default class JSONrpc {
       requestParams.headers.Authorization = 'Bearer ' + token
     }
 
-    var req = SuperAgent.post(this.endpoint)
-    for (var key in requestParams.headers) {
+    let req = SuperAgent.post(this.endpoint)
+    for (let key in requestParams.headers) {
       req.set(key, requestParams.headers[key])
     }
     // req.set('Access-Control-Allow-Origin', 'http://localhost:8080')
@@ -92,11 +91,6 @@ export default class JSONrpc {
         if (!res.text)
           throw new Error("res.text not set in the response")
         return JSON.parse(res.text).result
-      }, function(error) {
-        console.log(error)
-        if (error.res && error.res.text)
-          throw JSON.parse(error.res.text).error
-        throw error
       })
   }
 }

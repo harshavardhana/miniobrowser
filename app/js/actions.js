@@ -1,5 +1,5 @@
 /*
- * Isomorphic Javascript library for Minio Browser JSON-RPC API, (C) 2016 Minio, Inc.
+ * Minio Browser (C) 2016 Minio, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ import http from 'http'
 import https from 'https'
 import url from 'url'
 import web from './web'
-import fileReaderStream from 'filereader-stream'
 import Through2 from 'through2'
 
 export const SET_WEB = 'SET_WEB'
@@ -157,6 +156,12 @@ export const selectBucket = (currentBucket) => {
           }, [])
         ))
       })
+      .catch(err => {
+        dispatch(showAlert({
+          type: 'danger',
+          message: err.message
+        }))
+      })
   }
 }
 
@@ -199,41 +204,41 @@ export const uploadFile = (file) => {
     const { currentBucket, currentPath, web } = getState()
     const objectName = `${currentPath}${file.name}`
     web.PutObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName})
-       .then(signedurl => {
-        var parsedUrl = url.parse(signedurl)
-        let xhr = new XMLHttpRequest()
-        xhr.withCredentials = false
-        xhr.open('PUT', signedurl, true)
-        dispatch(setUpload({inProgress: true, percent: 0}))
-        xhr.upload.addEventListener('error', event => {
+        .then(signedurl => {
+          let parsedUrl = url.parse(signedurl)
+          let xhr = new XMLHttpRequest()
+          xhr.withCredentials = false
+          xhr.open('PUT', signedurl, true)
+          dispatch(setUpload({inProgress: true, percent: 0}))
+          xhr.upload.addEventListener('error', event => {
+            dispatch(showAlert({
+              type: 'danger',
+              message: 'error during upload'
+            }))
+            dispatch(setUpload({inProgress: false, percent: 0}))
+          })
+          xhr.upload.addEventListener('progress', event => {
+            if (event.lengthComputable) {
+              let percent = event.loaded / event.total * 100
+              dispatch(setUpload({inProgress: true, percent}))
+              if (percent === 100) {
+                dispatch(setUpload({inProgress: false, percent: 0}))
+                dispatch(addObject({name: objectName, size: file.size, lastModified: new Date()}))
+                dispatch(showAlert({
+                  type: 'success',
+                  message: 'file uploaded successfully'
+                }))
+              }
+            }
+          })
+          xhr.send(file)
+        })
+        .catch(err => {
+          dispatch(setUpload({inProgress: false, percent: 0}))
           dispatch(showAlert({
             type: 'danger',
-            message: 'error during upload'
+            message: err.message
           }))
-          dispatch(setUpload({inProgress: false, percent: 0}))
         })
-        xhr.upload.addEventListener('progress', event => {
-          if (event.lengthComputable) {
-            let percent = event.loaded / event.total * 100
-            dispatch(setUpload({inProgress: true, percent}))
-            if (percent === 100) {
-              dispatch(setUpload({inProgress: false, percent: 0}))
-              dispatch(addObject({name: objectName, size: file.size, lastModified: new Date()}))
-              dispatch(showAlert({
-                type: 'success',
-                message: 'file uploaded successfully'
-              }))
-            }
-          }
-        })
-        xhr.send(file)
-       })
-       .catch(message => {
-         dispatch(setUpload({inProgress: false, percent: 0}))
-         dispatch(showAlert({
-           type: 'danger',
-           message
-         }))
-       })
   }
 }

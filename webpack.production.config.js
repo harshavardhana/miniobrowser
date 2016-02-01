@@ -24,7 +24,7 @@ var exports = {
     path.resolve(__dirname, 'app/index.js')
   ],
   output: {
-    path: path.resolve(__dirname, 'dev'),
+    path: path.resolve(__dirname, 'production'),
     filename: 'index_bundle.js'
   },
   module: {

@@ -1,5 +1,5 @@
 /*
- * Isomorphic Javascript library for Minio Browser JSON-RPC API, (C) 2016 Minio, Inc.
+ * Minio Browser (C) 2016 Minio, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-import SuperAgent from 'superagent-es6-promise';
-import JSONrpc from './jsonrpc'
-import fileReaderStream from 'filereader-stream'
+import JSONrpc from './jsonrpc';
 
 export default class Web {
-  constructor(endpoint) {
-    var namespace = 'Web'
+  constructor(endpoint, history) {
+    const namespace = 'Web'
+    this.history = history
     this.JSONrpc = new JSONrpc({
       endpoint, namespace
     })
@@ -29,6 +28,17 @@ export default class Web {
     return this.JSONrpc.call(method, {
       params: [options]
     }, localStorage.token)
+    .then(data => data, err => {
+      if (err.status === 401) {
+        delete(localStorage.token)
+        this.history.pushState(null, '/login')
+      }
+      if (err.res && err.res.text) {
+        const errjson = JSON.parse(err.res.text)
+        throw new Error(errjson.error)
+      }
+      throw err
+    })
   }
   LoggedIn() {
     return !!localStorage.token
@@ -60,8 +70,5 @@ export default class Web {
   }
   PutObjectURL(args) {
     return this.makeCall('PutObjectURL', args)
-  }
-  MakeBucket(args) {
-    return this.makeCall('MakeBucket', args)
   }
 }

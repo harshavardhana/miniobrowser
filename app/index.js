@@ -1,5 +1,5 @@
 /*
- * Isomorphic Javascript library for Minio Browser JSON-RPC API, (C) 2016 Minio, Inc.
+ * Minio Browser (C) 2016 Minio, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,13 +35,15 @@ import _Browse from './js/components/Browse.js'
 import Web from './js/web'
 window.Web = Web
 
-let store =  applyMiddleware(thunkMiddleware)(createStore)(reducer)
-let Browse = connect(state => state)(_Browse)
-let Login = connect(state => state)(_Login)
-let web = new Web(`${window.location.protocol}//${window.location.host}/rpc`)
+const store = applyMiddleware(thunkMiddleware)(createStore)(reducer)
+const Browse = connect(state => state)(_Browse)
+const Login = connect(state => state)(_Login)
+const history = createBrowserHistory()
+
+let web = new Web(`${window.location.protocol}//${window.location.host}/rpc`, history)
 
 if (window.location.host === 'localhost:8080') {
-  web = new Web('http://localhost:9001/rpc')
+  web = new Web('http://localhost:9001/rpc', history)
 }
 
 window.web = web
@@ -51,7 +53,7 @@ function authNeeded(nextState, replace) {
   if (!web.LoggedIn()) {
     replace(
       nextState,
-      '/'
+      '/login'
     )
     return
   }
@@ -61,7 +63,7 @@ function authNotNeeded(nextState, replace) {
   if (web.LoggedIn()) {
     replace(
       nextState,
-      '/browse'
+      '/'
     )
     return
   }
@@ -69,10 +71,10 @@ function authNotNeeded(nextState, replace) {
 
 ReactDOM.render((
   <Provider store={store} web={web}>
-    <Router history={createBrowserHistory()}>
-      <Route path='/' component={Login} onEnter={authNotNeeded} />
-      <Route path='/browse' component={Browse} onEnter={authNeeded} />
-      <Route path='/browse/:bucketName' component={Browse} onEnter={authNeeded} />
+    <Router history={history}>
+      <Route path='/login' component={Login} onEnter={authNotNeeded} />
+      <Route path='/' component={Browse} onEnter={authNeeded} />
+      <Route path='/:bucketName' component={Browse} onEnter={authNeeded} />
     </Router>
   </Provider>
 ), document.getElementById('root'))

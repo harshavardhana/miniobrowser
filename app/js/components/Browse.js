@@ -1,9 +1,24 @@
+/*
+ * Minio Browser (C) 2016 Minio, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import React from 'react'
 import { connect } from 'react-redux'
 import humanize from 'humanize'
 import Moment from 'moment'
 import Modal from 'react-bootstrap/lib/Modal'
-import ModalHeader from 'react-bootstrap/lib/ModalHeader'
 import ModalBody from 'react-bootstrap/lib/ModalBody'
 import ProgressBar from 'react-bootstrap/lib/ProgressBar'
 import Alert from 'react-bootstrap/lib/Alert'
@@ -69,31 +84,27 @@ Path = connect(state => state)(Path)
 
 export default class Browse extends React.Component {
   componentDidMount() {
-    const { web, dispatch } = this.props
-    // $('.fe-scroll-list').mCustomScrollbar({
-    //     theme: 'minimal-dark',
-    //     scrollInertia: 100,
-    //     axis:'y',
-    //     mouseWheel: {
-    //         enable: true,
-    //         axis: 'y',
-    //         preventDefault: true
-    //     }
-    // });
-    web.ListBuckets().then(buckets => buckets.map(bucket => bucket.name))
-                      .then(buckets => {
-                        dispatch(actions.setBuckets(buckets))
-                        dispatch(actions.setVisibleBuckets(buckets))
-                      })
-    web.DiskInfo().then(diskInfo => {
-      var diskInfo_ = Object.assign({}, {
-        total: diskInfo.Total,
-        free: diskInfo.Free,
-        fstype: diskInfo.FSType,
+    const { web, dispatch, history } = this.props
+    web.ListBuckets()
+      .then(buckets => buckets.map(bucket => bucket.name))
+      .then(buckets => {
+        dispatch(actions.setBuckets(buckets))
+        dispatch(actions.setVisibleBuckets(buckets))
+        dispatch(actions.selectBucket(buckets[0]))
+        return web.DiskInfo()
       })
-      diskInfo_.used = diskInfo_.total - diskInfo_.free
-      dispatch(actions.setDiskInfo(diskInfo_))
-    })
+      .then(diskInfo => {
+        let diskInfo_ = Object.assign({}, {
+          total: diskInfo.Total,
+          free: diskInfo.Free,
+          fstype: diskInfo.FSType,
+        })
+        diskInfo_.used = diskInfo_.total - diskInfo_.free
+        dispatch(actions.setDiskInfo(diskInfo_))
+      })
+      .catch(err => {
+        dispatch(actions.showAlert({type: 'danger', message: err.message}))
+      })
   }
   selectBucket(e, bucket) {
     e.preventDefault()
@@ -123,9 +134,9 @@ export default class Browse extends React.Component {
     this.hideMakeBucketModal()
     web.MakeBucket({bucketName})
        .then(() => dispatch(actions.addBucket(bucketName)))
-       .catch(message => dispatch(actions.showAlert({
+       .catch(err => dispatch(actions.showAlert({
          type: 'danger',
-         message
+         message: err.message
        })))
   }
   hideMakeBucketModal() {
@@ -145,8 +156,10 @@ export default class Browse extends React.Component {
         type: 'danger',
         message: 'An upload already in progress'
       }))
+      return
     }
     let file = e.target.files[0]
+    e.target.value = null
     dispatch(actions.uploadFile(file))
   }
   hideAlert() {
@@ -161,7 +174,7 @@ export default class Browse extends React.Component {
     const { web, history } = this.props
     e.preventDefault()
     web.Logout()
-    history.pushState(null, '/')
+    history.pushState(null, '/login')
   }
   render() {
     const { total, free } = this.props.diskInfo

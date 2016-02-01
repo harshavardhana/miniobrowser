@@ -1,5 +1,5 @@
 /*
- * Isomorphic Javascript library for Minio Browser JSON-RPC API, (C) 2016 Minio, Inc.
+ * Minio Browser (C) 2016 Minio, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@ import * as actions from './actions'
 export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{}, currentBucket: '',
                 currentPath: '', showMakeBucketModal: false, upload: {},
                 alert: {show: false, type: '', message: ''}, loginError : false}, action) => {
-  var newState = Object.assign({}, state)
-  switch(action.type) {
+  let newState = Object.assign({}, state)
+  switch (action.type) {
     case actions.SET_WEB:
       newState.web = action.web
       break

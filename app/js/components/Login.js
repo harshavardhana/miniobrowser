@@ -1,5 +1,5 @@
 /*
- * Isomorphic Javascript library for Minio Browser JSON-RPC API, (C) 2016 Minio, Inc.
+ * Minio Browser (C) 2016 Minio, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React, { PropTypes } from 'react'
+import React from 'react'
 import logo from '../../img/logo.svg'
 
 import * as actions from '../actions'
@@ -25,10 +25,9 @@ export default class Login extends React.Component {
     const { web, dispatch } = this.props
     web.Login({username: this.refs.accessKey.value, password: this.refs.secretKey.value})
       .then((res) => {
-        this.props.history.pushState(null, '/browse')
+        this.props.history.pushState(null, '/')
       })
       .catch(e => {
-        console.log('logn errr')
         dispatch(actions.setLoginError())
       })
   }
@@ -42,7 +41,7 @@ export default class Login extends React.Component {
         <div className="lc-wrap">
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className={errClass}>
-                <input ref="accessKey" className="lci-text" type="text" spellCheck="false"/>
+                <input ref="accessKey" name="username" className="lci-text" type="text" spellCheck="false"/>
                 <label className="lci-label">Access Key</label>
 
                 <div className="lci-helpers">
@@ -50,7 +49,7 @@ export default class Login extends React.Component {
                 </div>
             </div>
             <div className={errClass}>
-                <input ref="secretKey" className="lci-text" type="password" spellCheck="false"/>
+                <input ref="secretKey" name="password" className="lci-text" type="password" spellCheck="false"/>
                 <label className="lci-label">Secret Key</label>
 
                 <div className="lci-helpers">
