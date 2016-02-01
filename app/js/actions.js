@@ -223,7 +223,7 @@ export const uploadFile = (file) => {
               dispatch(setUpload({inProgress: true, percent}))
               if (percent === 100) {
                 dispatch(setUpload({inProgress: false, percent: 0}))
-                dispatch(addObject({name: objectName, size: file.size, lastModified: new Date()}))
+                dispatch(addObject({name: file.name, size: file.size, lastModified: new Date()}))
                 dispatch(showAlert({
                   type: 'success',
                   message: 'file uploaded successfully'
