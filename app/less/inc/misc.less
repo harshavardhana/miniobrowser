@@ -13,15 +13,17 @@
 ----------------------------*/
 .feb-alert {
 	border: 0;
-	border-radius: 0px;
-	left: 0;
+	left: 20px;
 	position: fixed;
-	width: 100%;
-	top: 0;
-	padding: 25px 0;
+	max-width: 500px;
+	bottom: 20px;
+	margin: 0;
+	padding: 15px 0;
 	z-index: 10;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
 	color: #fff;
+	width: 100%;
+	border-radius: 3px;
 
 	&.alert-danger {
 		background: #ef5350;
@@ -31,11 +33,16 @@
 		background: #37D672;
 	}
 
+	&.alert-info {
+		background: #2196F3;
+	}
+
 	.close {
 		right: 20px;
 		font-weight: normal;
 		opacity: 1;
 		font-size: 18px;
+		top: 0;
 
 		span {
 			width: 25px;
@@ -45,12 +52,35 @@
 			border-radius: 50%;
 			line-height: 24px;
 			text-shadow: none;
-		}
-
-		&:hover span {
-			background-color: rgba(255, 255, 255, 0.25);
 			color: #fff;
 		}
+
+		&:hover,
+		&:focus {
+			span {
+				background-color: rgba(255, 255, 255, 0.25);
+				color: #fff;
+			}
+		}
+	}
+
+	.progress {
+		margin: 10px 65px 10px 25px;
+		height: 5px;
+		box-shadow: none;
+		border-radius: 1px;
+		background-color: #1d82d2;
+
+		.close {
+			position: absolute;
+			right: 20px;
+			top: 15px;
+		}
+	}
+
+	.progress-bar {
+		box-shadow: none;
+		background-color: #fff;
 	}
 }
 

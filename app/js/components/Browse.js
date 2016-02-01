@@ -28,6 +28,7 @@ import Tooltip from 'react-bootstrap/lib/Tooltip'
 import logo from '../../img/logo.svg'
 
 import * as actions from '../actions'
+import { Scrollbars } from 'react-custom-scrollbars';
 
 let BucketList = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets }) => {
   const list = visibleBuckets.map((bucket, i) => {
@@ -40,9 +41,15 @@ let BucketList = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets }
           <input type="text" onChange={searchBuckets} placeholder="Search Buckets..."/>
           <i></i>
       </div>
-      <ul>
-          {list}
-      </ul>
+      <div className="fesl-inner">
+          <Scrollbars
+              renderScrollbarVertical={props => <div className="scrollbar-vertical"/>}
+          >
+              <ul>
+                {list}
+              </ul>
+          </Scrollbars>
+      </div>
     </div>
   )
 }
@@ -181,13 +188,14 @@ export default class Browse extends React.Component {
     const {showMakeBucketModal, upload, alert } = this.props
     let progressBar = ''
     if (upload.inProgress) {
-      progressBar = <div style={{width:'70%', position:'fixed', bottom:0, padding: '20px', background: 'white'}}>
-                      <ProgressBar active now={upload.percent} />
+      progressBar = <div className="feb-alert animated fadeInUp alert-info">
+                        <ProgressBar now={upload.percent} />
+                        <button type="button" class="close"><span>&times;</span></button>
                     </div>
     }
     let alertBox = ''
     if (alert.show) {
-      alertBox = <Alert className="feb-alert animated fadeInDown" bsStyle={alert.type} onDismiss={this.hideAlert.bind(this)}>
+      alertBox = <Alert className="feb-alert animated fadeInUp" bsStyle={alert.type} onDismiss={this.hideAlert.bind(this)}>
         <div className='text-center'>{alert.message}</div>
       </Alert>
     }
