@@ -213,9 +213,9 @@ export default class Browse extends React.Component {
     }
     let alertBox = ''
     if (alert.show) {
-      alertBox = <Alert className="feb-alert animated fadeInUp" bsStyle={alert.type} onDismiss={this.hideAlert.bind(this)}>
-        <div className='text-center'>{alert.message}</div>
-      </Alert>
+      alertBox =  <Alert className="feb-alert animated fadeInUp" bsStyle={alert.type} onDismiss={this.hideAlert.bind(this)}>
+                    <div className='text-center'>{alert.message}</div>
+                  </Alert>
     }
     let signoutTooltip = <Tooltip>Sign out</Tooltip>
     let uploadTooltip = <Tooltip>Upload file</Tooltip>
