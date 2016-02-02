@@ -208,20 +208,21 @@ export const uploadFile = (file, xhr) => {
           let parsedUrl = url.parse(signedurl)
           xhr.withCredentials = false
           xhr.open('PUT', signedurl, true)
-          dispatch(setUpload({inProgress: true, percent: 0}))
+          dispatch(setUpload({inProgress: true, loaded: 0, total: file.size}))
           xhr.upload.addEventListener('error', event => {
             dispatch(showAlert({
               type: 'danger',
               message: 'error during upload'
             }))
-            dispatch(setUpload({inProgress: false, percent: 0}))
+            dispatch(setUpload({inProgress: false}))
           })
           xhr.upload.addEventListener('progress', event => {
             if (event.lengthComputable) {
-              let percent = event.loaded / event.total * 100
-              dispatch(setUpload({inProgress: true, percent}))
-              if (percent === 100) {
-                dispatch(setUpload({inProgress: false, percent: 0}))
+              let loaded = event.loaded
+              let total = event.total
+              dispatch(setUpload({inProgress: true, loaded, total}))
+              if (loaded === total) {
+                dispatch(setUpload({inProgress: false}))
                 dispatch(addObject({name: file.name, size: file.size, lastModified: new Date()}))
                 dispatch(showAlert({
                   type: 'success',
