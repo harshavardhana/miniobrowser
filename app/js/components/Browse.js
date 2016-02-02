@@ -28,6 +28,7 @@ import Tooltip from 'react-bootstrap/lib/Tooltip'
 import logo from '../../img/logo.svg'
 
 import * as actions from '../actions'
+import * as mime from '../mime';
 import { Scrollbars } from 'react-custom-scrollbars';
 
 let BucketList = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets }) => {
@@ -182,13 +183,9 @@ export default class Browse extends React.Component {
   }
   dataType(name, contentType) {
     if (name.endsWith('/')) return 'folder'
-    // Handle some special cases.
-    if (contentType === 'application/pdf') return 'pdf'
-    if (contentType === 'text/html') return 'code'
-    if (contentType === 'application/octet-stream') return 'other'
-    if (contentType === 'application/zip') return 'zip'
-    if (contentType === 'application/gzip') return 'zip'
-    if (contentType) return contentType.split('/')[0]
+    if (contentType) {
+      return mime.getDataType(contentType)
+    }
     return 'other'
   }
   logout(e) {
@@ -208,7 +205,7 @@ export default class Browse extends React.Component {
                         <a className="pull-right" href="" onClick={this.uploadAbort.bind(this)}>
                           <i className="fa fa-remove" ></i>
                         </a>
-                        </OverlayTrigger>            
+                        </OverlayTrigger>
                         <ProgressBar now={upload.percent} />
                         <button type="button" class="close"><span>&times;</span></button>
                     </div>
