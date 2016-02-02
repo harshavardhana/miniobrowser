@@ -199,16 +199,17 @@ export default class Browse extends React.Component {
     const {showMakeBucketModal, upload, alert } = this.props
     let progressBar = ''
     let abortUploadTooltip = <Tooltip>Abort Upload</Tooltip>
+    let percent = (upload.loaded / upload.total) * 100
     if (upload.inProgress) {
         progressBar = <div className="feb-alert animated fadeInUp alert-info">
-                        <OverlayTrigger placement="left" overlay={abortUploadTooltip}>
-                        <a className="pull-right" href="" onClick={this.uploadAbort.bind(this)}>
-                          <i className="fa fa-remove" ></i>
-                        </a>
+                        <OverlayTrigger placement="right" overlay={abortUploadTooltip}>
+                          <button type="button" className="close" onClick={this.uploadAbort.bind(this)}>
+                            <span>&times;</span>
+                          </button>
                         </OverlayTrigger>
-                        <ProgressBar now={upload.percent} />
-                        <button type="button" class="close"><span>&times;</span></button>
-                    </div>
+                        <ProgressBar now={percent} />
+                        <span style={{display:'block'}} className="text-center">{humanize.filesize(upload.loaded)} ({percent.toFixed(2)} %)</span>
+                      </div>
     }
     let alertBox = ''
     if (alert.show) {
