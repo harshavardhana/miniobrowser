@@ -34,6 +34,7 @@ export const SET_UPLOAD = 'SET_UPLOAD'
 export const SET_ALERT = 'SET_ALERT'
 export const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR'
 export const SET_SHOW_ABORT_MODAL = 'SET_SHOW_ABORT_MODAL'
+export const SHOW_ABOUT = 'SHOW_ABOUT'
 
 export const setWeb = web => {
   return {
@@ -248,5 +249,19 @@ export const uploadFile = (file, xhr) => {
             message: err.message
           }))
         })
+  }
+}
+
+export const showAbout = () => {
+  return {
+    type: SHOW_ABOUT,
+    showAbout: true
+  }
+}
+
+export const hideAbout = () => {
+  return {
+    type: SHOW_ABOUT,
+    showAbout: false
   }
 }
