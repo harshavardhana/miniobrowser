@@ -30,6 +30,7 @@ import logo from '../../img/logo.svg'
 import * as actions from '../actions'
 import * as mime from '../mime';
 import { Scrollbars } from 'react-custom-scrollbars';
+import PieChart from 'react-simple-pie-chart';
 
 let BucketList = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets }) => {
   const list = visibleBuckets.map((bucket, i) => {
@@ -201,14 +202,14 @@ export default class Browse extends React.Component {
     let abortUploadTooltip = <Tooltip>Abort Upload</Tooltip>
     let percent = (upload.loaded / upload.total) * 100
     if (upload.inProgress) {
-        progressBar = <div className="feb-alert animated fadeInUp alert-info">
+        progressBar = <div className="feb-alert feba-progress animated fadeInUp alert-info">
                         <OverlayTrigger placement="right" overlay={abortUploadTooltip}>
                           <button type="button" className="close" onClick={this.uploadAbort.bind(this)}>
                             <span>&times;</span>
                           </button>
                         </OverlayTrigger>
                         <ProgressBar now={percent} />
-                        <span style={{display:'block'}} className="text-center">{humanize.filesize(upload.loaded)} ({percent.toFixed(2)} %)</span>
+                        <div className="text-center"><small>{humanize.filesize(upload.loaded)} ({percent.toFixed(2)} %)</small></div>
                       </div>
     }
     let alertBox = ''
@@ -220,6 +221,11 @@ export default class Browse extends React.Component {
     let signoutTooltip = <Tooltip>Sign out</Tooltip>
     let uploadTooltip = <Tooltip>Upload file</Tooltip>
     let makeBucketTooltip = <Tooltip>Create bucket</Tooltip>
+
+    let used = total - free
+    let usedPercent = (used/total)*100
+    let freePercent = free*100/total
+
     return (
       <div className="file-explorer">
           <div className="fe-sidebar">
@@ -238,23 +244,47 @@ export default class Browse extends React.Component {
           <div className="fe-body">
               {alertBox}
               <header className="fe-header">
-                  <Path selectPrefix={this.selectPrefix.bind(this)} />
-                  <p>Total: {humanize.filesize(total)} &nbsp;|&nbsp; Free: {humanize.filesize(free)}</p>
-                  <ul className="feh-actions">
-                      <li>
-                        <OverlayTrigger placement="left" overlay={signoutTooltip}>
-                          <a href="" onClick={this.logout.bind(this)} data-toggle="tooltip" title="" data-placement="left" data-original-title="Sign Out">
-                              <i className="fa fa-sign-out"></i>
-                          </a>
-                        </OverlayTrigger>
-                      </li>
-                  </ul>
+                  <div className="media">
+                      <div className="feh-pie pull-left">
+                          <PieChart
+                              slices={[
+                            {
+                              color: '#2ed2ff',
+                              value: usedPercent,
+                            },
+                            {
+                              color: '#eee',
+                              value: freePercent,
+                            },
+                          ]}
+                          />
+                      </div>
+
+                      <div className="media-body">
+                          <Path selectPrefix={this.selectPrefix.bind(this)} />
+
+                          <ul className="feh-disk list-unstyled list-inline">
+                              <li><i className="fehd-icon used"></i> Used: {humanize.filesize(total - free)}</li>
+                              <li><i className="fehd-icon free"></i> Free: {humanize.filesize(total - used)}</li>
+                          </ul>
+
+                          <ul className="feh-actions">
+                              <li>
+                                  <OverlayTrigger placement="left" overlay={signoutTooltip}>
+                                      <a href="" onClick={this.logout.bind(this)} data-toggle="tooltip" title="" data-placement="left" data-original-title="Sign Out">
+                                          <i className="fa fa-sign-out"></i>
+                                      </a>
+                                  </OverlayTrigger>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
               </header>
               <div className="feb-container">
                   <header className="fesl-row" data-type="folder">
-                      <div className="fesl-item" data-sort="name">Name <i className="fesli-sort fa fa-sort"></i></div>
-                      <div className="fesl-item" data-sort="size">Size <i className="fesli-sort fa fa-sort"></i></div>
-                      <div className="fesl-item" data-sort="last-modified"> <i className="fesli-sort fa fa-sort"></i>Last Modified</div>
+                      <div className="fesl-item" data-sort="name">Name <i className="fesli-sort fa fa-sort-alpha-asc"></i></div>
+                      <div className="fesl-item" data-sort="size">Size <i className="fesli-sort fa fa-sort-amount-desc"></i></div>
+                      <div className="fesl-item" data-sort="last-modified"> <i className="fesli-sort fa fa-sort-numeric-asc"></i>Last Modified</div>
                   </header>
               </div>
 
