@@ -18,7 +18,6 @@ import http from 'http'
 import https from 'https'
 import url from 'url'
 import web from './web'
-import Through2 from 'through2'
 
 export const SET_WEB = 'SET_WEB'
 export const SET_CURRENT_BUCKET = 'SET_CURRENT_BUCKET'
