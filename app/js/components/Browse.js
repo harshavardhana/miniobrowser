@@ -93,7 +93,7 @@ let Path = ({currentBucket, currentPath, selectPrefix}) => {
 Path = connect(state => state)(Path)
 
 let ConfirmModal = ({text, okText, cancelText, okHandler, cancelHandler}) => {
-  return  <Modal show={true}>
+  return  <Modal show={true} className="confirm-modal">
             <ModalHeader>{text}</ModalHeader>
             <ModalBody>
               <button onClick={okHandler}>{okText}</button>
@@ -173,6 +173,17 @@ export default class Browse extends React.Component {
     const { dispatch } = this.props
     dispatch(actions.showMakeBucketModal())
   }
+  showAbout(e) {
+    e.preventDefault()
+    const { dispatch } = this.props
+    dispatch(actions.showAbout())
+  }
+
+  hideAbout(e) {
+    e.preventDefault()
+    const { dispatch } = this.props
+    dispatch(actions.hideAbout())
+  }
   uploadFile(e) {
     e.preventDefault()
     const { dispatch, upload } = this.props
@@ -222,9 +233,27 @@ export default class Browse extends React.Component {
     web.Logout()
     history.pushState(null, '/login')
   }
+  fullscreen(e) {
+    e.preventDefault()
+    let el = document.documentElement
+
+    if (el.requestFullscreen) {
+        el.requestFullscreen();
+    }
+    if(el.mozRequestFullScreen) {
+        el.mozRequestFullScreen();
+    }
+    if(el.webkitRequestFullscreen) {
+        el.webkitRequestFullscreen();
+    }
+    if(el.msRequestFullscreen) {
+        el.msRequestFullscreen();
+    }
+  }
   render() {
     const { total, free } = this.props.diskInfo
     const {showMakeBucketModal, showAbortModal, upload, alert } = this.props
+    const {showAbout } = this.props
     let progressBar = ''
     let percent = (upload.loaded / upload.total) * 100
     if (upload.inProgress) {
@@ -238,7 +267,7 @@ export default class Browse extends React.Component {
     }
     let alertBox = ''
     if (alert.show) {
-      alertBox =  <Alert className="feb-alert animated fadeInUp" bsStyle={alert.type} onDismiss={this.hideAlert.bind(this)}>
+      alertBox =  <Alert className="feb-alert animated fadeInDown" bsStyle={alert.type} onDismiss={this.hideAlert.bind(this)}>
                     <div className='text-center'>{alert.message}</div>
                   </Alert>
     }
@@ -302,13 +331,17 @@ export default class Browse extends React.Component {
                           </ul>
 
                           <ul className="feh-actions">
-                              <li>
-                                  <OverlayTrigger placement="left" overlay={signoutTooltip}>
-                                      <a href="" onClick={this.logout.bind(this)} data-toggle="tooltip" title="" data-placement="left" data-original-title="Sign Out">
-                                          <i className="fa fa-sign-out"></i>
-                                      </a>
-                                  </OverlayTrigger>
-                              </li>
+                                <li className="dropdown">
+                                    <a href="" data-toggle="dropdown">
+                                        <i className="fa fa-ellipsis-v"></i>
+                                    </a>
+
+                                    <ul className="dropdown-menu dm-right pull-right">
+                                        <li><a href="" onClick={this.fullscreen.bind(this)}>Fullscreen <i className="fa fa-expand"></i></a></li>
+                                        <li><a href="" onClick={this.showAbout.bind(this)}>About <i className="fa fa-info-circle"></i></a></li>
+                                        <li><a href="" onClick={this.logout.bind(this)} >Sign Out <i className="fa fa-sign-out"></i></a></li>
+                                    </ul>
+                                </li>
                           </ul>
                       </div>
                   </div>
@@ -356,6 +389,36 @@ export default class Browse extends React.Component {
                     </form>
                 </ModalBody>
              </Modal>
+
+          <Modal className="about-modal" show={showAbout} onHide={this.hideAbout.bind(this)}>
+              <ModalBody>
+
+                  <img className="am-logo" src={logo} alt=""/>
+
+                  <ul className="am-list list-unstyled">
+                    <li>
+                        <div className="aml-title">Version</div>
+                        <small>2016-01-31T03:32:00Z</small>
+                    </li>
+
+                    <li>
+                        <div className="aml-title">Memory</div>
+                        <small>Used: 454kB | Allocated: 454kB | Used-Heap: 454kB | Allocated-Heap: 1.7MB</small>
+                    </li>
+                    <li>
+                        <div className="aml-title">Platform</div>
+                        <small>Host: Space | OS: linux | Arch: amd64</small>
+                    </li>
+                    <li>
+                        <div className="aml-title">Runtime</div>
+                        <small>Version: go1.5.3 | CPUs: 4</small>
+                    </li>
+                  </ul>
+
+                  <a href="" className="am-close" onClick={this.hideAbout.bind(this)}><i className="fa fa-check"></i></a>
+
+              </ModalBody>
+          </Modal>
           </div>
       </div>
     )

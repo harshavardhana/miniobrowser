@@ -67,6 +67,9 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
     case actions.SET_SHOW_ABORT_MODAL:
       newState.showAbortModal = action.showAbortModal
       break
+    case actions.SHOW_ABOUT:
+      newState.showAbout = action.showAbout
+      break
   }
   return newState
 }
