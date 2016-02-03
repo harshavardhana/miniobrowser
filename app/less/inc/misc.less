@@ -15,15 +15,22 @@
 	border: 0;
 	position: fixed;
 	max-width: 500px;
-	top: 100px;
-	right: 20px;
 	margin: 0;
-	padding: 15px 0;
+	padding: 17px 0;
 	z-index: 10;
 	box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
 	color: #fff;
 	width: 100%;
+	right: 20px;
 	border-radius: 3px;
+
+	&:not(.feba-progress) {
+		top: 20px;
+	}
+
+	&.feba-progress {
+		bottom: 26px;
+	}
 
 	&.alert-danger {
 		background: #ef5350;
@@ -38,11 +45,13 @@
 	}
 
 	.close {
-		right: 20px;
+		right: 19px;
 		font-weight: normal;
 		opacity: 1;
 		font-size: 18px;
-		top: 0;
+		position: absolute;
+		text-align: center;
+		top: 16px;
 
 		span {
 			width: 25px;
@@ -155,3 +164,5 @@
 		z-index:1;
 	}
 }
+
+

@@ -18,13 +18,15 @@ header.fesl-row {
     }
     .fesl-item {
         cursor: pointer;
-        color: #32393F;
+        color: @text-muted-color;
         font-weight: 500;
+
         & > .fesli-sort {
             float: right;
             margin: 4px 0 0;
             .opacity(0);
             color: @dark-gray;
+            font-size: 14px;
         }
         &:hover {
             background: lighten(@text-muted-color, 22%);
@@ -75,7 +77,7 @@ div.fesl-row {
         flex: 3;
     }
     &:not(:first-child) {
-        flex: 1;
+        flex: 0.5;
     }
     &[data-type]:before {
         width: 24px;
