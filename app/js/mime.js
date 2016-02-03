@@ -14,28 +14,43 @@
  * limitations under the License.
  */
 
-export const supportedTypes = {
-  'text/html': 'code',
-  'application/pdf': 'pdf',
-  'application/zip': 'zip',
-  'application/gzip': 'zip',
-  'application/json': 'code',
-  'application/javascript': 'code',
-  'x-conference/x-cooltalk': 'audio'
+// List of official MIME Types: http://www.iana.org/assignments/media-types/media-types.xhtml
+const supportedSubMimeTypes = {
+  'xml': 'code',
+  'pdf': 'pdf',
+  'zip': 'zip',
+  'ogg': 'audio',
+  'gzip': 'zip',
+  'json': 'code',
+  'text': 'text',
+  'image': 'image',
+  'msword': 'doc',
+  'ms-word': 'doc',
+  'ms-excel': 'excel',
+  'javascript': 'code',
+  'spreadsheet': 'excel',
+  'opendocument.text': 'doc',
+  'presentation': 'presentation',
+  'ms-powerpoint': 'presentation',
 }
 
 export const getDataType = (contentType) => {
-  let dataType = supportedTypes[contentType]
-  if (dataType) {
-    return dataType
-  }
-  dataType = contentType.split('/')[0]
-  // For all other unsupported types if the mime preceding
-  // value is 'application' treat it as generic.
-  if (dataType === 'application') {
+  // Split the contentType two part identifiers.
+  let mimeIdentifiers = contentType.split('/');
+  let mimeType = mimeIdentifiers[0];
+  let mimeSubType = mimeIdentifiers[1];
+
+  // For mime type 'application' we need to look into its
+  // sub type to figure the relevant data type.
+  if (mimeType === 'application') {
+    for (var sMimeType in supportedSubMimeTypes) {
+      if (mimeSubType.indexOf(sMimeType) !== -1) {
+        return supportedSubMimeTypes[sMimeType]
+      }
+    }
     return 'other'
   }
-  // For all other mimes like audio, video, text data type
-  // is already valid and supported.
-  return dataType
+  // For all other mime type like audio, video, text treat
+  // them as valid data types and use as is.
+  return mimeType
 }
