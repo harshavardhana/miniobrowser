@@ -33,6 +33,7 @@ export const SHOW_MAKEBUCKET_MODAL = 'SHOW_MAKEBUCKET_MODAL'
 export const SET_UPLOAD = 'SET_UPLOAD'
 export const SET_ALERT = 'SET_ALERT'
 export const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR'
+export const SET_SHOW_ABORT_MODAL = 'SET_SHOW_ABORT_MODAL'
 
 export const setWeb = web => {
   return {
@@ -189,6 +190,13 @@ export const setUpload = (upload = {inProgress: false, percent: 0}) => {
   return {
     type: SET_UPLOAD,
     upload
+  }
+}
+
+export const setShowAbortModal = showAbortModal => {
+  return {
+    type: SET_SHOW_ABORT_MODAL,
+    showAbortModal
   }
 }
 

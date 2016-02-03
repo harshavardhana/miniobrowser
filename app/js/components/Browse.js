@@ -20,6 +20,7 @@ import humanize from 'humanize'
 import Moment from 'moment'
 import Modal from 'react-bootstrap/lib/Modal'
 import ModalBody from 'react-bootstrap/lib/ModalBody'
+import ModalHeader from 'react-bootstrap/lib/ModalHeader'
 import ProgressBar from 'react-bootstrap/lib/ProgressBar'
 import Alert from 'react-bootstrap/lib/Alert'
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger'
@@ -90,6 +91,17 @@ let Path = ({currentBucket, currentPath, selectPrefix}) => {
   )
 }
 Path = connect(state => state)(Path)
+
+let ConfirmModal = ({text, okText, cancelText, okHandler, cancelHandler}) => {
+  return  <Modal show={true}>
+            <ModalHeader>{text}</ModalHeader>
+            <ModalBody>
+              <button onClick={okHandler}>{okText}</button>
+              <button onClick={cancelHandler}>{cancelText}</button>
+            </ModalBody>
+          </Modal>
+}
+ConfirmModal = connect(state => state)(ConfirmModal)
 
 export default class Browse extends React.Component {
   componentDidMount() {
@@ -181,6 +193,17 @@ export default class Browse extends React.Component {
     const { dispatch } = this.props
     this.xhr.abort()
     dispatch(actions.setUpload({inProgress: false, percent: 0}))
+    this.hideAbortModal(e)
+  }
+  showAbortModal(e) {
+    e.preventDefault()
+    const { dispatch } = this.props
+    dispatch(actions.setShowAbortModal(true))
+  }
+  hideAbortModal(e) {
+    e.preventDefault()
+    const { dispatch } = this.props
+    dispatch(actions.setShowAbortModal(false))
   }
   hideAlert() {
     const { dispatch } = this.props
@@ -201,17 +224,14 @@ export default class Browse extends React.Component {
   }
   render() {
     const { total, free } = this.props.diskInfo
-    const {showMakeBucketModal, upload, alert } = this.props
+    const {showMakeBucketModal, showAbortModal, upload, alert } = this.props
     let progressBar = ''
-    let abortUploadTooltip = <Tooltip>Abort Upload</Tooltip>
     let percent = (upload.loaded / upload.total) * 100
     if (upload.inProgress) {
         progressBar = <div className="feb-alert feba-progress animated fadeInUp alert-info">
-                        <OverlayTrigger placement="right" overlay={abortUploadTooltip}>
-                          <button type="button" className="close" onClick={this.uploadAbort.bind(this)}>
-                            <span>&times;</span>
-                          </button>
-                        </OverlayTrigger>
+                        <button type="button" className="close" onClick={this.showAbortModal.bind(this)}>
+                          <span>&times;</span>
+                        </button>
                         <ProgressBar now={percent} />
                         <div className="text-center"><small>{humanize.filesize(upload.loaded)} ({percent.toFixed(2)} %)</small></div>
                       </div>
@@ -221,6 +241,14 @@ export default class Browse extends React.Component {
       alertBox =  <Alert className="feb-alert animated fadeInUp" bsStyle={alert.type} onDismiss={this.hideAlert.bind(this)}>
                     <div className='text-center'>{alert.message}</div>
                   </Alert>
+    }
+    let abortModal = ''
+    if (showAbortModal) {
+      abortModal =  <ConfirmModal
+                      text="Abort the upload in progress?"
+                      okText='Abort upload' cancelText='Continue upload'
+                      okHandler={this.uploadAbort.bind(this)} cancelHandler={this.hideAbortModal.bind(this)}>
+                    </ConfirmModal>
     }
     let signoutTooltip = <Tooltip>Sign out</Tooltip>
     let uploadTooltip = <Tooltip>Upload file</Tooltip>
@@ -232,6 +260,7 @@ export default class Browse extends React.Component {
 
     return (
       <div className="file-explorer">
+          {abortModal}
           <div className="fe-sidebar">
               <div className="fes-header clearfix">
                   <img src={logo} alt=""/>
