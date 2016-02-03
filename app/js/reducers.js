@@ -64,6 +64,9 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
     case actions.SET_LOGIN_ERROR:
       newState.loginError = true
       break
+    case actions.SET_SHOW_ABORT_MODAL:
+      newState.showAbortModal = action.showAbortModal
+      break
   }
   return newState
 }
