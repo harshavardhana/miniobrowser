@@ -132,6 +132,10 @@ export default class Browse extends React.Component {
     } else {
       web.GetObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName: prefix})
         .then(res => window.location = res)
+        .catch(err => dispatch(actions.showAlert({
+          type: 'danger',
+          message: err.message + ', please reload.',
+        })))
     }
   }
   makeBucket(e) {
