@@ -22,31 +22,22 @@ $ go get github.com/jteeuwen/go-bindata/...
 $ go get github.com/elazarl/go-bindata-assetfs/...
 ```
 
-## For regular development builds
+## For development environment with live reload
 
 ```
 $ npm run dev
 ```
 
-### Now generate `assetfs.go` for development.
+### For generating development version of assetfs
 
 The supplied resource is already compressed. Doing it again would not add any value and may even increase the size of the data, use `nocompress` flag to avoid it.
 
 ```sh
-$ go-bindata-assetfs -nocompress dev/...
+$ npm run build
 ```
 
-## For production builds
+## For generating release version of assetfs
 
 ```
-$ npm run prod
+$ npm run release
 ```
-
-### Now generate `assetfs.go` for production.
-
-The supplied resource is already compressed. Doing it again would not add any value and may even increase the size of the data, use `nocompress` flag to avoid it.
-
-```sh
-$ go-bindata-assetfs -nocompress production/...
-```
-
