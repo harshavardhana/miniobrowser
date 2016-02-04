@@ -45,6 +45,17 @@ async.waterfall([
       fs.appendFileSync(assetsFileName, 'var uiVersion = "' +
                         date.format("YYYY-MM-DDTHH:mm:ss") + 'Z"')
       fs.appendFileSync(assetsFileName, '\n')
+      var contents = fs.readFileSync(assetsFileName, 'utf8')
+                      .replace(/_productionIndexHtml/g, '_productionIndexHTML')
+                      .replace(/productionIndexHtmlBytes/g, 'productionIndexHTMLBytes')
+                      .replace(/productionIndexHtml/g, 'productionIndexHTML')
+                      .replace(/_productionIndex_bundleJs/g, '_productionIndexBundleJs')
+                      .replace(/productionIndex_bundleJsBytes/g, 'productionIndexBundleJsBytes')
+                      .replace(/productionIndex_bundleJs/g, 'productionIndexBundleJs')
+                      .replace(/_productionJqueryUiMinJs/g, '_productionJqueryUIMinJs')
+                      .replace(/productionJqueryUiMinJsBytes/g, 'productionJqueryUIMinJsBytes')
+                      .replace(/productionJqueryUiMinJs/g, 'productionJqueryUIMinJs')
+      fs.writeFileSync(assetsFileName, contents, 'utf8')
       console.log('UI assets file :', assetsFileName)
       cb()
     }

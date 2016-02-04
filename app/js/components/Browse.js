@@ -29,6 +29,7 @@ import Tooltip from 'react-bootstrap/lib/Tooltip'
 import logo from '../../img/logo.svg'
 
 import * as actions from '../actions'
+import * as utils from '../utils'
 import * as mime from '../mime';
 import { Scrollbars } from 'react-custom-scrollbars';
 import PieChart from 'react-simple-pie-chart';
@@ -240,6 +241,21 @@ export default class Browse extends React.Component {
         }
         return 'other'
     }
+    sortObjectsByName(e) {
+      const { dispatch, objects, sortNameOrder } = this.props
+      dispatch(actions.setObjects(utils.sortObjectsByName(objects, !sortNameOrder)))
+      dispatch(actions.setSortNameOrder(!sortNameOrder))
+    }
+    sortObjectsBySize() {
+      const { dispatch, objects, sortSizeOrder } = this.props
+      dispatch(actions.setObjects(utils.sortObjectsBySize(objects, !sortSizeOrder)))
+      dispatch(actions.setSortSizeOrder(!sortSizeOrder))
+    }
+    sortObjectsByDate() {
+      const { dispatch, objects, sortDateOrder } = this.props
+      dispatch(actions.setObjects(utils.sortObjectsByDate(objects, !sortDateOrder)))
+      dispatch(actions.setSortDateOrder(!sortDateOrder))
+    }
     logout(e) {
         const { web, history } = this.props
         e.preventDefault()
@@ -366,9 +382,9 @@ export default class Browse extends React.Component {
                     </header>
                     <div className="feb-container">
                         <header className="fesl-row" data-type="folder">
-                            <div className="fesl-item" data-sort="name">Name <i className="fesli-sort fa fa-sort-alpha-asc"></i></div>
-                            <div className="fesl-item" data-sort="size">Size <i className="fesli-sort fa fa-sort-amount-desc"></i></div>
-                            <div className="fesl-item" data-sort="last-modified"> <i className="fesli-sort fa fa-sort-numeric-asc"></i>Last Modified</div>
+                            <div className="fesl-item" onClick={this.sortObjectsByName.bind(this)} data-sort="name">Name <i className="fesli-sort fa fa-sort-alpha-asc"></i></div>
+                            <div className="fesl-item" onClick={this.sortObjectsBySize.bind(this)} data-sort="size">Size <i className="fesli-sort fa fa-sort-amount-desc"></i></div>
+                            <div className="fesl-item" onClick={this.sortObjectsByDate.bind(this)} data-sort="last-modified"> <i className="fesli-sort fa fa-sort-numeric-asc"></i>Last Modified</div>
                         </header>
                     </div>
 
