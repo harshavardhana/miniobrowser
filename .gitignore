@@ -8,4 +8,4 @@ Thumbs.db
 *~
 *.log
 .idea
-assetfs.go
+*.go
