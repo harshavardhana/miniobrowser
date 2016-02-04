@@ -5,7 +5,7 @@ var fs = require('fs')
 
 process.env.NODE_ENV = 'production'
 
-var assetfsFileName = ''
+var assetsFileName = ''
 var commitId = ''
 var date = undefined
 var buildType = process.env.MINIO_UI_BUILD
@@ -15,12 +15,12 @@ if (buildType !== 'OFFICIAL') buildType = 'UNOFFICIAL'
 async.waterfall([
     function(cb) {
       var cmd = 'webpack -p --config webpack.production.config.js'
-      console.log('Running ', cmd)
+      console.log('Running', cmd)
       exec(cmd, cb)
     },
     function(stdout, stderr, cb) {
       var cmd = 'git log --format="%H" -n1'
-      console.log('Running ', cmd)
+      console.log('Running', cmd)
       exec(cmd, cb)
     },
     function(stdout, stderr, cb) {
@@ -29,20 +29,22 @@ async.waterfall([
       if (commitId.length !== 40) throw new Error('commitId invalid : ' + commitId)
       date = moment.utc()
       if (buildType === 'OFFICIAL')
-        assetfsFileName = 'assetfs-ui-' + date.format("YYYY-MM-DDTHH-mm-ss") + '.go'
+        assetsFileName = 'ui-assets-' + date.format("YYYY-MM-DDTHH-mm-ss") + '.go'
       else
-        assetfsFileName = 'assetfs-ui.go'
-      var cmd = 'go-bindata-assetfs -o=' + assetfsFileName + ' -nocompress=true production/...'
-      console.log('Running ', cmd)
+        assetsFileName = 'ui-assets.go'
+      var cmd = 'go-bindata-assetfs -o=' + assetsFileName + ' -nocompress=true production/...'
+      console.log('Running', cmd)
       exec(cmd, cb)
     },
     function(stdout, stderr, cb) {
-      fs.appendFileSync(assetfsFileName, '\nvar uiReleaseTag = "' + buildType + '.' +
+      fs.appendFileSync(assetsFileName, '\n')
+      fs.appendFileSync(assetsFileName, 'var uiReleaseTag = "' + buildType + '.' +
                         date.format("YYYY-MM-DDTHH:mm:ss") + 'Z' + '"\n')
-      fs.appendFileSync(assetfsFileName, '\nvar uiCommitId = "' + commitId + '"\n')
-      fs.appendFileSync(assetfsFileName, '\nvar uiVersion = "' +
-                        date.format("YYYY-MM-DDTHH:mm:ss") + 'Z' + '"\n')
-      console.log('UI assets file : ', assetfsFileName)
+      fs.appendFileSync(assetsFileName, 'var uiCommitID = "' + commitId + '"\n')
+      fs.appendFileSync(assetsFileName, 'var uiVersion = "' +
+                        date.format("YYYY-MM-DDTHH:mm:ss") + 'Z"')
+      fs.appendFileSync(assetsFileName, '\n')
+      console.log('UI assets file :', assetsFileName)
       cb()
     }
   ], function(err) {
