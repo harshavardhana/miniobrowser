@@ -125,6 +125,16 @@ export default class Browse extends React.Component {
                 })
                 diskInfo_.used = diskInfo_.total - diskInfo_.free
                 dispatch(actions.setDiskInfo(diskInfo_))
+                return web.ServerInfo()
+            })
+            .then(serverInfo => {
+                let serverInfo_ = Object.assign({}, {
+                    version: serverInfo.MinioVersion,
+                    memory: serverInfo.MinioMemory,
+                    platform: serverInfo.MinioPlatform,
+                    runtime: serverInfo.MinioRuntime,
+                })
+                dispatch(actions.setServerInfo(serverInfo_))
             })
             .catch(err => {
                 dispatch(actions.showAlert({type: 'danger', message: err.message}))
@@ -181,7 +191,6 @@ export default class Browse extends React.Component {
         const { dispatch } = this.props
         dispatch(actions.showAbout())
     }
-
     hideAbout(e) {
         e.preventDefault()
         const { dispatch } = this.props
@@ -240,24 +249,24 @@ export default class Browse extends React.Component {
     fullscreen(e) {
         e.preventDefault()
         let el = document.documentElement
-
         if (el.requestFullscreen) {
             el.requestFullscreen();
         }
-        if(el.mozRequestFullScreen) {
+        if (el.mozRequestFullScreen) {
             el.mozRequestFullScreen();
         }
-        if(el.webkitRequestFullscreen) {
+        if (el.webkitRequestFullscreen) {
             el.webkitRequestFullscreen();
         }
-        if(el.msRequestFullscreen) {
+        if (el.msRequestFullscreen) {
             el.msRequestFullscreen();
         }
     }
     render() {
         const { total, free } = this.props.diskInfo
-        const {showMakeBucketModal, showAbortModal, upload, alert } = this.props
-        const {showAbout } = this.props
+        const { showMakeBucketModal, showAbortModal, upload, alert } = this.props
+        const { showAbout } = this.props
+        const { version, memory, platform, runtime } = this.props.serverInfo
         let progressBar = ''
         let percent = (upload.loaded / upload.total) * 100
         if (upload.inProgress) {
@@ -405,20 +414,20 @@ export default class Browse extends React.Component {
                             <ul className="am-list list-unstyled">
                                 <li>
                                     <div className="aml-title">Version</div>
-                                    <small>2016-01-31T03:32:00Z</small>
+                                    <small>{version}</small>
                                 </li>
 
                                 <li>
                                     <div className="aml-title">Memory</div>
-                                    <small>Used: 454kB | Allocated: 454kB | Used-Heap: 454kB | Allocated-Heap: 1.7MB</small>
+                                    <small>{memory}</small>
                                 </li>
                                 <li>
                                     <div className="aml-title">Platform</div>
-                                    <small>Host: Space | OS: linux | Arch: amd64</small>
+                                    <small>{platform}</small>
                                 </li>
                                 <li>
                                     <div className="aml-title">Runtime</div>
-                                    <small>Version: go1.5.3 | CPUs: 4</small>
+                                    <small>{runtime}</small>
                                 </li>
                             </ul>
 

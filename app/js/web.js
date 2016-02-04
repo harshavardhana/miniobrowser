@@ -53,6 +53,9 @@ export default class Web {
   Logout() {
     delete(localStorage.token)
   }
+  ServerInfo() {
+    return this.makeCall('ServerInfo')
+  }
   DiskInfo() {
     return this.makeCall('DiskInfo')
   }
