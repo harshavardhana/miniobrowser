@@ -92,14 +92,14 @@ let Path = ({currentBucket, currentPath, selectPrefix}) => {
 }
 Path = connect(state => state)(Path)
 
-let ConfirmModal = ({baseClass, text, okText, cancelText, okHandler, cancelHandler}) => {
+let ConfirmModal = ({baseClass, text, okText, okIcon, cancelText, cancelIcon, okHandler, cancelHandler}) => {
     return  <Modal animation={false} show={true} className={baseClass}>
         <ModalBody>
             <div className="cm-text">{text}</div>
 
             <div className="cm-footer">
-                <button className="cmf-btn" onClick={okHandler}>{okText}</button>
-                <button className="cmf-btn" onClick={cancelHandler}>{cancelText}</button>
+                <button className="cmf-btn" onClick={okHandler}><i className={okIcon}></i>{okText}</button>
+                <button className="cmf-btn" onClick={cancelHandler}><i className={cancelIcon}></i>{cancelText}</button>
             </div>
         </ModalBody>
     </Modal>
@@ -290,7 +290,9 @@ export default class Browse extends React.Component {
                 baseClass="abort-upload"
                 text="Abort the upload in progress?"
                 okText='Abort upload'
+                okIcon='fa fa-stop'
                 cancelText='Continue upload'
+                cancelIcon='fa fa-play'
                 okHandler={this.uploadAbort.bind(this)}
                 cancelHandler={this.hideAbortModal.bind(this)}>
             </ConfirmModal>
@@ -349,7 +351,7 @@ export default class Browse extends React.Component {
                                 <ul className="feh-actions">
                                     <li className="dropdown">
                                         <a href="" data-toggle="dropdown">
-                                            <i className="fa fa-ellipsis-v"></i>
+                                            <i className="fa fa-reorder"></i>
                                         </a>
 
                                         <ul className="dropdown-menu dm-right pull-right">
@@ -407,33 +409,39 @@ export default class Browse extends React.Component {
                     </Modal>
 
                     <Modal backdrop={false} className="about-modal" show={showAbout} onHide={this.hideAbout.bind(this)}>
-                        <ModalBody>
+                        <div className="am-inner">
 
-                            <img className="am-logo" src={logo} alt=""/>
 
-                            <ul className="am-list list-unstyled">
-                                <li>
-                                    <div className="aml-title">Version</div>
-                                    <small>{version}</small>
-                                </li>
+                            <div className="ami-item">
+                                <img className="amii-logo" src={logo} alt=""/>
+                            </div>
 
-                                <li>
-                                    <div className="aml-title">Memory</div>
-                                    <small>{memory}</small>
-                                </li>
-                                <li>
-                                    <div className="aml-title">Platform</div>
-                                    <small>{platform}</small>
-                                </li>
-                                <li>
-                                    <div className="aml-title">Runtime</div>
-                                    <small>{runtime}</small>
-                                </li>
-                            </ul>
+                            <div className="ami-item">
+                                <ul className="amii-list list-unstyled">
+                                    <li>
+                                        <div>Version</div>
+                                        <small>{version}</small>
+                                    </li>
 
-                            <a href="" className="am-close" onClick={this.hideAbout.bind(this)}><i className="fa fa-check"></i></a>
+                                    <li>
+                                        <div>Memory</div>
+                                        <small>{memory}</small>
+                                    </li>
+                                    <li>
+                                        <div>Platform</div>
+                                        <small>{platform}</small>
+                                    </li>
+                                    <li>
+                                        <div>Runtime</div>
+                                        <small>{runtime}</small>
+                                    </li>
+                                </ul>
 
-                        </ModalBody>
+                                <a href="" className="amii-close" onClick={this.hideAbout.bind(this)}><i className="fa fa-check"></i></a>
+                            </div>
+
+
+                        </div>
                     </Modal>
                 </div>
             </div>
