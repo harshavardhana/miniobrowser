@@ -29,14 +29,15 @@ async.waterfall([
       if (commitId.length !== 40) throw new Error('commitId invalid : ' + commitId)
       date = moment.utc()
       if (buildType === 'OFFICIAL')
-        assetsFileName = 'ui-assets-' + date.format("YYYY-MM-DDTHH-mm-ss") + '.go'
+        assetsFileName = 'ui-assets-' + date.format('YYYY-MM-DDTHH-mm-ss') + 'Z' + '.go'
       else
         assetsFileName = 'ui-assets.go'
-      var cmd = 'go-bindata-assetfs -o=' + assetsFileName + ' -nocompress=true production/...'
+      var cmd = 'go-bindata-assetfs -nocompress=true production/...'
       console.log('Running', cmd)
       exec(cmd, cb)
     },
     function(stdout, stderr, cb) {
+      fs.renameSync('bindata_assetfs.go', assetsFileName)
       fs.appendFileSync(assetsFileName, '\n')
       fs.appendFileSync(assetsFileName, 'var uiReleaseTag = "' + buildType + '.' +
                         date.format("YYYY-MM-DDTHH:mm:ss") + 'Z' + '"\n')
