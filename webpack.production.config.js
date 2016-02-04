@@ -17,6 +17,7 @@
 var webpack = require('webpack')
 var path = require('path')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 var exports = {
   context: __dirname,
@@ -52,9 +53,13 @@ var exports = {
       {from: 'bower_components/jquery-ui/jquery-ui.min.js'},
       {from: 'bower_components/jQuery-contextMenu/dist/jquery.contextMenu.min.js'},
       {from: 'bower_components/bootstrap/dist/js/bootstrap.min.js'},
-      {from: 'app/js/functions.js'},
-      {from: 'app/index.html'}
-    ])
+      {from: 'app/js/functions.js'}
+    ]),
+    new HtmlWebpackPlugin({
+        hash: true,
+        filename: 'index.html',
+        template: path.resolve(__dirname, 'app/index.html')
+    })
   ]
 }
 

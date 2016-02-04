@@ -219,8 +219,8 @@ export const uploadFile = (file, xhr) => {
     web.PutObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName})
         .then(signedurl => {
           let parsedUrl = url.parse(signedurl)
-          xhr.withCredentials = false
           xhr.open('PUT', signedurl, true)
+          xhr.withCredentials = false
           dispatch(setUpload({inProgress: true, loaded: 0, total: file.size}))
           xhr.upload.addEventListener('error', event => {
             dispatch(showAlert({
