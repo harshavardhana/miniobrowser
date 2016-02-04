@@ -16,8 +16,8 @@
 
 import * as actions from './actions'
 
-export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{}, currentBucket: '',
-                currentPath: '', showMakeBucketModal: false, upload: {},
+export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{}, serverInfo: {},
+                currentBucket: '', currentPath: '', showMakeBucketModal: false, upload: {},
                 alert: {show: false, type: '', message: ''}, loginError : false}, action) => {
   let newState = Object.assign({}, state)
   switch (action.type) {
@@ -45,6 +45,9 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
       break
     case actions.SET_DISK_INFO:
       newState.diskInfo = action.diskInfo
+      break
+    case actions.SET_SERVER_INFO:
+      newState.serverInfo = action.serverInfo
       break
     case actions.SHOW_MAKEBUCKET_MODAL:
       newState.showMakeBucketModal = action.showMakeBucketModal
