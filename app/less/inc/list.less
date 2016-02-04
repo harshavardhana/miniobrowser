@@ -70,15 +70,27 @@ div.fesl-row {
 
 .fesl-item {
     padding: 10px 15px;
+    color: #808080;
+    display: block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
     a {
         color: @text-color;
     }
-    &:first-child {
+
+    &:nth-child(1) {
         flex: 3;
     }
-    &:not(:first-child) {
-        flex: 0.5;
+
+    &:nth-child(2) {
+        width: 140px;
     }
+    &:nth-child(3) {
+        width: 190px;
+    }
+
     &[data-type]:before {
         width: 24px;
         height: 28px;

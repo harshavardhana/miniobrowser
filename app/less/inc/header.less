@@ -92,8 +92,7 @@
             min-width: 45px;
             text-align: center;
             line-height: 43px;
-            font-size: 18px;
-            border: 1px solid #F0F0F0;
+            font-size: 21px;
             color: #333;
             border-radius: 50%;
             .transition(all);
@@ -101,7 +100,7 @@
 
             &:hover {
                 background: #F3F3F3;
-                color: #000;
+                color: @dark-gray;
             }
         }
     }
@@ -152,53 +151,81 @@
 ----------------------------*/
 .about-modal {
     .modal-content {
-        background-color: #23282C;
-        text-align: center;
+        background-color: @dark-gray;
         box-shadow: 0 2px 13px rgba(0, 0, 0, 0.5);
     }
+}
 
-    .modal-body {
-        padding: 60px 40px 40px;
+.am-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    min-height: 350px;
+    position: relative;
+    
+    &:before {
+        content: '';
+        width: 150px;
+        height: 100%;
+        top: 0;
+        left: 0;
+        position: absolute;
+        background-color: #23282C;
+
+    }
+}
+
+.ami-item {
+    &:first-child {
+        width: 150px;
+        text-align: center;
     }
 
-    .am-logo {
-        width: 90px;
+    &:last-child {
+        flex: 4;
+        padding: 30px;
     }
+}
 
-    .am-list {
-        margin-top: 40px;
+.amii-logo {
+    width: 70px;
+    position: relative;
 
-        & > li {
-            margin-bottom: 15px;
+}
 
-            small {
-                font-size: 13px;
-            }
+.amii-list {
+    & > li {
+        margin-bottom: 15px;
+
+        div {
+            color: #B9B9B9;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        small {
+            font-size: 13px;
         }
     }
+}
 
-    .aml-title {
-        color: #B9B9B9;
-        text-transform: uppercase;
-        font-size: 14px;
-    }
+.amii-close {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+    border: 1px solid #FFFFFF;
+    border-radius: 50%;
+    line-height: 37px;
+    font-size: 17px;
+    color: #FFFFFF;
+    margin-top: 10px;
+    opacity: 0.4;
+    .transition(opacity);
+    .transition-duration(300ms);
+    text-align: center;
 
-    .am-close {
-        width: 45px;
-        height: 45px;
-        display: inline-block;
-        border: 1px solid #FFFFFF;
-        border-radius: 50%;
-        line-height: 41px;
-        font-size: 22px;
-        color: #FFFFFF;
-        margin-top: 10px;
-        opacity: 0.4;
-        .transition(opacity);
-        .transition-duration(300ms);
-
-        &:hover {
-            opacity: 0.8;
-        }
+    &:hover {
+        opacity: 0.8;
+        color: #fff;
     }
 }
