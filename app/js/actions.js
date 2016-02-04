@@ -18,6 +18,7 @@ import http from 'http'
 import https from 'https'
 import url from 'url'
 import web from './web'
+import * as utils from './utils'
 
 export const SET_WEB = 'SET_WEB'
 export const SET_CURRENT_BUCKET = 'SET_CURRENT_BUCKET'
@@ -35,6 +36,9 @@ export const SET_ALERT = 'SET_ALERT'
 export const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR'
 export const SET_SHOW_ABORT_MODAL = 'SET_SHOW_ABORT_MODAL'
 export const SHOW_ABOUT = 'SHOW_ABOUT'
+export const SET_SORT_NAME_ORDER = 'SET_SORT_NAME_ORDER'
+export const SET_SORT_SIZE_ORDER = 'SET_SORT_SIZE_ORDER'
+export const SET_SORT_DATE_ORDER = 'SET_SORT_DATE_ORDER'
 
 export const setWeb = web => {
   return {
@@ -157,13 +161,8 @@ export const selectBucket = (currentBucket) => {
     web.ListObjects({bucketName: currentBucket})
       .then(objects => {
         if (!objects) objects = []
-        dispatch(setObjects(
-          objects.reduce((acc, object) => {
-            if (object.name.endsWith('/')) acc.unshift(object)
-            else acc.push(object)
-            return acc
-          }, [])
-        ))
+        dispatch(setObjects(utils.sortObjectsByName(objects, false)))
+        dispatch(setSortNameOrder(false))
       })
       .catch(err => {
         dispatch(showAlert({
@@ -182,13 +181,11 @@ export const selectPrefix = prefix => {
       .then(objects => {
         if (!objects) objects = []
         dispatch(setObjects(
-          objects.map(object => {object.name = object.name.replace(`${prefix}`, ''); return object})
-                 .reduce((acc, object) => {
-                   if (object.name.endsWith('/')) acc.unshift(object)
-                   else acc.push(object)
-                   return acc
-                 }, [])
+          utils.sortObjectsByName(objects.map(object => {
+              object.name = object.name.replace(`${prefix}`, ''); return object
+            }))
         ))
+        dispatch(setSortNameOrder(false))
         dispatch(setCurrentPath(prefix))
       })
   }
@@ -270,5 +267,26 @@ export const hideAbout = () => {
   return {
     type: SHOW_ABOUT,
     showAbout: false
+  }
+}
+
+export const setSortNameOrder = (sortNameOrder) => {
+  return {
+    type: SET_SORT_NAME_ORDER,
+    sortNameOrder
+  }
+}
+
+export const setSortSizeOrder = (sortSizeOrder) => {
+  return {
+    type: SET_SORT_SIZE_ORDER,
+    sortSizeOrder
+  }
+}
+
+export const setSortDateOrder = (sortDateOrder) => {
+  return {
+    type: SET_SORT_DATE_ORDER,
+    sortDateOrder
   }
 }
