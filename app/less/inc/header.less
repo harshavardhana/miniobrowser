@@ -8,10 +8,10 @@
      h2 {
         & > span {
             & > a {
-                color: #337ab7;
+                color: #589FDC;
 
                 &:hover {
-                    color: #275d8c;
+                    color: #4984b7;
                 }
             }
 
@@ -36,38 +36,64 @@
     }
 }
 
+/*
 .feh-pie {
     margin-right: 10px;
     width: 65px;
 }
+*/
 
-.feh-disk {
-    color: @text-muted-color;
-    margin-top: 7px;
 
-    & > li {
-        margin-right: 5px;
+/*--------------------------
+    Disk usage
+----------------------------*/
+
+.feh-usage {
+    margin-top: 20px;
+
+    & > ul {
+        color: @text-muted-color;
+        margin-top: 7px;
+
+        & > li {
+            margin-right: 5px;
+
+            & > i {
+                display: inline-block;
+                width: 15px;
+                height: 15px;
+                border-radius: 50%;
+                margin-right: 2px;
+                position: relative;
+                top: 2px;
+
+                &.free {
+                    background-color: #eee;
+                }
+
+                &.used {
+                    background-color: #2ed2ff;
+                }
+            }
+        }
     }
 }
 
-.fehd-icon {
-    display: inline-block;
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    margin-right: 2px;
+.fehu-chart {
+    height: 5px;
+    background: #eee;
+    max-width: 285px;
     position: relative;
-    top: 2px;
+    border-radius: 2px;
+    overflow: hidden;
 
-    &.free {
-        background-color: #eee;
-    }
-
-    &.used {
-        background-color: #2ed2ff;
+    & > div {
+        position: absolute;
+        left: 0;
+        height: 100%;
+        background: #2ED2FF;
     }
 }
-
 
 /*--------------------------
     Header Actions
@@ -93,7 +119,7 @@
             text-align: center;
             line-height: 43px;
             font-size: 21px;
-            color: #333;
+            color: #7B7B7B;
             border-radius: 50%;
             .transition(all);
             .transition-duration(300ms);
