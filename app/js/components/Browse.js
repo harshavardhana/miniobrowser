@@ -58,7 +58,7 @@ let BucketList = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets }
 }
 BucketList = connect (state => state) (BucketList)
 
-let ObjectsList = ({objects, currentPath, selectPrefix, dataType }) => {
+let ObjectsList = ({objects, currentPath, selectPrefix, dataType, removeObject }) => {
     const list = objects.map((object, i) => {
         let size = object.name.endsWith('/') ? '-' : humanize.filesize(object.size)
         let lastModified = object.name.endsWith('/') ? '-' : Moment (object.lastModified).format('lll')
@@ -69,6 +69,9 @@ let ObjectsList = ({objects, currentPath, selectPrefix, dataType }) => {
                 </div>
                 <div className="fesl-item">{size}</div>
                 <div className="fesl-item">{lastModified}</div>
+                <div className="fesl-item">
+                {object.name.endsWith('/') ? '' : <i className="fa fa-trash" style={{cursor: 'pointer'}} onClick={e => removeObject(e, object)}></i>}
+                </div>
             </div>
         )
     })
@@ -223,6 +226,19 @@ export default class Browse extends React.Component {
         this.xhr = new XMLHttpRequest ()
         dispatch (actions.uploadFile(file, this.xhr))
         dispatch (actions.uploadFile(file, this.xhr))
+    }
+
+    removeObject(e, object) {
+      const { web, dispatch, currentBucket, currentPath } = this.props
+      web.RemoveObject({
+        bucketName: currentBucket,
+        objectName: currentPath + object.name
+      })
+      .then(() => dispatch(actions.selectPrefix(currentPath)))
+      .catch(e => dispatch(actions.showAlert({
+        type: 'danger',
+        message: e.message
+      })))
     }
 
     uploadAbort (e) {
@@ -411,7 +427,7 @@ export default class Browse extends React.Component {
                     </div>
 
                     <div className="feb-container">
-                        <ObjectsList dataType={this.dataType.bind(this)} selectPrefix={this.selectPrefix.bind(this)}/>
+                        <ObjectsList removeObject={this.removeObject.bind(this)} dataType={this.dataType.bind(this)} selectPrefix={this.selectPrefix.bind(this)}/>
                     </div>
                     {progressBar}
                     <div className="dropup feb-actions">
