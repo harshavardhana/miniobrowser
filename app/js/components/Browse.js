@@ -159,7 +159,8 @@ export default class Browse extends React.Component {
         const { dispatch, currentPath, web, currentBucket } = this.props
         e.preventDefault()
         if (prefix.endsWith('/') || prefix === '') {
-            dispatch (actions.selectPrefix(prefix))
+            if (prefix === currentPath) return
+            dispatch(actions.selectPrefix(prefix))
         } else {
             web.GetObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName: prefix})
                 .then(res => window.location = res)

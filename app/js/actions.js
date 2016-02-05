@@ -175,8 +175,7 @@ export const selectBucket = (currentBucket) => {
 
 export const selectPrefix = prefix => {
   return (dispatch, getState) => {
-    const { currentBucket, currentPath, web } = getState()
-    if (prefix === currentPath) return
+    const { currentBucket, web } = getState()
     web.ListObjects({bucketName: currentBucket, prefix})
       .then(objects => {
         if (!objects) objects = []
@@ -242,6 +241,7 @@ export const uploadFile = (file, xhr) => {
                   message: 'file uploaded successfully'
                 }))
               }
+              dispatch(selectPrefix(currentPath))
             }
           })
           xhr.send(file)
