@@ -47,34 +47,7 @@
 		background: #2196F3;
 	}
 
-	.close {
-		right: 19px;
-		font-weight: normal;
-		opacity: 1;
-		font-size: 18px;
-		position: absolute;
-		text-align: center;
-		top: 16px;
 
-		span {
-			width: 25px;
-			height: 25px;
-			background: rgba(255, 255, 255, 0.18);
-			display: block;
-			border-radius: 50%;
-			line-height: 24px;
-			text-shadow: none;
-			color: #fff;
-		}
-
-		&:hover,
-		&:focus {
-			span {
-				background-color: rgba(255, 255, 255, 0.25);
-				color: #fff;
-			}
-		}
-	}
 
 	.progress {
 		margin: 10px 65px 10px 25px;
@@ -174,6 +147,39 @@
 	& > li {
 		& > a {
 			text-align: right;
+		}
+	}
+}
+
+/*--------------------------
+    Close
+----------------------------*/
+.close {
+	right: 19px !important;
+	font-weight: normal;
+	opacity: 1;
+	font-size: 18px;
+	position: absolute !important;
+	text-align: center;
+	top: 16px !important;
+	z-index: 1;
+
+	span {
+		width: 25px;
+		height: 25px;
+		background: rgba(255, 255, 255, 0.18);
+		display: block;
+		border-radius: 50%;
+		line-height: 24px;
+		text-shadow: none;
+		color: #fff;
+	}
+
+	&:hover,
+	&:focus {
+		span {
+			background-color: rgba(255, 255, 255, 0.25);
+			color: #fff;
 		}
 	}
 }
