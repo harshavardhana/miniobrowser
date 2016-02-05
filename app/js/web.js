@@ -74,4 +74,7 @@ export default class Web {
   PutObjectURL(args) {
     return this.makeCall('PutObjectURL', args)
   }
+  RemoveObject(args) {
+    return this.makeCall('RemoveObject', args)
+  }
 }
