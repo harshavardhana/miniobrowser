@@ -234,19 +234,20 @@ export const uploadFile = (file, xhr) => {
               let total = event.total
               dispatch(setUpload({inProgress: true, loaded, total}))
               if (loaded === total) {
+                setShowAbortModal(false)
                 dispatch(setUpload({inProgress: false}))
-                dispatch(addObject({name: file.name, size: file.size, lastModified: new Date()}))
                 dispatch(showAlert({
                   type: 'success',
                   message: 'file uploaded successfully'
                 }))
+                dispatch(selectPrefix(currentPath))
               }
-              dispatch(selectPrefix(currentPath))
             }
           })
           xhr.send(file)
         })
         .catch(err => {
+          setShowAbortModal(false)
           dispatch(setUpload({inProgress: false, percent: 0}))
           dispatch(showAlert({
             type: 'danger',
