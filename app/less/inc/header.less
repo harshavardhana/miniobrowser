@@ -50,30 +50,16 @@
 
 .feh-usage {
     margin-top: 20px;
+    max-width: 285px;
 
     & > ul {
         color: @text-muted-color;
         margin-top: 7px;
 
         & > li {
-            margin-right: 5px;
-
-            & > i {
-                display: inline-block;
-                width: 15px;
-                height: 15px;
-                border-radius: 50%;
-                margin-right: 2px;
-                position: relative;
-                top: 2px;
-
-                &.free {
-                    background-color: #eee;
-                }
-
-                &.used {
-                    background-color: #2ed2ff;
-                }
+            padding-right: 0px;
+            &:first-child {
+              color: #2ED2FF;
             }
         }
     }
@@ -82,7 +68,6 @@
 .fehu-chart {
     height: 5px;
     background: #eee;
-    max-width: 285px;
     position: relative;
     border-radius: 2px;
     overflow: hidden;
@@ -188,7 +173,7 @@
     align-items: center;
     min-height: 350px;
     position: relative;
-    
+
     &:before {
         content: '';
         width: 150px;

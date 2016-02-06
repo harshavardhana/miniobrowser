@@ -391,8 +391,8 @@ export default class Browse extends React.Component {
                             </div>
 
                             <ul className="list-unstyled list-inline">
-                                <li><i className="used"></i> Used: {humanize.filesize(total - free)}</li>
-                                <li><i className="free"></i> Free: {humanize.filesize(total - used)}</li>
+                                <li>Used: {humanize.filesize(total - free)}</li>
+                                <li className="pull-right">Free: {humanize.filesize(total - used)}</li>
                             </ul>
                         </div>
 
