@@ -56,16 +56,18 @@ let BucketList = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets }
         </div>
     )
 }
-BucketList = connect (state => state) (BucketList)
+BucketList = connect(state => state) (BucketList)
 
 let ObjectsList = ({objects, currentPath, selectPrefix, dataType, removeObject }) => {
     const list = objects.map((object, i) => {
         let size = object.name.endsWith('/') ? '-' : humanize.filesize(object.size)
-        let lastModified = object.name.endsWith('/') ? '-' : Moment (object.lastModified).format('lll')
+        let lastModified = object.name.endsWith('/') ? '-' : Moment(object.lastModified).format('lll')
         return (
             <div key={i} className="fesl-row">
-                <div className="fesl-item" data-type={dataType(object.name, object.contentType)}><a href=""
-                                                                                                    onClick={(e) => selectPrefix(e, `${currentPath}${object.name}`)}>{object.name}</a>
+                <div className="fesl-item" data-type={dataType(object.name, object.contentType)}>
+                    <a href="" onClick={(e) => selectPrefix(e, `${currentPath}${object.name}`)}>
+                        {object.name}
+                    </a>
                 </div>
                 <div className="fesl-item">{size}</div>
                 <div className="fesl-item">{lastModified}</div>
@@ -76,7 +78,7 @@ let ObjectsList = ({objects, currentPath, selectPrefix, dataType, removeObject }
         <div>{list}</div>
     )
 }
-ObjectsList = connect (state => state) (ObjectsList)
+ObjectsList = connect(state => state) (ObjectsList)
 
 let Path = ({currentBucket, currentPath, selectPrefix}) => {
     let dirPath = []
@@ -87,18 +89,21 @@ let Path = ({currentBucket, currentPath, selectPrefix}) => {
     })
     return (
         <h2 className="fe-h2">
-            <span className="main"><a onClick={(e) => selectPrefix(e, '')} href="">{currentBucket}</a></span>
+            <span className="main">
+               <a onClick={(e) => selectPrefix(e, '')} href="">
+                  {currentBucket}
+               </a>
+            </span>
             {path}
         </h2>
     )
 }
-Path = connect (state => state) (Path)
+Path = connect(state => state) (Path)
 
 let ConfirmModal = ({baseClass, text, okText, okIcon, cancelText, cancelIcon, okHandler, cancelHandler}) => {
     return <Modal animation={false} show={true} className={baseClass}>
         <ModalBody>
             <div className="cm-text">{text}</div>
-
             <div className="cm-footer">
                 <button className="cmf-btn" onClick={okHandler}><i className={okIcon}></i>{okText}</button>
                 <button className="cmf-btn" onClick={cancelHandler}><i className={cancelIcon}></i>{cancelText}</button>
@@ -106,17 +111,17 @@ let ConfirmModal = ({baseClass, text, okText, okIcon, cancelText, cancelIcon, ok
         </ModalBody>
     </Modal>
 }
-ConfirmModal = connect (state => state) (ConfirmModal)
+ConfirmModal = connect(state => state) (ConfirmModal)
 
 export default class Browse extends React.Component {
-    componentDidMount () {
+    componentDidMount() {
         const { web, dispatch, history } = this.props
         web.ListBuckets()
             .then(buckets => buckets.map(bucket => bucket.name))
             .then(buckets => {
-                dispatch (actions.setBuckets(buckets))
-                dispatch (actions.setVisibleBuckets(buckets))
-                dispatch (actions.selectBucket(buckets[0]))
+                dispatch(actions.setBuckets(buckets))
+                dispatch(actions.setVisibleBuckets(buckets))
+                dispatch(actions.selectBucket(buckets[0]))
                 return web.DiskInfo()
             })
             .then(diskInfo => {
@@ -126,7 +131,7 @@ export default class Browse extends React.Component {
                     fstype: diskInfo.FSType,
                 })
                 diskInfo_.used = diskInfo_.total - diskInfo_.free
-                dispatch (actions.setDiskInfo(diskInfo_))
+                dispatch(actions.setDiskInfo(diskInfo_))
                 return web.ServerInfo()
             })
             .then(serverInfo => {
@@ -136,26 +141,26 @@ export default class Browse extends React.Component {
                     platform: serverInfo.MinioPlatform,
                     runtime: serverInfo.MinioRuntime,
                 })
-                dispatch (actions.setServerInfo(serverInfo_))
+                dispatch(actions.setServerInfo(serverInfo_))
             })
             .catch(err => {
-                dispatch (actions.showAlert({type: 'danger', message: err.message}))
+                dispatch(actions.showAlert({type: 'danger', message: err.message}))
             })
     }
 
-    selectBucket (e, bucket) {
+    selectBucket(e, bucket) {
         e.preventDefault()
         if (bucket == this.props.currentBucket) return
         this.props.dispatch(actions.selectBucket(bucket))
     }
 
-    searchBuckets (e) {
+    searchBuckets(e) {
         e.preventDefault()
         let { buckets } = this.props
         this.props.dispatch(actions.setVisibleBuckets(buckets.filter(bucket => bucket.indexOf(e.target.value) > -1)))
     }
 
-    selectPrefix (e, prefix) {
+    selectPrefix(e, prefix) {
         const { dispatch, currentPath, web, currentBucket } = this.props
         e.preventDefault()
         if (prefix.endsWith('/') || prefix === '') {
@@ -163,56 +168,56 @@ export default class Browse extends React.Component {
             dispatch(actions.selectPrefix(prefix))
         } else {
             web.GetObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName: prefix})
-                .then(res => window.location = res)
-                .catch(err => dispatch (actions.showAlert({
+                .then(res => window.open(res))
+                .catch(err => dispatch(actions.showAlert({
                     type: 'danger',
                     message: err.message + ', please reload.',
                 })))
         }
     }
 
-    makeBucket (e) {
+    makeBucket(e) {
         e.preventDefault()
         const bucketName = this.refs.makeBucketRef.value
         this.refs.makeBucketRef.value = ''
         const { web, dispatch } = this.props
         this.hideMakeBucketModal()
         web.MakeBucket({bucketName})
-            .then(() => dispatch (actions.addBucket(bucketName)))
-            .catch(err => dispatch (actions.showAlert({
+            .then(() => dispatch(actions.addBucket(bucketName)))
+            .catch(err => dispatch(actions.showAlert({
                 type: 'danger',
                 message: err.message
             })))
     }
 
-    hideMakeBucketModal () {
+    hideMakeBucketModal() {
         const { dispatch } = this.props
-        dispatch (actions.hideMakeBucketModal())
+        dispatch(actions.hideMakeBucketModal())
     }
 
-    showMakeBucketModal (e) {
+    showMakeBucketModal(e) {
         e.preventDefault()
         const { dispatch } = this.props
-        dispatch (actions.showMakeBucketModal())
+        dispatch(actions.showMakeBucketModal())
     }
 
-    showAbout (e) {
+    showAbout(e) {
         e.preventDefault()
         const { dispatch } = this.props
-        dispatch (actions.showAbout())
+        dispatch(actions.showAbout())
     }
 
-    hideAbout (e) {
+    hideAbout(e) {
         e.preventDefault()
         const { dispatch } = this.props
-        dispatch (actions.hideAbout())
+        dispatch(actions.hideAbout())
     }
 
-    uploadFile (e) {
+    uploadFile(e) {
         e.preventDefault()
         const { dispatch, upload } = this.props
         if (upload.inProgress) {
-            dispatch (actions.showAlert({
+            dispatch(actions.showAlert({
                 type: 'danger',
                 message: 'An upload already in progress'
             }))
@@ -221,8 +226,8 @@ export default class Browse extends React.Component {
         let file = e.target.files[0]
         e.target.value = null
         this.xhr = new XMLHttpRequest ()
-        dispatch (actions.uploadFile(file, this.xhr))
-        dispatch (actions.uploadFile(file, this.xhr))
+        dispatch(actions.uploadFile(file, this.xhr))
+        dispatch(actions.uploadFile(file, this.xhr))
     }
 
     removeObject(e, object) {
@@ -238,7 +243,7 @@ export default class Browse extends React.Component {
       })))
     }
 
-    uploadAbort (e) {
+    uploadAbort(e) {
         e.preventDefault()
         const { dispatch } = this.props
         this.xhr.abort()
@@ -246,24 +251,24 @@ export default class Browse extends React.Component {
         this.hideAbortModal(e)
     }
 
-    showAbortModal (e) {
+    showAbortModal(e) {
         e.preventDefault()
         const { dispatch } = this.props
         dispatch (actions.setShowAbortModal(true))
     }
 
-    hideAbortModal (e) {
+    hideAbortModal(e) {
         e.preventDefault()
         const { dispatch } = this.props
-        dispatch (actions.setShowAbortModal(false))
+        dispatch(actions.setShowAbortModal(false))
     }
 
-    hideAlert () {
+    hideAlert() {
         const { dispatch } = this.props
-        dispatch (actions.hideAlert())
+        dispatch(actions.hideAlert())
     }
 
-    dataType (name, contentType) {
+    dataType(name, contentType) {
         if (name.endsWith('/')) return 'folder'
         if (contentType) {
             return mime.getDataType(contentType)
@@ -271,32 +276,37 @@ export default class Browse extends React.Component {
         return 'other'
     }
 
-    sortObjectsByName (e) {
+    sortObjectsByName(e) {
         const { dispatch, objects, sortNameOrder } = this.props
         dispatch (actions.setObjects(utils.sortObjectsByName(objects, !sortNameOrder)))
         dispatch (actions.setSortNameOrder(!sortNameOrder))
     }
 
-    sortObjectsBySize () {
+    sortObjectsBySize() {
         const { dispatch, objects, sortSizeOrder } = this.props
         dispatch (actions.setObjects(utils.sortObjectsBySize(objects, !sortSizeOrder)))
         dispatch (actions.setSortSizeOrder(!sortSizeOrder))
     }
 
-    sortObjectsByDate () {
+    sortObjectsByDate() {
         const { dispatch, objects, sortDateOrder } = this.props
         dispatch (actions.setObjects(utils.sortObjectsByDate(objects, !sortDateOrder)))
         dispatch (actions.setSortDateOrder(!sortDateOrder))
     }
 
-    logout (e) {
+    logout(e) {
         const { web, history } = this.props
         e.preventDefault()
         web.Logout()
         history.pushState(null, '/login')
     }
 
-    fullscreen (e) {
+    landingPage(e) {
+        e.preventDefault()
+        this.props.dispatch(actions.selectBucket(this.props.buckets[0]))
+    }
+
+    fullScreen(e) {
         e.preventDefault()
         let el = document.documentElement
         if (el.requestFullscreen) {
@@ -313,7 +323,7 @@ export default class Browse extends React.Component {
         }
     }
 
-    render () {
+    render() {
         const { total, free } = this.props.diskInfo
         const { showMakeBucketModal, showAbortModal, upload, alert, sortNameOrder, sortSizeOrder, sortDateOrder } = this.props
         const { showAbout } = this.props
@@ -364,15 +374,18 @@ export default class Browse extends React.Component {
                 {abortModal}
                 <div className="fe-sidebar">
                     <div className="fes-header clearfix">
-                        <img src={logo} alt=""/>
-                        <h2 className="fe-h2">Minio Browser</h2>
+                        <a href="" onClick={this.landingPage.bind(this)}>
+                            <img src={logo} alt=""/>
+                            <h2 className="fe-h2">Minio Browser</h2>
+                        </a>
                     </div>
                     <div className="fes-list">
                         <BucketList searchBuckets={this.searchBuckets.bind(this)}
                                     selectBucket={this.selectBucket.bind(this)}/>
                     </div>
                     <div className="fes-host">
-                        <i className="fa fa-globe"></i> {window.location.hostname}
+                        <i className="fa fa-globe"></i>
+                        {window.location.hostname}
                     </div>
                 </div>
 
@@ -383,7 +396,6 @@ export default class Browse extends React.Component {
 
                         <div className="feh-usage">
                             <div className="fehu-chart">
-
                                 <div style={{width: usedPercent}}></div>
                             </div>
 
@@ -398,9 +410,8 @@ export default class Browse extends React.Component {
                                 <a href="" data-toggle="dropdown">
                                     <i className="fa fa-reorder"></i>
                                 </a>
-
                                 <ul className="dropdown-menu dm-right pull-right">
-                                    <li><a href="" onClick={this.fullscreen.bind(this)}>Fullscreen <i
+                                    <li><a href="" onClick={this.fullScreen.bind(this)}>Fullscreen <i
                                         className="fa fa-expand"></i></a></li>
                                     <li><a href="" onClick={this.showAbout.bind(this)}>About <i
                                         className="fa fa-info-circle"></i></a></li>
@@ -472,18 +483,17 @@ export default class Browse extends React.Component {
 
                     <Modal  className="about-modal" show={showAbout} onHide={this.hideAbout.bind(this)}>
                         <div className="am-inner">
-
                             <div className="ami-item">
-                                <img className="amii-logo" src={logo} alt=""/>
+                                <a href="https://minio.io" target="_blank">
+                                   <img className="amii-logo" src={logo} alt=""/>
+                                </a>
                             </div>
-
                             <div className="ami-item">
                                 <ul className="amii-list list-unstyled">
                                     <li>
                                         <div>Version</div>
                                         <small>{version}</small>
                                     </li>
-
                                     <li>
                                         <div>Memory</div>
                                         <small>{memory}</small>
@@ -497,9 +507,10 @@ export default class Browse extends React.Component {
                                         <small>{runtime}</small>
                                     </li>
                                 </ul>
-
-                                <a href="" className="amii-close" onClick={this.hideAbout.bind(this)}><i
-                                    className="fa fa-check"></i></a>
+                                <div style={{textAlign: 'center'}}>
+                                    <a href="" className="amii-close" onClick={this.hideAbout.bind(this)}><i
+                                        className="fa fa-check"></i></a>
+                                </div>
                             </div>
                         </div>
                     </Modal>
