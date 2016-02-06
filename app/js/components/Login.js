@@ -69,7 +69,9 @@ export default class Login extends React.Component {
           <img src={logo} alt=""/>
       </a>
 
-      <div className="server-info">{window.location.host}</div>
+      <div className="server-info">
+          {window.location.host}
+      </div>
       </div>
       </div>
     )

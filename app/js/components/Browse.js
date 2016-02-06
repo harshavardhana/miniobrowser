@@ -385,7 +385,7 @@ export default class Browse extends React.Component {
                     </div>
                     <div className="fes-host">
                         <i className="fa fa-globe"></i>
-                        {window.location.hostname}
+                        <a href="/">{window.location.host}</a>
                     </div>
                 </div>
 
