@@ -315,7 +315,7 @@ export default class Browse extends React.Component {
 
     render () {
         const { total, free } = this.props.diskInfo
-        const { showMakeBucketModal, showAbortModal, upload, alert } = this.props
+        const { showMakeBucketModal, showAbortModal, upload, alert, sortNameOrder, sortSizeOrder, sortDateOrder } = this.props
         const { showAbout } = this.props
         const { version, memory, platform, runtime } = this.props.serverInfo
         let progressBar = ''
@@ -412,13 +412,17 @@ export default class Browse extends React.Component {
                     </header>
                     <div className="feb-container">
                         <header className="fesl-row" data-type="folder">
-                            <div className="fesl-item" onClick={this.sortObjectsByName.bind(this)} data-sort="name">Name
-                                <i className="fesli-sort fa fa-sort-alpha-asc"></i></div>
-                            <div className="fesl-item" onClick={this.sortObjectsBySize.bind(this)} data-sort="size">Size
-                                <i className="fesli-sort fa fa-sort-amount-desc"></i></div>
-                            <div className="fesl-item" onClick={this.sortObjectsByDate.bind(this)}
-                                 data-sort="last-modified"><i className="fesli-sort fa fa-sort-numeric-asc"></i>Last
-                                Modified
+                            <div className="fesl-item" onClick={this.sortObjectsByName.bind(this)} data-sort="name">
+                              Name
+                              <i className={"fesli-sort fa " + (sortNameOrder?'fa-sort-alpha-desc':'fa-sort-alpha-asc')}/>
+                            </div>
+                            <div className="fesl-item" onClick={this.sortObjectsBySize.bind(this)} data-sort="size">
+                              Size
+                              <i className={"fesli-sort fa " + (sortSizeOrder?'fa-sort-amount-desc':'fa-sort-amount-asc')}/>
+                            </div>
+                            <div className="fesl-item" onClick={this.sortObjectsByDate.bind(this)} data-sort="last-modified">
+                              Last Modified
+                              <i className={"fesli-sort fa " + (sortDateOrder?'fa-sort-numeric-desc':'fa-sort-numeric-asc')}/>
                             </div>
                         </header>
                     </div>
