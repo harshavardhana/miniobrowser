@@ -69,9 +69,6 @@ let ObjectsList = ({objects, currentPath, selectPrefix, dataType, removeObject }
                 </div>
                 <div className="fesl-item">{size}</div>
                 <div className="fesl-item">{lastModified}</div>
-                <div className="fesl-item">
-                {object.name.endsWith('/') ? '' : <i className="fa fa-trash" style={{cursor: 'pointer'}} onClick={e => removeObject(e, object)}></i>}
-                </div>
             </div>
         )
     })
