@@ -168,7 +168,7 @@ export default class Browse extends React.Component {
             dispatch(actions.selectPrefix(prefix))
         } else {
             web.GetObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName: prefix})
-                .then(res => window.open(res))
+                .then(res => window.location = res)
                 .catch(err => dispatch(actions.showAlert({
                     type: 'danger',
                     message: err.message + ', please reload.',
