@@ -37,6 +37,8 @@ export default class Web {
         const errjson = JSON.parse(err.res.text)
         throw new Error(errjson.error)
       }
+      if (typeof(err.message) === 'string') throw err
+      else if (err.message instanceof Error) throw err.message
       throw err
     })
   }
