@@ -62,14 +62,14 @@ async.waterfall([
       exec(cmd, cb)
     },
     function(stdout, stderr, cb) {
+      var version = date.format('YYYY-MM-DDTHH:mm:ss') + 'Z'
       fs.renameSync('bindata_assetfs.go', assetsFileName)
       fs.appendFileSync(assetsFileName, '\n')
       fs.appendFileSync(assetsFileName, 'var uiReleaseTag = "' + buildType + '.' +
-                        date.format("YYYY-MM-DDTHH:mm:ss") + 'Z' + '"\n')
+                        version + '"\n')
       fs.appendFileSync(assetsFileName, 'var uiCommitID = "' + commitId + '"\n')
-      fs.appendFileSync(assetsFileName, 'var uiVersion = "' +
-                        date.format("YYYY-MM-DDTHH:mm:ss") + 'Z"');
-      fs.appendFileSync(assetsFileName, '\n');
+      fs.appendFileSync(assetsFileName, 'var uiVersion = "' + version + '"')
+      fs.appendFileSync(assetsFileName, '\n')
       var contents;
       if (isProduction) {
         contents = fs.readFileSync(assetsFileName, 'utf8')
@@ -94,6 +94,7 @@ async.waterfall([
                      .replace(/devJqueryUiMinJsBytes/g, 'devJqueryUIMinJsBytes')
                      .replace(/devJqueryUiMinJs/g, 'devJqueryUIMinJs');
       }
+      contents = contents.replace(/MINIO_UI_VERSION/g, version)
 
       fs.writeFileSync(assetsFileName, contents, 'utf8')
       console.log('UI assets file :', assetsFileName)

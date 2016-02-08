@@ -28,7 +28,7 @@ export default class Web {
     return this.JSONrpc.call(method, {
       params: [options]
     }, localStorage.token)
-    .then(data => data, err => {
+    .catch(err => {
       if (err.status === 401) {
         delete(localStorage.token)
         this.history.pushState(null, '/login')
@@ -78,5 +78,8 @@ export default class Web {
   }
   RemoveObject(args) {
     return this.makeCall('RemoveObject', args)
+  }
+  GetUIVersion() {
+    return this.makeCall('GetUIVersion')
   }
 }
