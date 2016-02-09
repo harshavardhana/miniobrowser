@@ -87,12 +87,15 @@ export const hideAlert = () => {
 
 export const showAlert = alert => {
   return (dispatch, getState) => {
-    let alertTimeout = setTimeout(() => {
-      dispatch({
-        type: SET_ALERT,
-        alert: {show: false}
-      })
-    }, 5000)
+    let alertTimeout = null
+    if (alert.type !== 'danger') {
+      alertTimeout = setTimeout(() => {
+        dispatch({
+          type: SET_ALERT,
+          alert: {show: false}
+        })
+      }, 5000)
+    }
     dispatch({
       type: SET_ALERT,
       alert: Object.assign({}, alert, {
