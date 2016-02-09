@@ -53,7 +53,8 @@ var exports = {
       {from: 'bower_components/jquery-ui/jquery-ui.min.js'},
       {from: 'bower_components/jQuery-contextMenu/dist/jquery.contextMenu.min.js'},
       {from: 'bower_components/bootstrap/dist/js/bootstrap.min.js'},
-      {from: 'app/js/functions.js'}
+      {from: 'app/js/functions.js'},
+      {from: 'app/img/favicon.ico'}
     ]),
     new HtmlWebpackPlugin({
         hash: true,

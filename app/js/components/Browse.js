@@ -113,9 +113,20 @@ let ConfirmModal = ({baseClass, text, okText, okIcon, cancelText, cancelIcon, ok
 }
 ConfirmModal = connect(state => state) (ConfirmModal)
 
+let BrowserUpdate = ({latestUiVersion}) => {
+  if (latestUiVersion === currentUiVersion) return <noscript></noscript>
+  return  <span style={{position: 'absolute', right:100, top:12, cursor: 'pointer', color: 'red'}}>
+            <OverlayTrigger placement="bottom" overlay={<Tooltip>New update available. Click to refresh.</Tooltip>}>
+            <i onClick={() => window.location.reload()} className="fa fa-refresh"></i>
+            </OverlayTrigger>
+          </span>
+}
+BrowserUpdate = connect(state => state) (BrowserUpdate)
+
 export default class Browse extends React.Component {
     componentDidMount() {
         const { web, dispatch, history } = this.props
+        this.versionTimer = setInterval(this.checkForUpdate.bind(this), 30*1000)
         web.ListBuckets()
             .then(buckets => buckets.map(bucket => bucket.name))
             .then(buckets => {
@@ -146,6 +157,18 @@ export default class Browse extends React.Component {
             .catch(err => {
                 dispatch(actions.showAlert({type: 'danger', message: err.message}))
             })
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.versionTimer)
+    }
+
+    checkForUpdate() {
+      const { dispatch } = this.props
+      web.GetUIVersion()
+         .then(data => {
+           dispatch(actions.setLatestUIVersion(data))
+         })
     }
 
     selectBucket(e, bucket) {
@@ -405,6 +428,7 @@ export default class Browse extends React.Component {
                             </ul>
                         </div>
 
+                        <BrowserUpdate />
                         <ul className="feh-actions">
                             <li className="dropdown">
                                 <a href="" data-toggle="dropdown">

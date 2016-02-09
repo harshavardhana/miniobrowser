@@ -19,7 +19,8 @@ import * as actions from './actions'
 export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{}, serverInfo: {},
                 currentBucket: '', currentPath: '', showMakeBucketModal: false, upload: {},
                 alert: {show: false, type: '', message: ''}, loginError : false,
-                sortNameOrder: false, sortSizeOrder: false, sortDateOrder: false}, action) => {
+                sortNameOrder: false, sortSizeOrder: false, sortDateOrder: false,
+                latestUiVersion: currentUiVersion}, action) => {
   let newState = Object.assign({}, state)
   switch (action.type) {
     case actions.SET_WEB:
@@ -82,6 +83,9 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
       break
     case actions.SET_SORT_DATE_ORDER:
       newState.sortDateOrder = action.sortDateOrder
+      break
+    case actions.SET_LATEST_UI_VERSION:
+      newState.latestUiVersion = action.latestUiVersion
       break
   }
   return newState

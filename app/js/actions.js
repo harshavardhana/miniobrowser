@@ -39,6 +39,7 @@ export const SHOW_ABOUT = 'SHOW_ABOUT'
 export const SET_SORT_NAME_ORDER = 'SET_SORT_NAME_ORDER'
 export const SET_SORT_SIZE_ORDER = 'SET_SORT_SIZE_ORDER'
 export const SET_SORT_DATE_ORDER = 'SET_SORT_DATE_ORDER'
+export const SET_LATEST_UI_VERSION = 'SET_LATEST_UI_VERSION'
 
 export const setWeb = web => {
   return {
@@ -289,5 +290,12 @@ export const setSortDateOrder = (sortDateOrder) => {
   return {
     type: SET_SORT_DATE_ORDER,
     sortDateOrder
+  }
+}
+
+export const setLatestUIVersion = (latestUiVersion) => {
+  return {
+    type: SET_LATEST_UI_VERSION,
+    latestUiVersion
   }
 }
