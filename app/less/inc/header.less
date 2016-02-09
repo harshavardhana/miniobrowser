@@ -2,21 +2,29 @@
     Header
 ----------------------------*/
 .fe-header {
-    margin-bottom: 25px;
-    position: relative;
+    padding: 45px 55px 20px;
 
-     h2 {
+    @media(min-width: @screen-md-min) {
+        position: relative;
+    }
+
+    @media(max-width: (@screen-xs-max - 100)) {
+        padding: 25px 30px 20px;
+    }
+
+    h2 {
+        font-size: 17px;
+
         & > span {
+            margin-bottom: 7px;
+            display: inline-block;
+
             & > a {
                 color: #589FDC;
 
                 &:hover {
                     color: #4984b7;
                 }
-            }
-
-            &:not(.main) {
-                font-size: 17px;
             }
 
             &:not(:first-child) {
@@ -36,21 +44,19 @@
     }
 }
 
-/*
-.feh-pie {
-    margin-right: 10px;
-    width: 65px;
-}
-*/
-
 
 /*--------------------------
     Disk usage
 ----------------------------*/
 
 .feh-usage {
-    margin-top: 20px;
+    margin-top: 12px;
     max-width: 285px;
+
+    @media(max-width: (@screen-xs-max - 100px)) {
+        max-width: 100%;
+        font-size: 12px;
+    }
 
     & > ul {
         color: @text-muted-color;
@@ -59,7 +65,7 @@
         & > li {
             padding-right: 0px;
             &:first-child {
-              color: #2ED2FF;
+                color: #2ED2FF;
             }
         }
     }
@@ -88,8 +94,14 @@
     padding: 0;
     margin: 0;
     position: absolute;
-    right: 0;
-    top: 0;
+    right: 35px;
+    top: 30px;
+    z-index: 11;
+
+    @media(max-width: (@screen-sm-max)) {
+        top: 5px;
+        right: 10px;
+    }
 
     & > li {
         display: inline-block;
@@ -102,17 +114,29 @@
             height: 45px;
             min-width: 45px;
             text-align: center;
-            line-height: 43px;
+            padding-top: 11px;
             font-size: 21px;
             color: #7B7B7B;
             border-radius: 50%;
-            .transition(all);
-            .transition-duration(300ms);
 
-            &:hover {
-                background: #F3F3F3;
-                color: @dark-gray;
+            @media(min-width: @screen-md-min) {
+                .transition(all);
+                .transition-duration(300ms);
+
+                &:hover {
+                    background: rgba(0,0,0,0.09);
+                }
             }
+
+            @media(max-width: (@screen-sm-max)) {
+                color: #EAEAEA;
+                font-size: 16px;
+
+                .fa-reorder:before {
+                    content: '\f142';
+                }
+            }
+
         }
     }
 }
@@ -240,3 +264,90 @@
         color: #fff;
     }
 }
+
+/*--------------------------
+    Mobile Header
+----------------------------*/
+@media(max-width: @screen-sm-max) {
+    .mobile-header {
+        background-color: #23282C;
+        padding: 10px;
+        text-align: center;
+        position: relative;
+        z-index: 10;
+
+        .mh-logo {
+            height: 35px;
+        }
+    }
+
+    #mh-trigger {
+        width: 65px;
+        height: 100%;
+        cursor: pointer;
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin-left: 12px;
+
+        &:before {
+            content: "";
+            position: absolute;
+            top: 7px;
+            left: 7px;
+            width: 41px;
+            height: 41px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            .transition(all);
+            .transition-duration(300ms);
+            .scale(0);
+            z-index: 0;
+        }
+
+        &.toggled {
+            &:before {
+                .scale(1);
+            }
+
+            .mht-lines {
+                .rotate(180deg);
+
+                & > div {
+                    &.top {
+                        width: 12px;
+                        transform: translateX(8px) translateY(1px) rotate(45deg);
+                        -webkit-transform: translateX(8px) translateY(1px) rotate(45deg);
+                    }
+
+                    &.bottom {
+                        width: 12px;
+                        transform: translateX(8px) translateY(-1px) rotate(-45deg);
+                        -webkit-transform: translateX(8px) translateY(-1px) rotate(-45deg);
+                    }
+                }
+            }
+        }
+    }
+
+    .mht-lines {
+        width: 18px;
+        height: 12px;
+        .transition(all);
+        .transition-duration(300ms);
+        margin: 21px 19px 0;
+
+        & > div {
+            background-color: #EAEAEA;
+            width: 18px;
+            height: 2px;
+            .transition(all);
+            .transition-duration(300ms);
+
+            &.center {
+                margin: 3px 0;
+            }
+        }
+    }
+}
+

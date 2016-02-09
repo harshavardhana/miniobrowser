@@ -63,8 +63,8 @@ let ObjectsList = ({objects, currentPath, selectPrefix, dataType, removeObject }
         let size = object.name.endsWith('/') ? '-' : humanize.filesize(object.size)
         let lastModified = object.name.endsWith('/') ? '-' : Moment(object.lastModified).format('lll')
         return (
-            <div key={i} className="fesl-row">
-                <div className="fesl-item" data-type={dataType(object.name, object.contentType)}>
+            <div key={i} className="fesl-row" data-type={dataType(object.name, object.contentType)}>
+                <div className="fesl-item">
                     <a href="" onClick={(e) => selectPrefix(e, `${currentPath}${object.name}`)}>
                         {object.name}
                     </a>
@@ -333,17 +333,28 @@ export default class Browse extends React.Component {
         e.preventDefault()
         let el = document.documentElement
         if (el.requestFullscreen) {
-            el.requestFullscreen();
+            el.requestFullscreen()
         }
         if (el.mozRequestFullScreen) {
-            el.mozRequestFullScreen();
+            el.mozRequestFullScreen()
         }
         if (el.webkitRequestFullscreen) {
-            el.webkitRequestFullscreen();
+            el.webkitRequestFullscreen()
         }
         if (el.msRequestFullscreen) {
-            el.msRequestFullscreen();
+            el.msRequestFullscreen()
         }
+    }
+
+    getInitialState(){
+        return {
+            condition:false
+        }
+    }
+
+    // TODO fix this properly with React component style
+    handleClick(){
+        $('#mh-trigger, .fe-sidebar').toggleClass('toggled');
     }
 
     render() {
@@ -351,6 +362,7 @@ export default class Browse extends React.Component {
         const { showMakeBucketModal, showAbortModal, upload, alert, sortNameOrder, sortSizeOrder, sortDateOrder } = this.props
         const { showAbout } = this.props
         const { version, memory, platform, runtime } = this.props.serverInfo
+
         let progressBar = ''
         let percent = (upload.loaded / upload.total) * 100
         if (upload.inProgress) {
@@ -396,7 +408,7 @@ export default class Browse extends React.Component {
             <div className="file-explorer">
                 {abortModal}
                 <div className="fe-sidebar">
-                    <div className="fes-header clearfix">
+                    <div className="fes-header clearfix hidden-sm hidden-xs">
                         <a href="" onClick={this.landingPage.bind(this)}>
                             <img src={logo} alt=""/>
                             <h2 className="fe-h2">Minio Browser</h2>
@@ -414,6 +426,19 @@ export default class Browse extends React.Component {
 
                 <div className="fe-body">
                     {alertBox}
+
+                    <header className="mobile-header hidden-lg hidden-md">
+                        <div id="mh-trigger" onClick={this.handleClick.bind(this)}>
+                            <div className="mht-lines">
+                                <div className="top"></div>
+                                <div className="center"></div>
+                                <div className="bottom"></div>
+                            </div>
+                        </div>
+
+                        <img className="mh-logo" src={logo} alt=""/>
+                    </header>
+
                     <header className="fe-header">
                         <Path selectPrefix={this.selectPrefix.bind(this)}/>
 

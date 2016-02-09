@@ -5,12 +5,26 @@
 	width: @fe-sidebar-width;
 	background-color: @dark-gray;
 	position: fixed;
-	left: 0;
-	top: 0;
 	height: 100%;
 	overflow: hidden;
 	color: @white;
-	padding: 40px 35px;
+	padding: 35px;
+
+	@media(min-width: @screen-md-min) {
+		.translate3d(0, 0, 0);
+	}
+
+	@media(max-width: @screen-sm-max) {
+		padding-top: 85px;
+		z-index: 9;
+		.transition(all);
+		.transition-duration(300ms);
+		.translate3d(-@fe-sidebar-width, 0, 0);
+
+		&.toggled {
+			.translate3d(0, 0, 0);
+		}
+	}
 
 	a {
 		color: rgba(255, 255, 255, 0.58);
@@ -115,12 +129,12 @@
 		}
 
 		&.active > a {
-			background-color: rgba(0, 0, 0, 0.3);
+			background-color: rgba(0, 0, 0, 0.2);
 			color: #fff;
 		}
 
 		&:not(.active) > a:hover {
-			background-color: rgba(0, 0, 0, 0.175);
+			background-color: rgba(0, 0, 0, 0.1);
 		}
 	}
 

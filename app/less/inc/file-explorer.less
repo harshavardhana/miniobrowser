@@ -9,8 +9,11 @@
 }
 
 .fe-body {
-	padding: 45px 45px 40px @fe-sidebar-width + 45;
-	min-height:100%;
+	@media(min-width: @screen-md-min) {
+		padding: 0 0 40px @fe-sidebar-width;
+	}
+
+	min-height:100vh;
 	overflow: auto;
 }
 
