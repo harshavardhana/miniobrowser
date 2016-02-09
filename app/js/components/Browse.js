@@ -127,12 +127,16 @@ export default class Browse extends React.Component {
     componentDidMount() {
         const { web, dispatch, history } = this.props
         web.ListBuckets()
-            .then(res => res.buckets.map(bucket => bucket.name))
-            .then(buckets => {
+            .then(res => {
+              let buckets
+              if (!res.buckets) buckets = []
+              else buckets = res.buckets.map(bucket => bucket.name)
+              if (buckets.length) {
                 dispatch(actions.setBuckets(buckets))
                 dispatch(actions.setVisibleBuckets(buckets))
                 dispatch(actions.selectBucket(buckets[0]))
-                return web.DiskInfo()
+              }
+              return web.DiskInfo()
             })
             .then(res => {
                 let diskInfo = Object.assign({}, {
