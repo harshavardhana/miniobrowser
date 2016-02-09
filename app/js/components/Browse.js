@@ -193,7 +193,10 @@ export default class Browse extends React.Component {
         const { web, dispatch } = this.props
         this.hideMakeBucketModal()
         web.MakeBucket({bucketName})
-            .then(() => dispatch(actions.addBucket(bucketName)))
+            .then(() => {
+              dispatch(actions.addBucket(bucketName))
+              dispatch(actions.selectBucket(bucketName))
+            })
             .catch(err => dispatch(actions.showAlert({
                 type: 'danger',
                 message: err.message
