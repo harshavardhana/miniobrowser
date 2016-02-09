@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import http from 'http'
-import https from 'https'
 import url from 'url'
 import web from './web'
 import * as utils from './utils'
