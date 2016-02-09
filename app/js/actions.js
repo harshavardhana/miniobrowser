@@ -158,7 +158,8 @@ export const selectBucket = (currentBucket) => {
     dispatch(setCurrentBucket(currentBucket))
     dispatch(setCurrentPath(''))
     web.ListObjects({bucketName: currentBucket})
-      .then(objects => {
+      .then(res => {
+        let objects = res.objects
         if (!objects) objects = []
         dispatch(setObjects(utils.sortObjectsByName(objects, false)))
         dispatch(setSortNameOrder(false))
@@ -176,7 +177,8 @@ export const selectPrefix = prefix => {
   return (dispatch, getState) => {
     const { currentBucket, web } = getState()
     web.ListObjects({bucketName: currentBucket, prefix})
-      .then(objects => {
+      .then(res => {
+        let objects = res.objects
         if (!objects) objects = []
         dispatch(setObjects(
           utils.sortObjectsByName(objects.map(object => {
@@ -215,7 +217,8 @@ export const uploadFile = (file, xhr) => {
     const { currentBucket, currentPath, web } = getState()
     const objectName = `${currentPath}${file.name}`
     web.PutObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName})
-        .then(signedurl => {
+        .then(res => {
+          let signedurl = res.url
           let parsedUrl = url.parse(signedurl)
           xhr.open('PUT', signedurl, true)
           xhr.withCredentials = false

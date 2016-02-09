@@ -126,49 +126,36 @@ BrowserUpdate = connect(state => state) (BrowserUpdate)
 export default class Browse extends React.Component {
     componentDidMount() {
         const { web, dispatch, history } = this.props
-        this.versionTimer = setInterval(this.checkForUpdate.bind(this), 30*1000)
         web.ListBuckets()
-            .then(buckets => buckets.map(bucket => bucket.name))
+            .then(res => res.buckets.map(bucket => bucket.name))
             .then(buckets => {
                 dispatch(actions.setBuckets(buckets))
                 dispatch(actions.setVisibleBuckets(buckets))
                 dispatch(actions.selectBucket(buckets[0]))
                 return web.DiskInfo()
             })
-            .then(diskInfo => {
-                let diskInfo_ = Object.assign({}, {
-                    total: diskInfo.Total,
-                    free: diskInfo.Free,
-                    fstype: diskInfo.FSType,
+            .then(res => {
+                let diskInfo = Object.assign({}, {
+                    total: res.diskInfo.Total,
+                    free: res.diskInfo.Free,
+                    fstype: res.diskInfo.FSType,
                 })
-                diskInfo_.used = diskInfo_.total - diskInfo_.free
-                dispatch(actions.setDiskInfo(diskInfo_))
+                diskInfo.used = diskInfo.total - diskInfo.free
+                dispatch(actions.setDiskInfo(diskInfo))
                 return web.ServerInfo()
             })
-            .then(serverInfo => {
-                let serverInfo_ = Object.assign({}, {
-                    version: serverInfo.MinioVersion,
-                    memory: serverInfo.MinioMemory,
-                    platform: serverInfo.MinioPlatform,
-                    runtime: serverInfo.MinioRuntime,
+            .then(res => {
+                let serverInfo = Object.assign({}, {
+                    version: res.MinioVersion,
+                    memory: res.MinioMemory,
+                    platform: res.MinioPlatform,
+                    runtime: res.MinioRuntime,
                 })
-                dispatch(actions.setServerInfo(serverInfo_))
+                dispatch(actions.setServerInfo(serverInfo))
             })
             .catch(err => {
                 dispatch(actions.showAlert({type: 'danger', message: err.message}))
             })
-    }
-
-    componentWillUnmount() {
-      clearInterval(this.versionTimer)
-    }
-
-    checkForUpdate() {
-      const { dispatch } = this.props
-      web.GetUIVersion()
-         .then(data => {
-           dispatch(actions.setLatestUIVersion(data))
-         })
     }
 
     selectBucket(e, bucket) {
@@ -191,7 +178,7 @@ export default class Browse extends React.Component {
             dispatch(actions.selectPrefix(prefix))
         } else {
             web.GetObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName: prefix})
-                .then(res => window.location = res)
+                .then(res => window.location = res.url)
                 .catch(err => dispatch(actions.showAlert({
                     type: 'danger',
                     message: err.message + ', please reload.',
@@ -249,7 +236,6 @@ export default class Browse extends React.Component {
         let file = e.target.files[0]
         e.target.value = null
         this.xhr = new XMLHttpRequest ()
-        dispatch(actions.uploadFile(file, this.xhr))
         dispatch(actions.uploadFile(file, this.xhr))
     }
 
