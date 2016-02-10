@@ -113,13 +113,16 @@ let ConfirmModal = ({baseClass, text, okText, okIcon, cancelText, cancelIcon, ok
 }
 ConfirmModal = connect(state => state) (ConfirmModal)
 
+// removed below i tag's onClick in favour of parent a href
 let BrowserUpdate = ({latestUiVersion}) => {
   if (latestUiVersion === currentUiVersion) return <noscript></noscript>
-  return  <span style={{position: 'absolute', right:100, top:12, cursor: 'pointer', color: 'red'}}>
-            <OverlayTrigger placement="bottom" overlay={<Tooltip>New update available. Click to refresh.</Tooltip>}>
-            <i onClick={() => window.location.reload()} className="fa fa-refresh"></i>
-            </OverlayTrigger>
-          </span>
+  return  <li>
+            <a href="">
+                <OverlayTrigger placement="left" overlay={<Tooltip>New update available. Click to refresh.</Tooltip>}>
+                    <i className="fa fa-refresh"></i>
+                </OverlayTrigger>
+            </a>
+          </li>
 }
 BrowserUpdate = connect(state => state) (BrowserUpdate)
 
@@ -446,8 +449,9 @@ export default class Browse extends React.Component {
                             </ul>
                         </div>
 
-                        <BrowserUpdate />
+
                         <ul className="feh-actions">
+                            <BrowserUpdate />
                             <li className="dropdown">
                                 <a href="" data-toggle="dropdown">
                                     <i className="fa fa-reorder"></i>
