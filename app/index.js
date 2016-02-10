@@ -40,10 +40,10 @@ const Browse = connect(state => state)(_Browse)
 const Login = connect(state => state)(_Login)
 const history = createBrowserHistory()
 
-let web = new Web(`${window.location.protocol}//${window.location.host}/rpc`, history)
+let web = new Web(`${window.location.protocol}//${window.location.host}/rpc`, history, store.dispatch)
 
 if (window.location.host === 'localhost:8080') {
-  web = new Web('http://localhost:9001/rpc', history)
+  web = new Web('http://localhost:9001/rpc', history, store.dispatch)
 }
 
 window.web = web

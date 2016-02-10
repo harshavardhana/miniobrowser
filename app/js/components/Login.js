@@ -16,6 +16,7 @@
 
 import React from 'react'
 import logo from '../../img/logo.svg'
+import Alert from 'react-bootstrap/lib/Alert'
 
 import * as actions from '../actions'
 
@@ -29,18 +30,35 @@ export default class Login extends React.Component {
       })
       .catch(e => {
         dispatch(actions.setLoginError())
+        dispatch(actions.showAlert({
+          type: 'danger',
+          message: e.message
+        }))
       })
   }
+
+  hideAlert() {
+      const { dispatch } = this.props
+      dispatch(actions.hideAlert())
+  }
+
   render() {
-    const { loginError } = this.props
-    let errClass = loginError ? 'lc-item lci-error toggled' : 'lc-item'
+    const { loginError, alert } = this.props
+    let alertBox = ''
+    if (alert.show) {
+        alertBox = <Alert className="feb-alert animated fadeInDown" bsStyle={alert.type}
+                          onDismiss={this.hideAlert.bind(this)}>
+            <div className='text-center'>{alert.message}</div>
+        </Alert>
+    }
     return (
       <div>
+      {alertBox}
       <div className="login">
       <div className="l-content">
         <div className="lc-wrap">
           <form onSubmit={this.handleSubmit.bind(this)}>
-            <div className={errClass}>
+            <div className='lc-item'>
                 <input ref="accessKey" name="username" className="lci-text" type="text" spellCheck="false"/>
                 <label className="lci-label">Access Key</label>
 
@@ -48,7 +66,7 @@ export default class Login extends React.Component {
                     <i></i><i></i>
                 </div>
             </div>
-            <div className={errClass}>
+            <div className='lc-item'>
                 <input ref="secretKey" name="password" className="lci-text" type="password" spellCheck="false"/>
                 <label className="lci-label">Secret Key</label>
 

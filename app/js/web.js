@@ -14,12 +14,15 @@
  * limitations under the License.
  */
 
-import JSONrpc from './jsonrpc';
+import JSONrpc from './jsonrpc'
+import * as  actions from './actions'
+import Moment from 'moment'
 
 export default class Web {
-  constructor(endpoint, history) {
+  constructor(endpoint, history, dispatch) {
     const namespace = 'Web'
     this.history = history
+    this.dispatch = dispatch
     this.JSONrpc = new JSONrpc({
       endpoint, namespace
     })
@@ -28,6 +31,15 @@ export default class Web {
     return this.JSONrpc.call(method, {
       params: [options]
     }, localStorage.token)
+    .then(res => {
+      if (!Moment(res.uiVersion).isValid()) {
+        throw new Error("Invalid UI version in the JSON-RPC response")
+      }
+      if (res.uiVersion !== currentUiVersion) {
+        this.dispatch(actions.setLatestUIVersion(res.uiVersion))
+      }
+      return res
+    })
     .catch(err => {
       if (err.status === 401) {
         delete(localStorage.token)
@@ -78,8 +90,5 @@ export default class Web {
   }
   RemoveObject(args) {
     return this.makeCall('RemoveObject', args)
-  }
-  GetUIVersion() {
-    return this.makeCall('GetUIVersion')
   }
 }
