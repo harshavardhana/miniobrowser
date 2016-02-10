@@ -44,14 +44,19 @@ export default class Web {
       if (err.status === 401) {
         delete(localStorage.token)
         this.history.pushState(null, '/login')
+        throw new Error('Please re-login.')
       }
       if (err.res && err.res.text) {
-        const errjson = JSON.parse(err.res.text)
+        let errjson
+        try {
+          errjson = JSON.parse(err.res.text)
+        } catch (ex) {
+          throw new Error(err.res.text)
+        }
         throw new Error(errjson.error)
       }
-      if (typeof(err.message) === 'string') throw err
-      else if (err.message instanceof Error) throw err.message
-      throw err
+      if (err.status) throw new Error(`Server returned error [${err.status}]`)
+      throw new Error('Minio server is unreachable')
     })
   }
   LoggedIn() {
