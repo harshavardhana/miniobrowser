@@ -73,7 +73,9 @@ export default class Login extends React.Component {
         <div className="lc-wrap">
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className='lc-item'>
-                <input ref="accessKey" name="username" className="lci-text" type="text" spellCheck="false"/>
+                <input ref="" name="" className="hidden" type="password" />
+                <input ref="accessKey" name="username" className="lci-text" type="password" autoComplete="new-password" spellCheck="false"/>
+
                 <label className="lci-label">Access Key</label>
 
                 <div className="lci-helpers">
@@ -81,7 +83,9 @@ export default class Login extends React.Component {
                 </div>
             </div>
             <div className='lc-item'>
+                <input ref="" name="" className="hidden" type="password" />
                 <input ref="secretKey" name="password" className="lci-text" type="password" spellCheck="false"/>
+
                 <label className="lci-label">Secret Key</label>
 
                 <div className="lci-helpers">
