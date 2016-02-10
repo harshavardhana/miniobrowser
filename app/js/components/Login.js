@@ -43,7 +43,7 @@ export default class Login extends React.Component {
   }
 
   render() {
-    const { loginError, alert } = this.props
+    const { alert } = this.props
     let alertBox = ''
     if (alert.show) {
         alertBox = <Alert className="feb-alert animated fadeInDown" bsStyle={alert.type}

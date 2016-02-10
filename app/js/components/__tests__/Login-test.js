@@ -14,15 +14,37 @@
  * limitations under the License.
  */
 
-import React from 'react';
-import TestUtils from 'react-addons-test-utils';
-import expect from 'expect';
+import React from 'react'
+import ReactTestUtils, {renderIntoDocument} from 'react-addons-test-utils'
 
-import Login from '../Login';
+import expect from 'expect'
+import Login from '../Login'
 
 describe('Login', () => {
-  it('should execute submit', () => {
-    const login = TestUtils.renderIntoDocument(<Login />);
-    expect(login).toExist();
-  });
+  it('it should have empty credentials', () => {
+    const alert = {
+      show: false
+    }
+    let loginComponent = renderIntoDocument(<Login alert={alert} />)
+    const accessKey = loginComponent.refs.accessKey
+    const secretKey = loginComponent.refs.secretKey
+    // Validate default value.
+    expect(accessKey.value).toEqual('')
+    expect(secretKey.value).toEqual('')
+  })
+  it('it should set accessKey and secretKey', () => {
+    const alert = {
+      show: false
+    }
+    let loginComponent = renderIntoDocument(<Login alert={alert} />)
+    let accessKey = loginComponent.refs.accessKey
+    let secretKey = loginComponent.refs.secretKey
+    accessKey.value = 'demo-username'
+    secretKey.value = 'demo-password'
+    ReactTestUtils.Simulate.change(accessKey)
+    ReactTestUtils.Simulate.change(secretKey)
+    // Validate if the change has occurred.
+    expect(loginComponent.refs.accessKey.value).toEqual('demo-username')
+    expect(loginComponent.refs.secretKey.value).toEqual('demo-password')
+  })
 });
