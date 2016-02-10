@@ -114,12 +114,13 @@
             height: 45px;
             min-width: 45px;
             text-align: center;
-            padding-top: 11px;
-            font-size: 21px;
             color: #7B7B7B;
             border-radius: 50%;
 
             @media(min-width: @screen-md-min) {
+                color: #7B7B7B;
+                font-size: 21px;
+                padding-top: 7px;
                 .transition(all);
                 .transition-duration(300ms);
 
@@ -131,6 +132,7 @@
             @media(max-width: (@screen-sm-max)) {
                 color: #EAEAEA;
                 font-size: 16px;
+                padding-top: 11px;
 
                 .fa-reorder:before {
                     content: '\f142';
