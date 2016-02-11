@@ -164,7 +164,7 @@ export default class Browse extends React.Component {
 
     selectBucket(e, bucket) {
         e.preventDefault()
-        if (bucket == this.props.currentBucket) return
+        if (bucket === this.props.currentBucket) return
         this.props.dispatch(actions.selectBucket(bucket))
     }
 

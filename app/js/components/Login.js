@@ -24,6 +24,20 @@ export default class Login extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
     const { web, dispatch } = this.props
+    let message = ''
+    if (!this.refs.secretKey.value) {
+      message = 'Secret Key cannot be empty'
+    }
+    if (!this.refs.accessKey.value) {
+      message = 'Access Key cannot be empty'
+    }
+    if (message) {
+      dispatch(actions.showAlert({
+        type: 'danger',
+        message
+      }))
+      return
+    }
     web.Login({username: this.refs.accessKey.value, password: this.refs.secretKey.value})
       .then((res) => {
         this.props.history.pushState(null, '/')

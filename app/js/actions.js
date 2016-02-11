@@ -191,6 +191,10 @@ export const selectPrefix = prefix => {
         dispatch(setSortNameOrder(false))
         dispatch(setCurrentPath(prefix))
       })
+      .catch(err => dispatch(actions.showAlert({
+        type: 'danger',
+        message: err.message
+      })))
   }
 }
 
