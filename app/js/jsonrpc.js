@@ -77,7 +77,7 @@ export default class JSONrpc {
       }
     }
 
-    if (token !== undefined) {
+    if (token) {
       requestParams.headers.Authorization = 'Bearer ' + token
     }
 
