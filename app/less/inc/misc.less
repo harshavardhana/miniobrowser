@@ -16,18 +16,22 @@
 	position: fixed;
 	max-width: 500px;
 	margin: 0;
-	padding: 17px 0;
 	z-index: 10;
 	box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
 	color: #fff;
 	width: 100%;
 	right: 20px;
 	border-radius: 3px;
+	z-index: 12;
+	padding: 17px 50px 17px 17px;
 
 	&:not(.feba-progress) {
 		top: 20px;
-		left: 50%;
-		margin-left: -250px;
+
+		@media(min-width: (@screen-sm-min)) {
+			left: 50%;
+			margin-left: -250px;
+		}
 	}
 
 	&.feba-progress {
@@ -47,7 +51,11 @@
 		background: #2196F3;
 	}
 
-
+	@media(max-width: (@screen-xs-max)) {
+		left: 20px;
+		width: ~"calc(100% - 40px)";
+		max-width: 100%;
+	}
 
 	.progress {
 		margin: 10px 65px 10px 25px;
