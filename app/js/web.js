@@ -29,34 +29,30 @@ export default class Web {
   }
   makeCall(method, options) {
     return this.JSONrpc.call(method, {
-      params: [options]
+      params: options
     }, localStorage.token)
-    .then(res => {
-      if (!Moment(res.uiVersion).isValid()) {
-        throw new Error("Invalid UI version in the JSON-RPC response")
-      }
-      if (res.uiVersion !== currentUiVersion) {
-        this.dispatch(actions.setLatestUIVersion(res.uiVersion))
-      }
-      return res
-    })
     .catch(err => {
       if (err.status === 401) {
         delete(localStorage.token)
         this.history.pushState(null, '/login')
         throw new Error('Please re-login.')
       }
-      if (err.res && err.res.text) {
-        let errjson
-        try {
-          errjson = JSON.parse(err.res.text)
-        } catch (ex) {
-          throw new Error(err.res.text)
-        }
-        throw new Error(errjson.error)
-      }
       if (err.status) throw new Error(`Server returned error [${err.status}]`)
       throw new Error('Minio server is unreachable')
+    })
+    .then(res => {
+      let json = JSON.parse(res.text)
+      let result = json.result
+      let error = json.error
+      if (error) throw new Error(error.message)
+
+      if (!Moment(result.uiVersion).isValid()) {
+        throw new Error("Invalid UI version in the JSON-RPC response")
+      }
+      if (result.uiVersion !== currentUiVersion) {
+        this.dispatch(actions.setLatestUIVersion(result.uiVersion))
+      }
+      return result
     })
   }
   LoggedIn() {
@@ -99,7 +95,7 @@ export default class Web {
   GetUIVersion() {
     // The call should work even in logged out state.
     return this.JSONrpc.call('GetUIVersion', {
-      params: []
+      params: {}
     })
   }
 }

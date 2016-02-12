@@ -57,12 +57,12 @@ export default class JSONrpc {
       options.id = 1;
     }
     if (!options.params) {
-      options.params = [];
+      options.params = {};
     }
     const dataObj = {
       id: options.id,
       jsonrpc: this.version,
-      params: options.params ? options.params : [],
+      params: options.params ? options.params : {},
       method: this.namespace ? this.namespace + '.' + method : method
     }
     let requestParams = {
@@ -86,11 +86,6 @@ export default class JSONrpc {
       req.set(key, requestParams.headers[key])
     }
     // req.set('Access-Control-Allow-Origin', 'http://localhost:8080')
-    return req.send(JSON.stringify(dataObj))
-      .then(function(res) {
-        if (!res.text)
-          throw new Error("res.text not set in the response")
-        return JSON.parse(res.text).result
-      })
+    return req.send(JSON.stringify(dataObj)).then(res => res)
   }
 }
