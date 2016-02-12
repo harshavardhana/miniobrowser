@@ -18,7 +18,7 @@ import * as actions from './actions'
 
 export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{}, serverInfo: {},
                 currentBucket: '', currentPath: '', showMakeBucketModal: false, upload: {},
-                alert: {show: false, type: '', message: ''}, loginError : false,
+                alert: {show: false, type: 'danger', message: ''}, loginError : false,
                 sortNameOrder: false, sortSizeOrder: false, sortDateOrder: false,
                 latestUiVersion: currentUiVersion}, action) => {
   let newState = Object.assign({}, state)
@@ -64,7 +64,11 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
       break
     case actions.SET_ALERT:
       if (newState.alert.alertTimeout) clearTimeout(newState.alert.alertTimeout)
-      newState.alert = action.alert
+      if (!action.alert.show) {
+        newState.alert = Object.assign({}, newState.alert, {show: false})
+      } else {
+        newState.alert = action.alert
+      }
       break
     case actions.SET_LOGIN_ERROR:
       newState.loginError = true
