@@ -372,13 +372,12 @@ export default class Browse extends React.Component {
                 </div>
             </div>
         }
-        let alertBox = ''
-        if (alert.show) {
-            alertBox = <Alert className="feb-alert animated fadeInDown" bsStyle={alert.type}
-                              onDismiss={this.hideAlert.bind(this)}>
-                <div className='text-center'>{alert.message}</div>
-            </Alert>
-        }
+        let alertBox = <Alert className={'feb-alert animated ' + (alert.show ? 'fadeInDown' : 'fadeOutUp')} bsStyle={alert.type}
+                          onDismiss={this.hideAlert.bind(this)}>
+            <div className='text-center'>{alert.message}</div>
+        </Alert>
+        // Make sure you don't show a fading out alert box on the initial web-page load.
+        if (!alert.message) alertBox = ''
         let abortModal = ''
         if (showAbortModal) {
             abortModal = <ConfirmModal
