@@ -372,6 +372,9 @@ export default class Browse extends React.Component {
                 <button type="button" className="close" onClick={this.showAbortModal.bind(this)}>
                     <span>&times;</span>
                 </button>
+                <div className="text-center">
+                    <small>{upload.filename}</small>
+                </div>
                 <ProgressBar now={percent}/>
                 <div className="text-center">
                     <small>{humanize.filesize(upload.loaded)} ({percent.toFixed(2)} %)</small>

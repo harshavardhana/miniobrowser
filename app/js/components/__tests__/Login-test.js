@@ -25,7 +25,8 @@ describe('Login', () => {
     const alert = {
       show: false
     }
-    let loginComponent = renderIntoDocument(<Login alert={alert} />)
+    const dispatch = () => {}
+    let loginComponent = renderIntoDocument(<Login alert={alert} dispatch={dispatch} />)
     const accessKey = loginComponent.refs.accessKey
     const secretKey = loginComponent.refs.secretKey
     // Validate default value.
@@ -36,7 +37,8 @@ describe('Login', () => {
     const alert = {
       show: false
     }
-    let loginComponent = renderIntoDocument(<Login alert={alert} />)
+    const dispatch = () => {}
+    let loginComponent = renderIntoDocument(<Login alert={alert} dispatch={dispatch} />)
     let accessKey = loginComponent.refs.accessKey
     let secretKey = loginComponent.refs.secretKey
     accessKey.value = 'demo-username'
