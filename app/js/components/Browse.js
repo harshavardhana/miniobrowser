@@ -165,6 +165,12 @@ export default class Browse extends React.Component {
             })
     }
 
+    componentWillMount() {
+      const { dispatch } = this.props
+      // Clear out any stale message in the alert of Login page
+      dispatch(actions.showAlert({type: 'danger', message: ''}))
+    }
+
     selectBucket(e, bucket) {
         e.preventDefault()
         if (bucket === this.props.currentBucket) return

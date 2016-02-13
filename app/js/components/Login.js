@@ -51,6 +51,12 @@ export default class Login extends React.Component {
       })
   }
 
+  componentWillMount() {
+    const { dispatch } = this.props
+    // Clear out any stale message in the alert of previous page
+    dispatch(actions.showAlert({type: 'danger', message: ''}))
+  }
+
   hideAlert() {
       const { dispatch } = this.props
       dispatch(actions.hideAlert())
