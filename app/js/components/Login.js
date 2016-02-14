@@ -51,6 +51,12 @@ export default class Login extends React.Component {
       })
   }
 
+  componentWillMount() {
+    const { dispatch } = this.props
+    // Clear out any stale message in the alert of previous page
+    dispatch(actions.showAlert({type: 'danger', message: ''}))
+  }
+
   hideAlert() {
       const { dispatch } = this.props
       dispatch(actions.hideAlert())
@@ -73,7 +79,7 @@ export default class Login extends React.Component {
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className='lc-item'>
                 <input ref="" name="" className="hidden" type="password" />
-                <input ref="accessKey" name="username" className="lci-text" type="password" autoComplete="new-password" spellCheck="false"/>
+                <input ref="accessKey" name="username" className="lci-text" type="text" autoComplete="new-password" spellCheck="false"/>
 
                 <label className="lci-label">Access Key</label>
 

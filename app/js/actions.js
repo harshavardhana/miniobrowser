@@ -229,7 +229,7 @@ export const uploadFile = (file, xhr) => {
           let parsedUrl = url.parse(signedurl)
           xhr.open('PUT', signedurl, true)
           xhr.withCredentials = false
-          dispatch(setUpload({inProgress: true, loaded: 0, total: file.size}))
+          dispatch(setUpload({inProgress: true, loaded: 0, total: file.size, filename: file.name}))
           xhr.upload.addEventListener('error', event => {
             dispatch(showAlert({
               type: 'danger',
@@ -241,7 +241,7 @@ export const uploadFile = (file, xhr) => {
             if (event.lengthComputable) {
               let loaded = event.loaded
               let total = event.total
-              dispatch(setUpload({inProgress: true, loaded, total}))
+              dispatch(setUpload({inProgress: true, loaded, total, filename: file.name}))
               if (loaded === total) {
                 setShowAbortModal(false)
                 dispatch(setUpload({inProgress: false}))
