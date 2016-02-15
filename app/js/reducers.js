@@ -20,7 +20,7 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
                 currentBucket: '', currentPath: '', showMakeBucketModal: false, upload: {},
                 alert: {show: false, type: 'danger', message: ''}, loginError : false,
                 sortNameOrder: false, sortSizeOrder: false, sortDateOrder: false,
-                latestUiVersion: currentUiVersion}, action) => {
+                latestUiVersion: currentUiVersion, sideBarActive: false}, action) => {
   let newState = Object.assign({}, state)
   switch (action.type) {
     case actions.SET_WEB:
@@ -90,6 +90,9 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
       break
     case actions.SET_LATEST_UI_VERSION:
       newState.latestUiVersion = action.latestUiVersion
+      break
+    case actions.SIDE_BAR_TOGGLE:
+      newState.sideBarActive = !newState.sideBarActive
       break
   }
   return newState

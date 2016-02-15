@@ -348,15 +348,9 @@ export default class Browse extends React.Component {
         }
     }
 
-    getInitialState(){
-        return {
-            condition:false
-        }
-    }
-
-    // TODO fix this properly with React component style
-    handleClick(){
-        $('#mh-trigger, .fe-sidebar').toggleClass('toggled');
+    handleSidebar(){
+        const { dispatch } = this.props
+        dispatch(actions.sideBarToggle())
     }
 
     render() {
@@ -364,6 +358,7 @@ export default class Browse extends React.Component {
         const { showMakeBucketModal, showAbortModal, upload, alert, sortNameOrder, sortSizeOrder, sortDateOrder } = this.props
         const { showAbout } = this.props
         const { version, memory, platform, runtime } = this.props.serverInfo
+        const { sideBarActive } = this.props
 
         let progressBar = ''
         let percent = (upload.loaded / upload.total) * 100
@@ -383,7 +378,11 @@ export default class Browse extends React.Component {
         }
         let alertBox = <Alert className={'feb-alert animated ' + (alert.show ? 'fadeInDown' : 'fadeOutUp')} bsStyle={alert.type}
                           onDismiss={this.hideAlert.bind(this)}>
-            <div className='text-center'>{alert.message}</div>
+            <div className='text-center'>
+                {alert.message}
+                <a href="" className="feba-more">show more...</a>
+            </div>
+
         </Alert>
         // Make sure you don't show a fading out alert box on the initial web-page load.
         if (!alert.message) alertBox = ''
@@ -411,7 +410,7 @@ export default class Browse extends React.Component {
         return (
             <div className="file-explorer">
                 {abortModal}
-                <div className="fe-sidebar">
+                <div className={"fe-sidebar " + (sideBarActive ? "toggled": "")}>
                     <div className="fes-header clearfix hidden-sm hidden-xs">
                         <a href="" onClick={this.landingPage.bind(this)}>
                             <img src={logo} alt=""/>
@@ -432,7 +431,7 @@ export default class Browse extends React.Component {
                     {alertBox}
 
                     <header className="mobile-header hidden-lg hidden-md">
-                        <div id="mh-trigger" onClick={this.handleClick.bind(this)}>
+                        <div id="mh-trigger" onClick={this.handleSidebar.bind(this)} className={sideBarActive ? 'toggled' : ''}>
                             <div className="mht-lines">
                                 <div className="top"></div>
                                 <div className="center"></div>
