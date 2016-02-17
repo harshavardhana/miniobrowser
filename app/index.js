@@ -20,10 +20,9 @@ import './less/main.less'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import createBrowserHistory from 'history/lib/createBrowserHistory'
 import thunkMiddleware from 'redux-thunk'
 import { createStore, applyMiddleware } from 'redux'
-import { Route, Router } from 'react-router'
+import { Route, Router, browserHistory, IndexRoute } from 'react-router'
 import { Provider, connect } from 'react-redux'
 import Moment from 'moment'
 
@@ -39,12 +38,11 @@ window.Web = Web
 const store = applyMiddleware(thunkMiddleware)(createStore)(reducer)
 const Browse = connect(state => state)(_Browse)
 const Login = connect(state => state)(_Login)
-const history = createBrowserHistory()
 
-let web = new Web(`${window.location.protocol}//${window.location.host}/rpc`, history, store.dispatch)
+let web = new Web(`${window.location.protocol}//${window.location.host}/rpc`, store.dispatch)
 
 if (window.location.host === 'localhost:8080') {
-  web = new Web('http://localhost:9001/rpc', history, store.dispatch)
+  web = new Web('http://localhost:9001/rpc', store.dispatch)
 }
 
 window.web = web
@@ -70,30 +68,31 @@ store.dispatch(actions.setWeb(web))
 
 function authNeeded(nextState, replace) {
   if (!web.LoggedIn()) {
-    replace(
-      nextState,
-      '/login'
-    )
+    replace('/login')
     return
   }
 }
 
 function authNotNeeded(nextState, replace) {
   if (web.LoggedIn()) {
-    replace(
-      nextState,
-      '/'
-    )
-    return
+    replace('/')
   }
+}
+
+const App = (props) => {
+  return  <div>
+            {props.children}
+          </div>
 }
 
 ReactDOM.render((
   <Provider store={store} web={web}>
-    <Router history={history}>
-      <Route path='/login' component={Login} onEnter={authNotNeeded} />
-      <Route path='/' component={Browse} onEnter={authNeeded} />
-      <Route path='/:bucketName' component={Browse} onEnter={authNeeded} />
+    <Router history={browserHistory}>
+      <Route path='/' component={App}>
+        <IndexRoute component={Browse} onEnter={authNeeded} />
+        <Route path='/login' component={Login} onEnter={authNotNeeded} />
+        <Route path='/:bucket/*' component={Browse} onEnter={authNeeded} />
+      </Route>
     </Router>
   </Provider>
 ), document.getElementById('root'))
