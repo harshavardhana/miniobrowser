@@ -40,7 +40,7 @@ export default class Login extends React.Component {
     }
     web.Login({username: this.refs.accessKey.value, password: this.refs.secretKey.value})
       .then((res) => {
-        this.props.history.pushState(null, '/')
+        this.context.router.push('/')
       })
       .catch(e => {
         dispatch(actions.setLoginError())
@@ -117,4 +117,8 @@ export default class Login extends React.Component {
       </div>
     )
   }
+}
+
+Login.contextTypes = {
+  router: React.PropTypes.object.isRequired
 }

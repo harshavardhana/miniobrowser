@@ -33,3 +33,22 @@ export const sortObjectsByDate = (objects, order) => {
   if (order) files = files.reverse()
   return [...folders, ...files]
 }
+
+export const pathSlice = (path) => {
+  let prefix = ''
+  let bucket = ''
+  if (!path) return {bucket, prefix}
+  let objectIndex = path.indexOf('/', 1)
+  if (objectIndex == -1) {
+    bucket = path.slice(1)
+    return {bucket, prefix}
+  }
+  bucket = path.slice(1, objectIndex)
+  prefix = path.slice(objectIndex + 1)
+  return {bucket, prefix}
+}
+
+export const pathJoin = (bucket, prefix) => {
+  if (!prefix) prefix = ''
+  return '/' + bucket + '/' + prefix
+}

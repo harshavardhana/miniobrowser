@@ -162,24 +162,13 @@ export const setServerInfo = serverInfo => {
   }
 }
 
-export const selectBucket = (currentBucket) => {
+export const selectBucket = (currentBucket, prefix) => {
+  if (!prefix) prefix = ''
   return (dispatch, getState) => {
     let web = getState().web
     dispatch(setCurrentBucket(currentBucket))
-    dispatch(setCurrentPath(''))
-    web.ListObjects({bucketName: currentBucket})
-      .then(res => {
-        let objects = res.objects
-        if (!objects) objects = []
-        dispatch(setObjects(utils.sortObjectsByName(objects, false)))
-        dispatch(setSortNameOrder(false))
-      })
-      .catch(err => {
-        dispatch(showAlert({
-          type: 'danger',
-          message: err.message
-        }))
-      })
+    dispatch(selectPrefix(prefix))
+    return
   }
 }
 
@@ -198,7 +187,7 @@ export const selectPrefix = prefix => {
         dispatch(setSortNameOrder(false))
         dispatch(setCurrentPath(prefix))
       })
-      .catch(err => dispatch(actions.showAlert({
+      .catch(err => dispatch(showAlert({
         type: 'danger',
         message: err.message
       })))

@@ -15,6 +15,7 @@
  */
 
 import React from 'react'
+import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import humanize from 'humanize'
 import Moment from 'moment'
@@ -128,19 +129,8 @@ BrowserUpdate = connect(state => state) (BrowserUpdate)
 
 export default class Browse extends React.Component {
     componentDidMount() {
-        const { web, dispatch, history } = this.props
-        web.ListBuckets()
-            .then(res => {
-              let buckets
-              if (!res.buckets) buckets = []
-              else buckets = res.buckets.map(bucket => bucket.name)
-              if (buckets.length) {
-                dispatch(actions.setBuckets(buckets))
-                dispatch(actions.setVisibleBuckets(buckets))
-                dispatch(actions.selectBucket(buckets[0]))
-              }
-              return web.DiskInfo()
-            })
+        const { web, dispatch, currentBucket } = this.props
+        web.DiskInfo()
             .then(res => {
                 let diskInfo = Object.assign({}, {
                     total: res.diskInfo.Total,
@@ -169,12 +159,40 @@ export default class Browse extends React.Component {
       const { dispatch } = this.props
       // Clear out any stale message in the alert of Login page
       dispatch(actions.showAlert({type: 'danger', message: ''}))
+      web.ListBuckets()
+          .then(res => {
+            let buckets
+            if (!res.buckets) buckets = []
+            else buckets = res.buckets.map(bucket => bucket.name)
+            if (buckets.length) {
+              dispatch(actions.setBuckets(buckets))
+              dispatch(actions.setVisibleBuckets(buckets))
+              if (location.pathname === '/') {
+                browserHistory.push(utils.pathJoin(buckets[0]))
+              }
+            }
+          })
+      this.history = browserHistory.listen(({pathname}) => {
+        if (pathname === '/login') return // FIXME: better organize routes and remove this
+        if (pathname === '/') {
+          dispatch(actions.setCurrentBucket(''))
+          dispatch(actions.setCurrentPath(''))
+          dispatch(actions.setObjects([]))
+          return
+        }
+        let obj = utils.pathSlice(pathname)
+        dispatch(actions.selectBucket(obj.bucket, obj.prefix))
+      })
+    }
+
+    componentWillUnmount() {
+      this.history()
     }
 
     selectBucket(e, bucket) {
         e.preventDefault()
         if (bucket === this.props.currentBucket) return
-        this.props.dispatch(actions.selectBucket(bucket))
+        browserHistory.push(utils.pathJoin(bucket))
     }
 
     searchBuckets(e) {
@@ -188,7 +206,7 @@ export default class Browse extends React.Component {
         e.preventDefault()
         if (prefix.endsWith('/') || prefix === '') {
             if (prefix === currentPath) return
-            dispatch(actions.selectPrefix(prefix))
+            browserHistory.push(utils.pathJoin(currentBucket, prefix))
         } else {
             web.GetObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName: prefix})
                 .then(res => window.location = res.url)
@@ -320,10 +338,10 @@ export default class Browse extends React.Component {
     }
 
     logout(e) {
-        const { web, history } = this.props
+        const { web } = this.props
         e.preventDefault()
         web.Logout()
-        history.pushState(null, '/login')
+        browserHistory.push('/login')
     }
 
     landingPage(e) {

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
+import { browserHistory } from 'react-router'
 import JSONrpc from './jsonrpc'
 import * as  actions from './actions'
 import Moment from 'moment'
 
 export default class Web {
-  constructor(endpoint, history, dispatch) {
+  constructor(endpoint,  dispatch) {
     const namespace = 'Web'
-    this.history = history
     this.dispatch = dispatch
     this.JSONrpc = new JSONrpc({
       endpoint, namespace
@@ -34,7 +34,7 @@ export default class Web {
     .catch(err => {
       if (err.status === 401) {
         delete(localStorage.token)
-        this.history.pushState(null, '/login')
+        browserHistory('/login')
         throw new Error('Please re-login.')
       }
       if (err.status) throw new Error(`Server returned error [${err.status}]`)
