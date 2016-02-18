@@ -35,6 +35,7 @@ export const sortObjectsByDate = (objects, order) => {
 }
 
 export const pathSlice = (path) => {
+  path = path.replace('/minio', '')
   let prefix = ''
   let bucket = ''
   if (!path) return {bucket, prefix}
@@ -50,5 +51,6 @@ export const pathSlice = (path) => {
 
 export const pathJoin = (bucket, prefix) => {
   if (!prefix) prefix = ''
-  return '/' + bucket + '/' + prefix
+  console.log('/minio/' + bucket + '/' + prefix)
+  return '/minio/' + bucket + '/' + prefix
 }
