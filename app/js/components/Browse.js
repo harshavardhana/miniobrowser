@@ -167,14 +167,14 @@ export default class Browse extends React.Component {
             if (buckets.length) {
               dispatch(actions.setBuckets(buckets))
               dispatch(actions.setVisibleBuckets(buckets))
-              if (location.pathname === '/') {
+              if (location.pathname === '/minio' || location.pathname === '/minio/') {
                 browserHistory.push(utils.pathJoin(buckets[0]))
               }
             }
           })
       this.history = browserHistory.listen(({pathname}) => {
-        if (pathname === '/login') return // FIXME: better organize routes and remove this
-        if (pathname === '/') {
+        if (pathname === '/minio/login') return // FIXME: better organize routes and remove this
+        if (pathname === '/minio' || pathname === '/minio/') {
           dispatch(actions.setCurrentBucket(''))
           dispatch(actions.setCurrentPath(''))
           dispatch(actions.setObjects([]))
@@ -341,7 +341,7 @@ export default class Browse extends React.Component {
         const { web } = this.props
         e.preventDefault()
         web.Logout()
-        browserHistory.push('/login')
+        browserHistory.push('/minio/login')
     }
 
     landingPage(e) {

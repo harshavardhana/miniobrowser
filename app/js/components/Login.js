@@ -40,7 +40,7 @@ export default class Login extends React.Component {
     }
     web.Login({username: this.refs.accessKey.value, password: this.refs.secretKey.value})
       .then((res) => {
-        this.context.router.push('/')
+        this.context.router.push('/minio')
       })
       .catch(e => {
         dispatch(actions.setLoginError())

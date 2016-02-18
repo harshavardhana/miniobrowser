@@ -42,7 +42,7 @@ const Login = connect(state => state)(_Login)
 let web = new Web(`${window.location.protocol}//${window.location.host}/rpc`, store.dispatch)
 
 if (window.location.host === 'localhost:8080') {
-  web = new Web('http://localhost:9001/rpc', store.dispatch)
+  web = new Web('http://localhost:9000/minio/rpc', store.dispatch)
 }
 
 window.web = web
@@ -68,14 +68,14 @@ store.dispatch(actions.setWeb(web))
 
 function authNeeded(nextState, replace) {
   if (!web.LoggedIn()) {
-    replace('/login')
+    replace('/minio/login')
     return
   }
 }
 
 function authNotNeeded(nextState, replace) {
   if (web.LoggedIn()) {
-    replace('/')
+    replace('/minio')
   }
 }
 
@@ -88,10 +88,10 @@ const App = (props) => {
 ReactDOM.render((
   <Provider store={store} web={web}>
     <Router history={browserHistory}>
-      <Route path='/' component={App}>
+      <Route path='/minio' component={App}>
         <IndexRoute component={Browse} onEnter={authNeeded} />
-        <Route path='/login' component={Login} onEnter={authNotNeeded} />
-        <Route path='/:bucket/*' component={Browse} onEnter={authNeeded} />
+        <Route path='login' component={Login} onEnter={authNotNeeded} />
+        <Route path=':bucket/*' component={Browse} onEnter={authNeeded} />
       </Route>
     </Router>
   </Provider>

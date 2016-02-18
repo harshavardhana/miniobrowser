@@ -28,13 +28,14 @@ export default class Web {
     })
   }
   makeCall(method, options) {
+    if (options && !options.bucketName && !options.prefix) console.trace()
     return this.JSONrpc.call(method, {
       params: options
     }, localStorage.token)
     .catch(err => {
       if (err.status === 401) {
         delete(localStorage.token)
-        browserHistory('/login')
+        browserHistory('/minio/login')
         throw new Error('Please re-login.')
       }
       if (err.status) throw new Error(`Server returned error [${err.status}]`)
@@ -44,8 +45,10 @@ export default class Web {
       let json = JSON.parse(res.text)
       let result = json.result
       let error = json.error
-      if (error) throw new Error(error.message)
-
+      if (error) {
+        console.log(options)
+        throw new Error(error.message)
+      }
       if (!Moment(result.uiVersion).isValid()) {
         throw new Error("Invalid UI version in the JSON-RPC response")
       }
