@@ -208,7 +208,7 @@ export default class Browse extends React.Component {
             if (prefix === currentPath) return
             browserHistory.push(utils.pathJoin(currentBucket, prefix))
         } else {
-            web.GetObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName: prefix})
+            web.GetObjectURL({targetHost: window.location.host, targetProto: window.location.protocol, bucketName: currentBucket, objectName: prefix})
                 .then(res => window.location = res.url)
                 .catch(err => dispatch(actions.showAlert({
                     type: 'danger',
@@ -398,7 +398,7 @@ export default class Browse extends React.Component {
                           onDismiss={this.hideAlert.bind(this)}>
             <div className='text-center'>
                 {alert.message}
-                <a href="" className="feba-more">show more...</a>
+                <a href="" className="feba-more"> show more...</a>
             </div>
 
         </Alert>

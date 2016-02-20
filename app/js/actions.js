@@ -219,7 +219,7 @@ export const uploadFile = (file, xhr) => {
   return (dispatch, getState) => {
     const { currentBucket, currentPath, web } = getState()
     const objectName = `${currentPath}${file.name}`
-    web.PutObjectURL({targetHost: window.location.host, bucketName: currentBucket, objectName})
+    web.PutObjectURL({targetHost: window.location.host, targetProto: window.location.protocol, bucketName: currentBucket, objectName})
         .then(res => {
           let signedurl = res.url
           let parsedUrl = url.parse(signedurl)
