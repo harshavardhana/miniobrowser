@@ -297,7 +297,8 @@
         top: 0;
         margin-left: 12px;
 
-        &:before {
+        &:before,
+        &:after {
             content: "";
             position: absolute;
             top: 7px;
@@ -305,14 +306,21 @@
             width: 41px;
             height: 41px;
             border-radius: 50%;
+
+        }
+
+        &:after {
+            z-index: 1;
+        }
+
+        &:before {
             background: rgba(255, 255, 255, 0.1);
             .transition(all);
             .transition-duration(300ms);
             .scale(0);
-            z-index: 0;
         }
 
-        &.toggled {
+        &.mht-toggled {
             &:before {
                 .scale(1);
             }

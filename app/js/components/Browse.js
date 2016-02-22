@@ -27,37 +27,57 @@ import Alert from 'react-bootstrap/lib/Alert'
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger'
 import Tooltip from 'react-bootstrap/lib/Tooltip'
 
+
 import logo from '../../img/logo.svg'
 
 import * as actions from '../actions'
 import * as utils from '../utils'
 import * as mime from '../mime';
-import { Scrollbars } from 'react-custom-scrollbars';
+import { Scrollbars } from 'react-custom-scrollbars'
 
-let BucketList = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets }) => {
+let SideBar = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets, landingPage, sidebarStatus, clickOutside }) => {
+    let ClickOutHandler = require('react-onclickout');
+
     const list = visibleBuckets.map((bucket, i) => {
         const active = bucket === currentBucket ? 'active' : ''
         return <li className={active} key={i} onClick={(e) => selectBucket(e, bucket)}><a href="">{bucket}</a></li>
     })
+
     return (
-        <div>
-            <div className="fesb-search">
-                <input type="text" onChange={searchBuckets} placeholder="Search Buckets..."/>
-                <i></i>
+        <ClickOutHandler onClickOut={clickOutside}>
+            <div className={"fe-sidebar " + (sidebarStatus ? 'toggled' : "")}>
+                <div className="fes-header clearfix hidden-sm hidden-xs">
+                    <a href="" onClick={landingPage}>
+                        <img src={logo} alt=""/>
+                        <h2 className="fe-h2">Minio Browser</h2>
+                    </a>
+                </div>
+
+                <div className="fes-list">
+                    <div className="fesb-search">
+                        <input type="text" onChange={searchBuckets} placeholder="Search Buckets..."/>
+                        <i></i>
+                    </div>
+                    <div className="fesl-inner">
+                        <Scrollbars
+                            renderScrollbarVertical={props => <div className="scrollbar-vertical"/>}
+                        >
+                            <ul>
+                                {list}
+                            </ul>
+                        </Scrollbars>
+                    </div>
+                </div>
+
+                <div className="fes-host">
+                    <i className="fa fa-globe"></i>
+                    <a href="/">{window.location.host}</a>
+                </div>
             </div>
-            <div className="fesl-inner">
-                <Scrollbars
-                    renderScrollbarVertical={props => <div className="scrollbar-vertical"/>}
-                >
-                    <ul>
-                        {list}
-                    </ul>
-                </Scrollbars>
-            </div>
-        </div>
+        </ClickOutHandler>
     )
 }
-BucketList = connect(state => state) (BucketList)
+SideBar = connect(state => state) (SideBar)
 
 let ObjectsList = ({objects, currentPath, selectPrefix, dataType, removeObject }) => {
     const list = objects.map((object, i) => {
@@ -366,9 +386,17 @@ export default class Browse extends React.Component {
         }
     }
 
-    handleSidebar(){
-        const { dispatch } = this.props
-        dispatch(actions.sideBarToggle())
+    toggleSidebar(status){
+        this.props.dispatch(actions.setSidebarStatus(status))
+    }
+
+    hideSidebar(event){
+        let e = event || window.event;
+        let target = e.srcElement.id
+
+        if (!(target === 'mh-trigger')) {
+            this.props.dispatch(actions.setSidebarStatus(false))
+        }
     }
 
     render() {
@@ -376,7 +404,7 @@ export default class Browse extends React.Component {
         const { showMakeBucketModal, showAbortModal, upload, alert, sortNameOrder, sortSizeOrder, sortDateOrder } = this.props
         const { showAbout } = this.props
         const { version, memory, platform, runtime } = this.props.serverInfo
-        const { sideBarActive } = this.props
+        const { sidebarStatus } = this.props
 
         let progressBar = ''
         let percent = (upload.loaded / upload.total) * 100
@@ -428,28 +456,17 @@ export default class Browse extends React.Component {
         return (
             <div className="file-explorer">
                 {abortModal}
-                <div className={"fe-sidebar " + (sideBarActive ? "toggled": "")}>
-                    <div className="fes-header clearfix hidden-sm hidden-xs">
-                        <a href="" onClick={this.landingPage.bind(this)}>
-                            <img src={logo} alt=""/>
-                            <h2 className="fe-h2">Minio Browser</h2>
-                        </a>
-                    </div>
-                    <div className="fes-list">
-                        <BucketList searchBuckets={this.searchBuckets.bind(this)}
-                                    selectBucket={this.selectBucket.bind(this)}/>
-                    </div>
-                    <div className="fes-host">
-                        <i className="fa fa-globe"></i>
-                        <a href="/">{window.location.host}</a>
-                    </div>
-                </div>
+                <SideBar landingPage={this.landingPage.bind(this)}
+                            searchBuckets={this.searchBuckets.bind(this)}
+                            selectBucket={this.selectBucket.bind(this)}
+                            clickOutside={this.hideSidebar.bind(this)}/>
 
                 <div className="fe-body">
                     {alertBox}
 
                     <header className="mobile-header hidden-lg hidden-md">
-                        <div id="mh-trigger" onClick={this.handleSidebar.bind(this)} className={sideBarActive ? 'toggled' : ''}>
+                        <div id="mh-trigger" className={sidebarStatus ? 'mht-toggled' : ''} onClick={this.toggleSidebar.bind(this, !sidebarStatus)}>
+
                             <div className="mht-lines">
                                 <div className="top"></div>
                                 <div className="center"></div>
