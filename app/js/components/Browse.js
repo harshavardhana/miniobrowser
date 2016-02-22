@@ -454,7 +454,7 @@ export default class Browse extends React.Component {
         let freePercent = free * 100 / total
 
         return (
-            <div className="file-explorer">
+            <div className={'file-explorer ' + (sidebarStatus ? 'toggled' : '')}>
                 {abortModal}
                 <SideBar landingPage={this.landingPage.bind(this)}
                             searchBuckets={this.searchBuckets.bind(this)}
