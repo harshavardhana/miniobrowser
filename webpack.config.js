@@ -25,7 +25,8 @@ var exports = {
   ],
   output: {
     path: path.resolve(__dirname, 'dev'),
-    filename: 'minio/index_bundle.js'
+    filename: 'index_bundle.js',
+    publicPath: '/minio/'
   },
   module: {
     loaders: [{
@@ -48,11 +49,11 @@ var exports = {
   },
   plugins: [
     new CopyWebpackPlugin([
-      {from: 'bower_components/jquery/dist/jquery.min.js', to: 'minio'},
-      {from: 'bower_components/bootstrap/dist/js/bootstrap.min.js', to: 'minio'},
-      {from: 'app/js/functions.js', to: 'minio'},
-      {from: 'app/img/favicon.ico', to: 'minio'},
-      {from: 'app/index.html', to: 'minio'}
+      {from: 'bower_components/jquery/dist/jquery.min.js'},
+      {from: 'bower_components/bootstrap/dist/js/bootstrap.min.js'},
+      {from: 'app/js/functions.js'},
+      {from: 'app/img/favicon.ico'},
+      {from: 'app/index.html'}
     ])
   ]
 }

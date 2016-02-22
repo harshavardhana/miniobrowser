@@ -28,14 +28,13 @@ export default class Web {
     })
   }
   makeCall(method, options) {
-    if (options && !options.bucketName && !options.prefix) console.trace()
     return this.JSONrpc.call(method, {
       params: options
     }, localStorage.token)
     .catch(err => {
       if (err.status === 401) {
         delete(localStorage.token)
-        browserHistory('/minio/login')
+        browserHistory.push('/minio/login')
         throw new Error('Please re-login.')
       }
       if (err.status) throw new Error(`Server returned error [${err.status}]`)
@@ -46,7 +45,6 @@ export default class Web {
       let result = json.result
       let error = json.error
       if (error) {
-        console.log(options)
         throw new Error(error.message)
       }
       if (!Moment(result.uiVersion).isValid()) {

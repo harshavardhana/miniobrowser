@@ -194,7 +194,8 @@ export default class Browse extends React.Component {
           })
       this.history = browserHistory.listen(({pathname}) => {
         if (pathname === '/minio/login') return // FIXME: better organize routes and remove this
-        if (pathname === '/minio' || pathname === '/minio/') {
+        if (!pathname.endsWith('/')) pathname += '/'
+        if (pathname === '/minio/') {
           dispatch(actions.setCurrentBucket(''))
           dispatch(actions.setCurrentPath(''))
           dispatch(actions.setObjects([]))

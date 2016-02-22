@@ -39,7 +39,7 @@ const store = applyMiddleware(thunkMiddleware)(createStore)(reducer)
 const Browse = connect(state => state)(_Browse)
 const Login = connect(state => state)(_Login)
 
-let web = new Web(`${window.location.protocol}//${window.location.host}/rpc`, store.dispatch)
+let web = new Web(`${window.location.protocol}//${window.location.host}/minio/rpc`, store.dispatch)
 
 if (window.location.host === 'localhost:8080') {
   web = new Web('http://localhost:9000/minio/rpc', store.dispatch)
@@ -88,10 +88,13 @@ const App = (props) => {
 ReactDOM.render((
   <Provider store={store} web={web}>
     <Router history={browserHistory}>
-      <Route path='/minio' component={App}>
-        <IndexRoute component={Browse} onEnter={authNeeded} />
-        <Route path='login' component={Login} onEnter={authNotNeeded} />
-        <Route path=':bucket/*' component={Browse} onEnter={authNeeded} />
+      <Route path='/' component={App}>
+        <Route path='minio' component={App}>
+          <IndexRoute component={Browse} onEnter={authNeeded} />
+          <Route path='login' component={Login} onEnter={authNotNeeded} />
+          <Route path=':bucket' component={Browse} onEnter={authNeeded} />
+          <Route path=':bucket/*' component={Browse} onEnter={authNeeded} />
+        </Route>
       </Route>
     </Router>
   </Provider>
