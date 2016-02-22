@@ -91,8 +91,8 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
     case actions.SET_LATEST_UI_VERSION:
       newState.latestUiVersion = action.latestUiVersion
       break
-    case actions.SIDE_BAR_TOGGLE:
-      newState.sideBarActive = !newState.sideBarActive
+    case actions.SET_SIDEBAR_STATUS:
+      newState.sidebarStatus = action.sidebarStatus
       break
   }
   return newState

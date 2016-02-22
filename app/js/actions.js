@@ -38,7 +38,7 @@ export const SET_SORT_NAME_ORDER = 'SET_SORT_NAME_ORDER'
 export const SET_SORT_SIZE_ORDER = 'SET_SORT_SIZE_ORDER'
 export const SET_SORT_DATE_ORDER = 'SET_SORT_DATE_ORDER'
 export const SET_LATEST_UI_VERSION = 'SET_LATEST_UI_VERSION'
-export const SIDE_BAR_TOGGLE = 'SIDE_BAR_TOGGLE'
+export const SET_SIDEBAR_STATUS = 'SET_SIDEBAR_STATUS'
 
 export const setWeb = web => {
   return {
@@ -107,9 +107,10 @@ export const showAlert = alert => {
   }
 }
 
-export const sideBarToggle = () => {
+export const setSidebarStatus = (status) => {
   return {
-    type: SIDE_BAR_TOGGLE
+    type: SET_SIDEBAR_STATUS,
+    sidebarStatus: status
   }
 }
 

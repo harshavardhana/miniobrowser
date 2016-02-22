@@ -5,7 +5,7 @@
 .fesl-row {
     padding-right: 40px;
     padding-top: 5px;
-    padding-bottom: 2px;
+    padding-bottom: 5px;
     position: relative;
 
     @media (min-width: (@screen-sm-min - 100px)) {
@@ -37,7 +37,7 @@ header.fesl-row {
             cursor: pointer;
             color: @text-muted-color;
             font-weight: 500;
-            margin-bottom: -2px;
+            margin-bottom: -5px;
 
             & > .fesli-sort {
                 float: right;
@@ -63,9 +63,14 @@ header.fesl-row {
 }
 
 div.fesl-row {
-    padding-left: 75px;
+    padding-left: 85px;
     border-bottom: 1px solid transparent;
     cursor: default;
+
+    @media (max-width: (@screen-xs-max - 100px)) {
+        padding-left: 75px;
+        padding-right: 20px;
+    }
 
     &:nth-child(even) {
         background-color: #F7F7F7;
@@ -93,24 +98,33 @@ div.fesl-row {
         width: 35px;
         height: 35px;
         vertical-align: top;
-        font-size: 20px;
         text-align: center;
         line-height: 35px;
         position: absolute;
-        left: 47px;
-        top: 9px;
         border-radius: 50%;
+        font-size: 16px;
+        left: 50px;
+        top: 9px;
+        color: #fff;
+
+        @media (max-width: (@screen-xs-max - 100px)) {
+            left: 25px;
+        }
     }
 
-    @media(max-width: (@screen-xs-max - 100px)) {
-        padding-bottom: 7px;
+    &[data-type="folder"] {
+        @media (max-width: (@screen-xs-max - 100px)) {
+            .fesl-item {
+                &:nth-child(1) {
+                    padding-top: 10px;
+                    padding-bottom: 7px;
+                }
 
-        &[data-type]:before {
-            font-size: 16px;
-            left: 25px;
-            top: 8px;
-            background: #2ED2FF;
-            color: #fff !important;
+                &:nth-child(2),
+                &:nth-child(3) {
+                    display: none;
+                }
+            }
         }
     }
 
@@ -120,49 +134,51 @@ div.fesl-row {
     ----------------------------*/
     &[data-type=folder]:before {
         content: '\f114';
-        color: @blue;
+        background-color: #2dd3fb;
     }
     &[data-type=pdf]:before {
         content: "\f1c1";
-        color: @red;
+        background-color: #fb766d;
     }
     &[data-type=zip]:before {
         content: "\f1c6";
-        color: @blue-gray;
+        background-color: @blue-gray;
     }
     &[data-type=audio]:before {
         content: "\f1c7";
-        color: @green;
+        background-color: #009688
     }
     &[data-type=code]:before {
         content: "\f1c9";
-        color: @brown;
+        background-color: #997867;
     }
     &[data-type=excel]:before {
         content: "\f1c3";
-        color: @teal;
+        background-color: #64c866;
     }
     &[data-type=image]:before {
         content: "\f1c5";
-        color: @purple;
+        background-color: #d24ce9;
     }
     &[data-type=video]:before {
         content: "\f1c8";
-        color: @yellow;
+        background-color: #fdc206;
     }
     &[data-type=other]:before {
         content: "\f016";
+        background-color: #8a8a8a;
     }
     &[data-type=text]:before {
         content: "\f0f6";
+        background-color: #8a8a8a;
     }
     &[data-type=doc]:before {
         content: "\f1c2";
-        color: @blue;
+        background-color: #2196f5;
     }
     &[data-type=presentation]:before {
         content: "\f1c4";
-        color: @orange;
+        background-color: #fba220;
     }
 }
 
@@ -206,6 +222,7 @@ div.fesl-row {
 
         &:nth-child(1) {
             width: 100%;
+            margin-bottom: 3px;
         }
 
         &:nth-child(2),
@@ -230,7 +247,6 @@ div.fesl-row {
 
     }
 }
-
 
 .feb-modal {
     .modal-content {
