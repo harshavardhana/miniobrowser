@@ -63,10 +63,10 @@ async.waterfall([
       var releaseTag = date.format('YYYY-MM-DDTHH-mm-ss') + 'Z'
       fs.renameSync('bindata_assetfs.go', assetsFileName)
       fs.appendFileSync(assetsFileName, '\n')
-      fs.appendFileSync(assetsFileName, 'var uiReleaseTag = "' + buildType + '.' +
+      fs.appendFileSync(assetsFileName, 'var UIReleaseTag = "' + buildType + '.' +
                         releaseTag + '"\n')
-      fs.appendFileSync(assetsFileName, 'var uiCommitID = "' + commitId + '"\n')
-      fs.appendFileSync(assetsFileName, 'var uiVersion = "' + version + '"')
+      fs.appendFileSync(assetsFileName, 'var UICommitID = "' + commitId + '"\n')
+      fs.appendFileSync(assetsFileName, 'var UIVersion = "' + version + '"')
       fs.appendFileSync(assetsFileName, '\n')
       var contents;
       if (isProduction) {
