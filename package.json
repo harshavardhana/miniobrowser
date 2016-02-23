@@ -6,7 +6,7 @@
     "test": "karma start",
     "dev": "NODE_ENV=dev webpack-dev-server --devtool eval --progress --colors --hot --content-base dev --history-api-fallback",
     "build": "NODE_ENV=dev node build.js",
-    "release": "NODE_ENV=production MINIO_UI_BUILD=OFFICIAL node build.js"
+    "release": "NODE_ENV=production MINIO_UI_BUILD=RELEASE node build.js"
   },
   "repository": {
     "type": "git",

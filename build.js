@@ -45,13 +45,10 @@ async.waterfall([
       commitId = stdout.replace('\n', '')
       if (commitId.length !== 40) throw new Error('commitId invalid : ' + commitId)
       date = moment.utc()
-      if (buildType === 'OFFICIAL')
-        assetsFileName = 'ui-assets-' + date.format('YYYY-MM-DDTHH-mm-ss') + 'Z' + '.go'
-      else
-        assetsFileName = 'ui-assets.go';
-      var cmd = 'go-bindata-assetfs -nocompress=true production/...'
+      assetsFileName = 'ui-assets.go';
+      var cmd = 'go-bindata-assetfs -pkg miniobrowser -nocompress=true production/...'
       if (!isProduction) {
-        cmd = 'go-bindata-assetfs -nocompress=true dev/...'
+        cmd = 'go-bindata-assetfs -pkg miniobrowser -nocompress=true dev/...'
       }
       console.log('Running', cmd)
       exec(cmd, cb)
@@ -63,10 +60,11 @@ async.waterfall([
     },
     function(stdout, stderr, cb) {
       var version = date.format('YYYY-MM-DDTHH:mm:ss') + 'Z'
+      var releaseTag = date.format('YYYY-MM-DDTHH-mm-ss') + 'Z'
       fs.renameSync('bindata_assetfs.go', assetsFileName)
       fs.appendFileSync(assetsFileName, '\n')
       fs.appendFileSync(assetsFileName, 'var uiReleaseTag = "' + buildType + '.' +
-                        version + '"\n')
+                        releaseTag + '"\n')
       fs.appendFileSync(assetsFileName, 'var uiCommitID = "' + commitId + '"\n')
       fs.appendFileSync(assetsFileName, 'var uiVersion = "' + version + '"')
       fs.appendFileSync(assetsFileName, '\n')
