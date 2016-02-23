@@ -51,7 +51,6 @@ var exports = {
     new CopyWebpackPlugin([
       {from: 'node_modules/jquery/dist/jquery.min.js'},
       {from: 'node_modules/bootstrap/dist/js/bootstrap.min.js'},
-      {from: 'app/js/functions.js'},
       {from: 'app/img/favicon.ico'},
       {from: 'app/index.html'}
     ])
