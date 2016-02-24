@@ -56,7 +56,10 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "bootstrap": "^3.3.6",
+    "font-awesome": "^4.5.0",
     "humanize": "0.0.9",
+    "jquery": "^2.2.1",
     "react-custom-scrollbars": "^2.2.2",
     "react-dom": "^0.14.6",
     "react-onclickout": "^2.0.4"

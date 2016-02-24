@@ -49,9 +49,8 @@ var exports = {
   },
   plugins: [
     new CopyWebpackPlugin([
-      {from: 'bower_components/jquery/dist/jquery.min.js'},
-      {from: 'bower_components/bootstrap/dist/js/bootstrap.min.js'},
-      {from: 'app/js/functions.js'},
+      {from: 'node_modules/jquery/dist/jquery.min.js'},
+      {from: 'node_modules/bootstrap/dist/js/bootstrap.min.js'},
       {from: 'app/img/favicon.ico'},
       {from: 'app/index.html'}
     ])

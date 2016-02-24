@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import '../bower_components/font-awesome/css/font-awesome.css'
-import '../bower_components/animate.css/animate.min.css'
+import '../node_modules/font-awesome/css/font-awesome.css'
+import '../node_modules/animate.css/animate.min.css'
 import './less/main.less'
 
 import React from 'react'
