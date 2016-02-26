@@ -22,7 +22,9 @@ var fs = require('fs')
 var isProduction = process.env.NODE_ENV == 'production' ? true : false
 var assetsFileName = ''
 var commitId = ''
-var date = undefined
+var date = moment.utc()
+var version = date.format('YYYY-MM-DDTHH:mm:ss') + 'Z'
+var releaseTag = date.format('YYYY-MM-DDTHH-mm-ss') + 'Z'
 var buildType = 'UNOFFICIAL'
 if (process.env.MINIO_UI_BUILD) buildType = process.env.MINIO_UI_BUILD
 
@@ -36,6 +38,8 @@ async.waterfall([
       exec(cmd, cb)
     },
     function(stdout, stderr, cb) {
+      if (isProduction) fs.renameSync('production/index_bundle.js', 'production/index_bundle-' + releaseTag + '.js')
+      else fs.renameSync('dev/index_bundle.js', 'dev/index_bundle-' + releaseTag + '.js')
       var cmd = 'git log --format="%H" -n1'
       console.log('Running', cmd)
       exec(cmd, cb)
@@ -44,7 +48,6 @@ async.waterfall([
       if (!stdout) throw new Error('commitId is empty')
       commitId = stdout.replace('\n', '')
       if (commitId.length !== 40) throw new Error('commitId invalid : ' + commitId)
-      date = moment.utc()
       assetsFileName = 'ui-assets.go';
       var cmd = 'go-bindata-assetfs -pkg miniobrowser -nocompress=true production/...'
       if (!isProduction) {
@@ -59,8 +62,6 @@ async.waterfall([
       exec(cmd, cb)
     },
     function(stdout, stderr, cb) {
-      var version = date.format('YYYY-MM-DDTHH:mm:ss') + 'Z'
-      var releaseTag = date.format('YYYY-MM-DDTHH-mm-ss') + 'Z'
       fs.renameSync('bindata_assetfs.go', assetsFileName)
       fs.appendFileSync(assetsFileName, '\n')
       fs.appendFileSync(assetsFileName, 'var UIReleaseTag = "' + buildType + '.' +
@@ -93,6 +94,7 @@ async.waterfall([
                      .replace(/devJqueryUiMinJs/g, 'devJqueryUIMinJs');
       }
       contents = contents.replace(/MINIO_UI_VERSION/g, version)
+      contents = contents.replace(/index_bundle.js/g, 'index_bundle-' + releaseTag + '.js')
 
       fs.writeFileSync(assetsFileName, contents, 'utf8')
       console.log('UI assets file :', assetsFileName)

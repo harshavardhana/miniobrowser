@@ -47,23 +47,6 @@ if (window.location.host === 'localhost:8080') {
 
 window.web = web
 
-// check for UI version compatibility during init.
-// Reload in case of version mismatch.
-if (currentUiVersion !== 'MINIO_UI_VERSION') { // when not in dev mode
-  web.GetUIVersion()
-      .then(res => {
-        if (!Moment(res.uiVersion).isValid()) {
-          throw new Error("Invalid UI version in the JSON-RPC response")
-        }
-        if (!Moment(currentUiVersion).isValid()) {
-          throw new Error("Invalid UI version in the 'currentUiVersion'")
-        }
-        if (res.uiVersion !== currentUiVersion) {
-          location.reload()
-        }
-      })
-}
-
 store.dispatch(actions.setWeb(web))
 
 function authNeeded(nextState, replace) {
