@@ -39,6 +39,14 @@ export const SET_SORT_SIZE_ORDER = 'SET_SORT_SIZE_ORDER'
 export const SET_SORT_DATE_ORDER = 'SET_SORT_DATE_ORDER'
 export const SET_LATEST_UI_VERSION = 'SET_LATEST_UI_VERSION'
 export const SET_SIDEBAR_STATUS = 'SET_SIDEBAR_STATUS'
+export const SET_LOGIN_REDIRECT_PATH = 'SET_LOGIN_REDIRECT_PATH'
+
+export const setLoginRedirectPath = (path) => {
+  return {
+    type: SET_LOGIN_REDIRECT_PATH,
+    path
+  }
+}
 
 export const setWeb = web => {
   return {

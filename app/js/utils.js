@@ -51,6 +51,5 @@ export const pathSlice = (path) => {
 
 export const pathJoin = (bucket, prefix) => {
   if (!prefix) prefix = ''
-  console.log('/minio/' + bucket + '/' + prefix)
   return '/minio/' + bucket + '/' + prefix
 }

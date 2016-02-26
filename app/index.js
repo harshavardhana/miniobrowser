@@ -51,6 +51,7 @@ store.dispatch(actions.setWeb(web))
 
 function authNeeded(nextState, replace) {
   if (!web.LoggedIn()) {
+    store.dispatch(actions.setLoginRedirectPath(location.pathname))
     replace('/minio/login')
     return
   }
