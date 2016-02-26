@@ -94,6 +94,9 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
     case actions.SET_SIDEBAR_STATUS:
       newState.sidebarStatus = action.sidebarStatus
       break
+    case actions.SET_LOGIN_REDIRECT_PATH:
+      newState.loginRedirectPath = action.path
+      break
   }
   return newState
 }

@@ -93,10 +93,4 @@ export default class Web {
   RemoveObject(args) {
     return this.makeCall('RemoveObject', args)
   }
-  GetUIVersion() {
-    // The call should work even in logged out state.
-    return this.JSONrpc.call('GetUIVersion', {
-      params: {}
-    })
-  }
 }

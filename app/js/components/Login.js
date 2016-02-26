@@ -23,7 +23,7 @@ import * as actions from '../actions'
 export default class Login extends React.Component {
   handleSubmit(event) {
     event.preventDefault()
-    const { web, dispatch } = this.props
+    const { web, dispatch, loginRedirectPath } = this.props
     let message = ''
     if (!this.refs.secretKey.value) {
       message = 'Secret Key cannot be empty'
@@ -40,7 +40,7 @@ export default class Login extends React.Component {
     }
     web.Login({username: this.refs.accessKey.value, password: this.refs.secretKey.value})
       .then((res) => {
-        this.context.router.push('/minio')
+        this.context.router.push(loginRedirectPath)
       })
       .catch(e => {
         dispatch(actions.setLoginError())
