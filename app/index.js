@@ -26,6 +26,7 @@ import { Route, Router, browserHistory, IndexRoute } from 'react-router'
 import { Provider, connect } from 'react-redux'
 import Moment from 'moment'
 
+import { minioBrowserPrefix } from './js/constants.js'
 import * as actions from './js/actions.js'
 import reducer from './js/reducers.js'
 
@@ -39,10 +40,10 @@ const store = applyMiddleware(thunkMiddleware)(createStore)(reducer)
 const Browse = connect(state => state)(_Browse)
 const Login = connect(state => state)(_Login)
 
-let web = new Web(`${window.location.protocol}//${window.location.host}/minio/rpc`, store.dispatch)
+let web = new Web(`${window.location.protocol}//${window.location.host}${minioBrowserPrefix}/rpc`, store.dispatch)
 
 if (window.location.host === 'localhost:8080') {
-  web = new Web('http://localhost:9000/minio/rpc', store.dispatch)
+  web = new Web(`http://localhost:9000${minioBrowserPrefix}/rpc`, store.dispatch)
 }
 
 window.web = web
@@ -52,14 +53,14 @@ store.dispatch(actions.setWeb(web))
 function authNeeded(nextState, replace) {
   if (!web.LoggedIn()) {
     store.dispatch(actions.setLoginRedirectPath(location.pathname))
-    replace('/minio/login')
+    replace(`${minioBrowserPrefix}/login`)
     return
   }
 }
 
 function authNotNeeded(nextState, replace) {
   if (web.LoggedIn()) {
-    replace('/minio')
+    replace(`${minioBrowserPrefix}`)
   }
 }
 

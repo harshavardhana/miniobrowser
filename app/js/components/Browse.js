@@ -32,7 +32,8 @@ import logo from '../../img/logo.svg'
 
 import * as actions from '../actions'
 import * as utils from '../utils'
-import * as mime from '../mime';
+import * as mime from '../mime'
+import { minioBrowserPrefix } from '../constants'
 import { Scrollbars } from 'react-custom-scrollbars'
 
 let SideBar = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets, landingPage, sidebarStatus, clickOutside }) => {
@@ -187,15 +188,15 @@ export default class Browse extends React.Component {
             if (buckets.length) {
               dispatch(actions.setBuckets(buckets))
               dispatch(actions.setVisibleBuckets(buckets))
-              if (location.pathname === '/minio' || location.pathname === '/minio/') {
+              if (location.pathname === minioBrowserPrefix || location.pathname === minioBrowserPrefix + '/') {
                 browserHistory.push(utils.pathJoin(buckets[0]))
               }
             }
           })
       this.history = browserHistory.listen(({pathname}) => {
-        if (pathname === '/minio/login') return // FIXME: better organize routes and remove this
+        if (pathname === `${minioBrowserPrefix}/login`) return // FIXME: better organize routes and remove this
         if (!pathname.endsWith('/')) pathname += '/'
-        if (pathname === '/minio/') {
+        if (pathname === minioBrowserPrefix + '/') {
           dispatch(actions.setCurrentBucket(''))
           dispatch(actions.setCurrentPath(''))
           dispatch(actions.setObjects([]))
@@ -362,7 +363,7 @@ export default class Browse extends React.Component {
         const { web } = this.props
         e.preventDefault()
         web.Logout()
-        browserHistory.push('/minio/login')
+        browserHistory.push(`${minioBrowserPrefix}/login`)
     }
 
     landingPage(e) {
