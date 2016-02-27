@@ -17,6 +17,7 @@
 import { browserHistory } from 'react-router'
 import JSONrpc from './jsonrpc'
 import * as  actions from './actions'
+import { minioBrowserPrefix } from './constants.js'
 import Moment from 'moment'
 
 export default class Web {
@@ -34,7 +35,7 @@ export default class Web {
     .catch(err => {
       if (err.status === 401) {
         delete(localStorage.token)
-        browserHistory.push('/minio/login')
+        browserHistory.push(`${minioBrowserPrefix}/login`)
         throw new Error('Please re-login.')
       }
       if (err.status) throw new Error(`Server returned error [${err.status}]`)
