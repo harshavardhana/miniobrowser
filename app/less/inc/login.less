@@ -61,6 +61,9 @@
 }
 
 .lci-helpers {
+    position: relative;
+    z-index: 1;
+
     i {
         &:first-child {
             height: 1px;
@@ -109,7 +112,8 @@
     color: #fff;
     position: relative;
     z-index: 1;
-    &:focus + input + label + .lci-helpers i {
+
+    &:focus + label + .lci-helpers i {
         &:last-child {
             .scale(1);
             &:before,
@@ -119,12 +123,13 @@
             }
         }
     }
-}
 
-.lci-text:focus + .lci-label,
-.lc-item.toggled .lci-label {
-    bottom: 40px;
-    font-size: 13px;
+    &:valid {
+        & + .lci-label {
+            bottom: 40px;
+            font-size: 13px;
+        }
+    }
 }
 
 .lci-error {
@@ -215,4 +220,12 @@
         color: #fff;
         border-color: #fff;
     }
+}
+
+/*------------------------------
+    Chrome autofill fix
+-------------------------------*/
+input:-webkit-autofill {
+     -webkit-box-shadow:0 0 0 50px @dark-gray inset !important;
+     -webkit-text-fill-color: #fff !important;
 }
