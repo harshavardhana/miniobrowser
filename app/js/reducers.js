@@ -15,12 +15,14 @@
  */
 
 import * as actions from './actions'
+import { minioBrowserPrefix } from './constants'
 
 export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{}, serverInfo: {},
                 currentBucket: '', currentPath: '', showMakeBucketModal: false, upload: {},
                 alert: {show: false, type: 'danger', message: ''}, loginError : false,
                 sortNameOrder: false, sortSizeOrder: false, sortDateOrder: false,
-                latestUiVersion: currentUiVersion, sideBarActive: false}, action) => {
+                latestUiVersion: currentUiVersion, sideBarActive: false,
+                loginRedirectPath: minioBrowserPrefix}, action) => {
   let newState = Object.assign({}, state)
   switch (action.type) {
     case actions.SET_WEB:
