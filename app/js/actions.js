@@ -40,11 +40,27 @@ export const SET_SORT_DATE_ORDER = 'SET_SORT_DATE_ORDER'
 export const SET_LATEST_UI_VERSION = 'SET_LATEST_UI_VERSION'
 export const SET_SIDEBAR_STATUS = 'SET_SIDEBAR_STATUS'
 export const SET_LOGIN_REDIRECT_PATH = 'SET_LOGIN_REDIRECT_PATH'
+export const SET_LOAD_BUCKET = 'SET_LOAD_BUCKET'
+export const SET_LOAD_PATH = 'SET_LOAD_PATH'
 
 export const setLoginRedirectPath = (path) => {
   return {
     type: SET_LOGIN_REDIRECT_PATH,
     path
+  }
+}
+
+export const setLoadPath = (loadPath) => {
+  return {
+    type: SET_LOAD_PATH,
+    loadPath
+  }
+}
+
+export const setLoadBucket = (loadBucket) => {
+  return {
+    type: SET_LOAD_BUCKET,
+    loadBucket
   }
 }
 
@@ -171,11 +187,15 @@ export const setServerInfo = serverInfo => {
   }
 }
 
-export const selectBucket = (currentBucket, prefix) => {
+export const selectBucket = (newCurrentBucket, prefix) => {
   if (!prefix) prefix = ''
   return (dispatch, getState) => {
     let web = getState().web
-    dispatch(setCurrentBucket(currentBucket))
+    let currentBucket = getState().currentBucket
+
+    if(currentBucket !== newCurrentBucket) dispatch(setLoadBucket(newCurrentBucket))
+
+    dispatch(setCurrentBucket(newCurrentBucket))
     dispatch(selectPrefix(prefix))
     return
   }
@@ -184,6 +204,7 @@ export const selectBucket = (currentBucket, prefix) => {
 export const selectPrefix = prefix => {
   return (dispatch, getState) => {
     const { currentBucket, web } = getState()
+    dispatch(setLoadPath(prefix))
     web.ListObjects({bucketName: currentBucket, prefix})
       .then(res => {
         let objects = res.objects
@@ -195,11 +216,17 @@ export const selectPrefix = prefix => {
         ))
         dispatch(setSortNameOrder(false))
         dispatch(setCurrentPath(prefix))
+        dispatch(setLoadBucket(''))
+        dispatch(setLoadPath(''))
       })
-      .catch(err => dispatch(showAlert({
-        type: 'danger',
-        message: err.message
-      })))
+      .catch(err => {
+        dispatch (showAlert ({
+          type: 'danger',
+          message: err.message
+        }))
+        dispatch (setLoadBucket(''))
+        dispatch (setLoadPath(''))
+      })
   }
 }
 

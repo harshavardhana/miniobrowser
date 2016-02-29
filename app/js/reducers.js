@@ -98,6 +98,11 @@ export default (state = {buckets:[], visibleBuckets:[], objects:[], diskInfo:{},
       break
     case actions.SET_LOGIN_REDIRECT_PATH:
       newState.loginRedirectPath = action.path
+    case actions.SET_LOAD_BUCKET:
+      newState.loadBucket = action.loadBucket
+      break
+    case actions.SET_LOAD_PATH:
+      newState.loadPath = action.loadPath
       break
   }
   return newState

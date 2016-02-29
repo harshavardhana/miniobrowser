@@ -115,19 +115,18 @@ div.fesl-row {
     &[data-type="folder"] {
         @media (max-width: (@screen-xs-max - 100px)) {
             .fesl-item {
-                &:nth-child(1) {
+                &.fi-name {
                     padding-top: 10px;
                     padding-bottom: 7px;
                 }
 
-                &:nth-child(2),
-                &:nth-child(3) {
+                &.fi-size,
+                &.fi-modified {
                     display: none;
                 }
             }
         }
     }
-
 
     /*--------------------------
         Icons
@@ -180,6 +179,10 @@ div.fesl-row {
         content: "\f1c4";
         background-color: #fba220;
     }
+
+    &.fesl-loading:before {
+        content: '';
+    }
 }
 
 
@@ -200,51 +203,40 @@ div.fesl-row {
     }
 
     @media(min-width: (@screen-sm-min - 100px)) {
-        &:nth-child(1) {
+        &.fi-name {
             flex: 3;
         }
 
-        &:nth-child(2) {
+        &.fi-size {
             width: 140px;
         }
-        &:nth-child(3) {
-            width: 190px;
-        }
 
-        &.fesli-action {
-            flex: 0.1;
-            text-align: right;
+        &.fi-modified {
+            width: 190px;
         }
     }
 
     @media(max-width: (@screen-xs-max - 100px)) {
         padding: 0;
 
-        &:nth-child(1) {
+        &.fi-name {
             width: 100%;
             margin-bottom: 3px;
         }
 
-        &:nth-child(2),
-        &:nth-child(3) {
+        &.fi-size,
+        &.fi-modified {
             font-size: 12px;
             color: #B5B5B5;
         }
 
-        &:nth-child(2) {
+        &.fi-size {
             float: left;
         }
 
-        &:nth-child(3) {
+        &.fi-modified {
             float: right;
         }
-
-        &.fesli-action {
-            position: absolute;
-            right: 0;
-            top: 0;
-        }
-
     }
 }
 
