@@ -17,6 +17,7 @@
 var webpack = require('webpack')
 var path = require('path')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
+var purify = require("purifycss-webpack-plugin")
 
 var exports = {
   context: __dirname,
@@ -56,6 +57,14 @@ var exports = {
     ]),
     new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"production"'
+    }),
+    new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(en)$/),
+    new purify({
+        basePath: __dirname,
+        paths: [
+            "app/index.html",
+            "app/js/*.js"
+        ]
     })
   ]
 }

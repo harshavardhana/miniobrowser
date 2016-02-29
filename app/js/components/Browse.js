@@ -15,8 +15,9 @@
  */
 
 import React from 'react'
-import { browserHistory } from 'react-router'
-import { connect } from 'react-redux'
+import classNames from 'classnames'
+import browserHistory from 'react-router/lib/browserHistory'
+import connect from 'react-redux/lib/components/connect'
 import humanize from 'humanize'
 import Moment from 'moment'
 import Modal from 'react-bootstrap/lib/Modal'
@@ -26,6 +27,7 @@ import ProgressBar from 'react-bootstrap/lib/ProgressBar'
 import Alert from 'react-bootstrap/lib/Alert'
 import OverlayTrigger from 'react-bootstrap/lib/OverlayTrigger'
 import Tooltip from 'react-bootstrap/lib/Tooltip'
+import Scrollbars from 'react-custom-scrollbars/lib/Scrollbars'
 
 
 import logo from '../../img/logo.svg'
@@ -34,25 +36,21 @@ import * as actions from '../actions'
 import * as utils from '../utils'
 import * as mime from '../mime'
 import { minioBrowserPrefix } from '../constants'
-import { Scrollbars } from 'react-custom-scrollbars'
 
 let SideBar = ({ visibleBuckets, loadBucket, currentBucket, selectBucket, searchBuckets, landingPage, sidebarStatus, clickOutside }) => {
     let ClickOutHandler = require('react-onclickout');
 
     const list = visibleBuckets.map((bucket, i) => {
-        const active = bucket === currentBucket ? 'active' : ''
-        const loading = bucket === loadBucket ? 'fesli-loading' : ''
-        return <li className={active} key={i} onClick={(e) => selectBucket(e, bucket)}>
-            <a href="" className={loading}>
-                {bucket}
-                {bucket === loadBucket ? <span className="loading l-bucket"><i /></span> : ''}
-            </a>
-        </li>
+        const liClass = classNames({
+          'active': bucket === currentBucket,
+          'fesli-loading': bucket === loadBucket
+        })
+        return <li className={liClass} key={i} onClick={(e) => selectBucket(e, bucket)}><a href="">{bucket}</a></li>
     })
 
     return (
         <ClickOutHandler onClickOut={clickOutside}>
-            <div className={"fe-sidebar " + (sidebarStatus ? 'toggled' : "")}>
+            <div className={classNames({'fe-sidebar': true, 'toggled': sidebarStatus})}>
                 <div className="fes-header clearfix hidden-sm hidden-xs">
                     <a href="" onClick={landingPage}>
                         <img src={logo} alt=""/>
@@ -434,25 +432,30 @@ export default class Browse extends React.Component {
                 </div>
             </div>
         }
-        let alertBox = <Alert className={'feb-alert animated ' + (alert.show ? 'fadeInDown' : 'fadeOutUp')} bsStyle={alert.type}
-                          onDismiss={this.hideAlert.bind(this)}>
-            <div className='text-center'>
-                {alert.message}
-                <a href="" className="feba-more"> show more...</a>
-            </div>
-
-        </Alert>
+        let alertBox = <Alert className={classNames({
+                                          'feb-alert': true,
+                                          'animated': true,
+                                          'fadeInDown': alert.show,
+                                          'fadeOutUp': !alert.show
+                                        })} bsStyle={alert.type} onDismiss={this.hideAlert.bind(this)}>
+                            <div className='text-center'>
+                                {alert.message}
+                            </div>
+                        </Alert>
         // Make sure you don't show a fading out alert box on the initial web-page load.
         if (!alert.message) alertBox = ''
         let abortModal = ''
+        let baseClass = classNames({'abort-upload': true})
+        let okIcon = classNames({'fa': true, 'fa-stop': true})
+        let cancelIcon = classNames({'fa': true, 'fa-play': true})
         if (showAbortModal) {
             abortModal = <ConfirmModal
-                baseClass="abort-upload"
+                baseClass={baseClass}
                 text="Abort the upload in progress?"
                 okText='Abort'
-                okIcon='fa fa-stop'
+                okIcon={okIcon}
                 cancelText='Continue'
-                cancelIcon='fa fa-play'
+                cancelIcon={cancelIcon}
                 okHandler={this.uploadAbort.bind(this)}
                 cancelHandler={this.hideAbortModal.bind(this)}>
             </ConfirmModal>
@@ -466,7 +469,7 @@ export default class Browse extends React.Component {
         let freePercent = free * 100 / total
 
         return (
-            <div className={'file-explorer ' + (sidebarStatus ? 'toggled' : '')}>
+            <div className={classNames({'file-explorer': true, 'toggled': sidebarStatus})}>
                 {abortModal}
                 <SideBar landingPage={this.landingPage.bind(this)}
                             searchBuckets={this.searchBuckets.bind(this)}
@@ -477,8 +480,7 @@ export default class Browse extends React.Component {
                     {alertBox}
 
                     <header className="mobile-header hidden-lg hidden-md">
-                        <div id="mh-trigger" className={sidebarStatus ? 'mht-toggled' : ''} onClick={this.toggleSidebar.bind(this, !sidebarStatus)}>
-
+                        <div id="mh-trigger" className={classNames({'mht-toggled': sidebarStatus})} onClick={this.toggleSidebar.bind(this, !sidebarStatus)}>
                             <div className="mht-lines">
                                 <div className="top"></div>
                                 <div className="center"></div>
@@ -534,15 +536,30 @@ export default class Browse extends React.Component {
                         <header className="fesl-row" data-type="folder">
                             <div className="fesl-item fi-name" onClick={this.sortObjectsByName.bind(this)} data-sort="name">
                               Name
-                              <i className={"fesli-sort fa " + (sortNameOrder?'fa-sort-alpha-desc':'fa-sort-alpha-asc')}/>
+                              <i className={classNames({
+                                  'fesli-sort': true,
+                                  'fa': true,
+                                  'fa-sort-alpha-desc': sortNameOrder,
+                                  'fa-sort-alpha-asc': !sortNameOrder
+                                })}/>
                             </div>
                             <div className="fesl-item fi-size" onClick={this.sortObjectsBySize.bind(this)} data-sort="size">
                               Size
-                              <i className={"fesli-sort fa " + (sortSizeOrder?'fa-sort-amount-desc':'fa-sort-amount-asc')}/>
+                              <i className={classNames({
+                                  'fesli-sort': true,
+                                  'fa': true,
+                                  'fa-sort-amount-desc': sortSizeOrder,
+                                  'fa-sort-amount-asc': !sortSizeOrder
+                                })}/>
                             </div>
                             <div className="fesl-item fi-modified" onClick={this.sortObjectsByDate.bind(this)} data-sort="last-modified">
                               Last Modified
-                              <i className={"fesli-sort fa " + (sortDateOrder?'fa-sort-numeric-desc':'fa-sort-numeric-asc')}/>
+                              <i className={classNames({
+                                  'fesli-sort': true,
+                                  'fa': true,
+                                  'fa-sort-numeric-desc': sortDateOrder,
+                                  'fa-sort-numeric-asc': !sortDateOrder
+                                })}/>
                             </div>
                         </header>
                     </div>
