@@ -36,12 +36,18 @@ import * as mime from '../mime'
 import { minioBrowserPrefix } from '../constants'
 import { Scrollbars } from 'react-custom-scrollbars'
 
-let SideBar = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets, landingPage, sidebarStatus, clickOutside }) => {
+let SideBar = ({ visibleBuckets, loadBucket, currentBucket, selectBucket, searchBuckets, landingPage, sidebarStatus, clickOutside }) => {
     let ClickOutHandler = require('react-onclickout');
 
     const list = visibleBuckets.map((bucket, i) => {
         const active = bucket === currentBucket ? 'active' : ''
-        return <li className={active} key={i} onClick={(e) => selectBucket(e, bucket)}><a href="">{bucket}</a></li>
+        const loading = bucket === loadBucket ? 'fesli-loading' : ''
+        return <li className={active} key={i} onClick={(e) => selectBucket(e, bucket)}>
+            <a href="" className={loading}>
+                {bucket}
+                {bucket === loadBucket ? <span className="loading l-bucket"><i /></span> : ''}
+            </a>
+        </li>
     })
 
     return (
@@ -80,19 +86,23 @@ let SideBar = ({ visibleBuckets, currentBucket, selectBucket, searchBuckets, lan
 }
 SideBar = connect(state => state) (SideBar)
 
-let ObjectsList = ({objects, currentPath, selectPrefix, dataType, removeObject }) => {
+let ObjectsList = ({objects, currentPath, selectPrefix, dataType, removeObject, loadPath }) => {
     const list = objects.map((object, i) => {
         let size = object.name.endsWith('/') ? '-' : humanize.filesize(object.size)
         let lastModified = object.name.endsWith('/') ? '-' : Moment(object.lastModified).format('lll')
+        let loadingClass = loadPath === `${currentPath}${object.name}` ? 'fesl-loading' : ''
         return (
-            <div key={i} className="fesl-row" data-type={dataType(object.name, object.contentType)}>
-                <div className="fesl-item">
+            <div key={i} className={"fesl-row " + loadingClass} data-type={dataType(object.name, object.contentType)}>
+
+                {loadPath === `${currentPath}${object.name}` ? <span className="loading l-listing"><i /></span> : ''}
+
+                <div className="fesl-item fi-name">
                     <a href="" onClick={(e) => selectPrefix(e, `${currentPath}${object.name}`)}>
                         {object.name}
                     </a>
                 </div>
-                <div className="fesl-item">{size}</div>
-                <div className="fesl-item">{lastModified}</div>
+                <div className="fesl-item fi-size">{size}</div>
+                <div className="fesl-item fi-modified">{lastModified}</div>
             </div>
         )
     })
@@ -522,15 +532,15 @@ export default class Browse extends React.Component {
                     </header>
                     <div className="feb-container">
                         <header className="fesl-row" data-type="folder">
-                            <div className="fesl-item" onClick={this.sortObjectsByName.bind(this)} data-sort="name">
+                            <div className="fesl-item fi-name" onClick={this.sortObjectsByName.bind(this)} data-sort="name">
                               Name
                               <i className={"fesli-sort fa " + (sortNameOrder?'fa-sort-alpha-desc':'fa-sort-alpha-asc')}/>
                             </div>
-                            <div className="fesl-item" onClick={this.sortObjectsBySize.bind(this)} data-sort="size">
+                            <div className="fesl-item fi-size" onClick={this.sortObjectsBySize.bind(this)} data-sort="size">
                               Size
                               <i className={"fesli-sort fa " + (sortSizeOrder?'fa-sort-amount-desc':'fa-sort-amount-asc')}/>
                             </div>
-                            <div className="fesl-item" onClick={this.sortObjectsByDate.bind(this)} data-sort="last-modified">
+                            <div className="fesl-item fi-modified" onClick={this.sortObjectsByDate.bind(this)} data-sort="last-modified">
                               Last Modified
                               <i className={"fesli-sort fa " + (sortDateOrder?'fa-sort-numeric-desc':'fa-sort-numeric-asc')}/>
                             </div>

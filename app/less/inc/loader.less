@@ -1,54 +1,43 @@
-/*--------------------------
-    Loader
-----------------------------*/
-.loader {
-    position: relative;
-    margin: 0px auto;
-    width: 50px;
-    &:before {
-        content:'';
-        display: block;
-        padding-top: 100%;
+.l-listing,
+.l-bucket {
+    width: 23px;
+    height: 23px;
+    .animated(zoomIn, 500ms);
+
+    & > i {
+        border-width: 2px;
     }
 }
 
-.circular {
-    animation: rotate 2s linear infinite;
-    height: 100%;
-    transform-origin: center center;
-    width: 100%;
-    position: absolute;
-    top: 0; bottom: 0; left: 0; right: 0;
-    margin: auto;
+.l-bucket {
+    left: 31px;
+    top: 10px;
+
+    & > i {
+        background-color: @dark-gray;
+        border-top-color: rgba(255, 255, 255, 0.1);
+        border-right-color: rgba(255, 255, 255, 0.1);
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
 }
 
-.path {
-    stroke-dasharray: 1,200;
-    stroke-dashoffset: 0;
-    animation: dash 1.5s ease-in-out infinite;
-    stroke-linecap: round;
-    stroke: rgba(255,255,255,0.5);
+.active .l-bucket > i {
+    background-color: #282E32;
 }
 
-/*--------------------------
-    Animation
-----------------------------*/
-@keyframes rotate{
-    100%{
-        transform: rotate(360deg);
+.l-listing {
+    left: 56px;
+    top: 15px;
+
+    & > i {
+        border-top-color: rgba(255, 255, 255, 0.4);
+        border-right-color: rgba(255, 255, 255, 0.4);
+        border-bottom-color: rgba(255, 255, 255, 0.4);
+    }
+
+    @media (max-width:(@screen-xs-max - 100px)) {
+        left: 31px;
     }
 }
-@keyframes dash{
-    0%{
-        stroke-dasharray: 1,200;
-        stroke-dashoffset: 0;
-    }
-    50%{
-        stroke-dasharray: 89,200;
-        stroke-dashoffset: -35px;
-    }
-    100%{
-        stroke-dasharray: 89,200;
-        stroke-dashoffset: -124px;
-    }
-}
+
+
