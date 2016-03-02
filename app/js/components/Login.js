@@ -15,6 +15,7 @@
  */
 
 import React from 'react'
+import classNames from 'classnames'
 import logo from '../../img/logo.svg'
 import Alert from 'react-bootstrap/lib/Alert'
 
@@ -64,7 +65,7 @@ export default class Login extends React.Component {
 
   render() {
     const { alert } = this.props
-    let alertBox = <Alert className={'feb-alert animated ' + (alert.show ? 'fadeInDown' : 'fadeOutUp')} bsStyle={alert.type}
+    let alertBox = <Alert className={classNames({'feb-alert': true, 'animated': true, 'fadeInDown': alert.show, 'fadeInUp': !alert.show})} bsStyle={alert.type}
                       onDismiss={this.hideAlert.bind(this)}>
         <div className='text-center'>{alert.message}</div>
     </Alert>

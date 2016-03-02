@@ -17,6 +17,7 @@
 var webpack = require('webpack')
 var path = require('path')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
+var purify = require("purifycss-webpack-plugin")
 
 var exports = {
   context: __dirname,
@@ -54,7 +55,15 @@ var exports = {
       {from: 'node_modules/bootstrap/dist/js/bootstrap.min.js'},
       {from: 'app/img/favicon.ico'},
       {from: 'app/index.html'}
-    ])
+    ]),
+    new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /^\.\/(en)$/),
+    new purify({
+        basePath: __dirname,
+        paths: [
+            "app/index.html",
+            "app/js/*.js"
+        ]
+    })
   ]
 }
 

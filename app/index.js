@@ -19,9 +19,17 @@ import './less/main.less'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import thunkMiddleware from 'redux-thunk'
-import { createStore, applyMiddleware } from 'redux'
-import { Route, Router, browserHistory, IndexRoute } from 'react-router'
-import { Provider, connect } from 'react-redux'
+import createStore from 'redux/lib/createStore'
+import applyMiddleware  from 'redux/lib/applyMiddleware'
+
+import Route from 'react-router/lib/Route'
+import Router from 'react-router/lib/Router'
+import browserHistory from 'react-router/lib/browserHistory'
+import IndexRoute from 'react-router/lib/IndexRoute'
+
+import Provider from 'react-redux/lib/components/Provider'
+import connect from 'react-redux/lib/components/connect'
+
 import Moment from 'moment'
 
 import { minioBrowserPrefix } from './js/constants.js'
