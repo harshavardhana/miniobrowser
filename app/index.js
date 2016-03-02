@@ -90,3 +90,19 @@ ReactDOM.render((
     </Router>
   </Provider>
 ), document.getElementById('root'))
+
+//Page loader
+let delay = [1300, 850, 900]
+let i = -1
+
+function addClass() {
+    i++;
+    if(i < 3) {
+        setTimeout(function () {
+            document.querySelector('.page-load').classList.add('pl-'+i)
+            addClass()
+        }, delay[i])
+    }
+}
+addClass()
+
