@@ -1,35 +1,30 @@
 .login {
     height: 100vh;
+    min-height: 500px;
     background: @dark-gray;
-}
 
-.l-logo {
-    position: absolute;
-    bottom: 40px;
-    right: 40px;
-    img {
-        width: 40px;
-    }
-}
-
-.l-content {
-    height: 100%;
     text-align: center;
     &:before {
-        height: 100%;
+        height: ~"calc(100% - 110px)";
         width: 1px;
         content: "";
     }
 }
 
-.lc-wrap,
-.l-content:before {
+.l-content {
+    height: 100%;
+
+}
+
+.l-wrap,
+.login:before {
     display: inline-block;
     vertical-align: middle;
 }
 
-.lc-wrap {
-    width: 450px;
+.l-wrap {
+    width: 80%;
+    max-width: 500px;
     margin-top: -50px;
     &.toggled {
         display: inline-block;
@@ -113,6 +108,7 @@
     position: relative;
     z-index: 1;
 
+
     &:focus + label + .lci-helpers i {
         &:last-child {
             .scale(1);
@@ -124,7 +120,8 @@
         }
     }
 
-    &:valid {
+    &:valid,
+    &:focus {
         & + .lci-label {
             bottom: 40px;
             font-size: 13px;
@@ -159,31 +156,40 @@
     }
 }
 
-.server-info {
+.l-footer {
+    height: 110px;
+    padding: 0 50px;
+}
+
+.lf-logo {
+    float: right;
+    img {
+        width: 40px;
+    }
+}
+
+.lf-server {
+    float: left;
     color: rgba(255, 255, 255, 0.4);
     font-size: 20px;
     font-weight: 400;
-    position: absolute;
-    left: 50px;
-    bottom: 50px;
 }
 
 @media (max-width: @screen-sm-min) {
-    .lc-wrap {
-        width: 80%;
-        margin-top: -100px;
-    }
-    .l-logo {
-        right: 50%;
-        margin-right: -25px;
-        bottom: 50px;
-    }
-    .server-info {
-        width: 100%;
-        left: 0;
-        bottom: 20px;
-        font-size: 15px;
+    .lf-logo,
+    .lf-server {
+        float: none;
+        display: block;
         text-align: center;
+        width: 100%;
+    }
+
+    .lf-logo {
+        margin-bottom: 5px;
+    }
+
+    .lf-server {
+        font-size: 15px;
     }
 }
 
