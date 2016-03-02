@@ -92,17 +92,16 @@ ReactDOM.render((
 ), document.getElementById('root'))
 
 //Page loader
-let delay = [1300, 850, 900]
-let i = -1
+let delay = [1000, 850, 900]
+let i = 0
 
-function addClass() {
-    i++;
+function handleLoader() {
     if(i < 3) {
         setTimeout(function () {
             document.querySelector('.page-load').classList.add('pl-'+i)
-            addClass()
+            i++
+            handleLoader()
         }, delay[i])
     }
 }
-addClass()
-
+handleLoader()

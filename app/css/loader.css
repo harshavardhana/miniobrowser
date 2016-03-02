@@ -86,22 +86,20 @@
 
 .page-load,
 .l-page {
-    -webkit-transition: all 1000ms;
-    transition: all 1000ms;
+    -webkit-transition: all 800ms;
+    transition: all 800ms;
 }
 
-.pl-0 {
+.is-guest .pl-0, body:not(.is-guest) .pl-1 {
     opacity: 0;
 }
 
-.pl-0 .l-page {
-    animation-name: zoomOut;
-    -webkit-animation-duration: 1500ms;
-    animation-duration: 1500ms;
+.is-guest .pl-1, body:not(.is-guest) .pl-2 {
+    display: none;
 }
 
-.pl-1 {
-    display: none;
+body:not(.is-guest) .pl-0 {
+    width: 300px;
 }
 
 
