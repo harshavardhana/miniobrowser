@@ -14,43 +14,86 @@
  * limitations under the License.
  */
 
-// List of official MIME Types: http://www.iana.org/assignments/media-types/media-types.xhtml
-const supportedSubMimeTypes = {
-  'xml': 'code',
-  'pdf': 'pdf',
-  'zip': 'zip',
-  'ogg': 'audio',
-  'gzip': 'zip',
-  'json': 'code',
-  'text': 'text',
-  'image': 'image',
-  'msword': 'doc',
-  'ms-word': 'doc',
-  'ms-excel': 'excel',
-  'javascript': 'code',
-  'spreadsheet': 'excel',
-  'opendocument.text': 'doc',
-  'presentation': 'presentation',
-  'ms-powerpoint': 'presentation',
+const isFolder = (name, contentType) => {
+  if (name.endsWith('/')) return true
+  return false
 }
 
-export const getDataType = (contentType) => {
-  // Split the contentType two part identifiers.
-  let mimeIdentifiers = contentType.split('/');
-  let mimeType = mimeIdentifiers[0];
-  let mimeSubType = mimeIdentifiers[1];
+const isPdf = (name, contentType) => {
+  if (contentType === 'application/pdf') return true
+  return false
+}
 
-  // For mime type 'application' we need to look into its
-  // sub type to figure the relevant data type.
-  if (mimeType === 'application') {
-    for (var sMimeType in supportedSubMimeTypes) {
-      if (mimeSubType.indexOf(sMimeType) !== -1) {
-        return supportedSubMimeTypes[sMimeType]
-      }
-    }
-    return 'other'
+const isZip = (name, contentType) => {
+  if (!contentType || !contentType.includes('/')) return false
+  if(contentType.split('/')[1].includes('zip')) return true
+  return false
+}
+
+const isCode = (name, contentType) => {
+  const codeExt = ['c', 'cpp', 'go', 'py', 'java', 'rb', 'js', 'pl']
+  const ext = name.split('.').reverse()[0]
+  for (var i in codeExt) {
+    if (ext === codeExt[i]) return true
   }
-  // For all other mime type like audio, video, text treat
-  // them as valid data types and use as is.
-  return mimeType
+  return false
+}
+
+const isExcel = (name, contentType) => {
+  if (!contentType || !contentType.includes('/')) return false
+  const types = ['excel', 'spreadsheet']
+  const subType = contentType.split('/')[1]
+
+  for (var i in types) {
+    if (subType.includes(types[i])) return true
+  }
+  return false
+}
+
+const isDoc = (name, contentType) => {
+  if (!contentType || !contentType.includes('/')) return false
+  const types = ['word', '.document']
+  const subType = contentType.split('/')[1]
+  for (var i in types) {
+    if (subType.includes(types[i])) return true
+  }
+  return false
+}
+
+const isPresentation = (name, contentType) => {
+  if (!contentType || !contentType.includes('/')) return false
+  var types = ['powerpoint', 'presentation']
+  const subType = contentType.split('/')[1]
+  for (var i in types) {
+    if (subType.includes(types[i])) return true
+  }
+  return false
+}
+
+const typeToIcon = (type) => {
+  return (name, contentType) => {
+    if (!contentType || !contentType.includes('/')) return false
+    if (contentType.split('/')[0] === type) return true
+    return false
+  }
+}
+
+export const getDataType = (name, contentType) => {
+  const check = [
+    ['folder', isFolder],
+    ['code', isCode],
+    ['audio', typeToIcon('audio')],
+    ['image', typeToIcon('image')],
+    ['video', typeToIcon('video')],
+    ['text', typeToIcon('text')],
+    ['pdf', isPdf],
+    ['zip', isZip],
+    ['excel', isExcel],
+    ['doc', isDoc],
+    ['presentation', isPresentation]
+  ]
+  for (var i in check) {
+    if (check[i][1](name, contentType)) return check[i][0]
+  }
+  return 'other'
 }

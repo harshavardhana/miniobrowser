@@ -342,11 +342,7 @@ export default class Browse extends React.Component {
     }
 
     dataType(name, contentType) {
-        if (name.endsWith('/')) return 'folder'
-        if (contentType) {
-            return mime.getDataType(contentType)
-        }
-        return 'other'
+      return mime.getDataType(name, contentType)
     }
 
     sortObjectsByName(e) {
