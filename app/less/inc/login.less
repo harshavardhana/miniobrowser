@@ -199,7 +199,6 @@
     border: 1px solid #fff;
     display: inline-block;
     border-radius: 50%;
-    line-height: 50px;
     font-size: 22px;
     color: #fff;
     .transition(all);
@@ -207,10 +206,17 @@
     opacity: 0.3;
     background-color: transparent;
     line-height: 45px;
+    padding: 0;
     &:hover {
         color: #fff;
         opacity: 0.8;
         border-color: #fff;
+    }
+
+    i {
+        display: block;
+        width: 100%;
+        padding-left: 3px;
     }
 }
 
