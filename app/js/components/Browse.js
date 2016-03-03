@@ -60,7 +60,7 @@ let SideBar = ({ visibleBuckets, loadBucket, currentBucket, selectBucket, search
                 </div>
 
                 <div className="fes-list">
-                    <div className="fesb-search">
+                    <div className="fesl-search">
                         <input type="text" onChange={searchBuckets} placeholder="Search Buckets..."/>
                         <i></i>
                     </div>
@@ -147,7 +147,7 @@ ConfirmModal = connect(state => state) (ConfirmModal)
 // removed below i tag's onClick in favour of parent a href
 let BrowserUpdate = ({latestUiVersion}) => {
   if (latestUiVersion === currentUiVersion) return <noscript></noscript>
-  return  <li>
+  return  <li className="hidden-xs hidden-sm">
             <a href="">
                 <OverlayTrigger placement="left" overlay={<Tooltip>New update available. Click to refresh.</Tooltip>}>
                     <i className="fa fa-refresh"></i>
@@ -416,7 +416,7 @@ export default class Browse extends React.Component {
         let progressBar = ''
         let percent = (upload.loaded / upload.total) * 100
         if (upload.inProgress) {
-            progressBar = <div className="feb-alert feba-progress animated fadeInUp alert-info">
+            progressBar = <div className="alert progress animated fadeInUp alert-info">
                 <button type="button" className="close" onClick={this.showAbortModal.bind(this)}>
                     <span>&times;</span>
                 </button>
@@ -430,7 +430,7 @@ export default class Browse extends React.Component {
             </div>
         }
         let alertBox = <Alert className={classNames({
-                                          'feb-alert': true,
+                                          'alert': true,
                                           'animated': true,
                                           'fadeInDown': alert.show,
                                           'fadeOutUp': !alert.show
@@ -477,7 +477,7 @@ export default class Browse extends React.Component {
                     {alertBox}
 
                     <header className="mobile-header hidden-lg hidden-md">
-                        <div id="mh-trigger" className={classNames({'mht-toggled': sidebarStatus})} onClick={this.toggleSidebar.bind(this, !sidebarStatus)}>
+                        <div id="mh-trigger" className={'mh-trigger '+ (classNames({'mht-toggled': sidebarStatus}))} onClick={this.toggleSidebar.bind(this, !sidebarStatus)}>
                             <div className="mht-lines">
                                 <div className="top"></div>
                                 <div className="center"></div>
@@ -496,7 +496,7 @@ export default class Browse extends React.Component {
                                 <div style={{width: usedPercent}}></div>
                             </div>
 
-                            <ul className="list-unstyled list-inline">
+                            <ul>
                                 <li>Used: {humanize.filesize(total - free)}</li>
                                 <li className="pull-right">Free: {humanize.filesize(total - used)}</li>
                             </ul>
@@ -612,7 +612,7 @@ export default class Browse extends React.Component {
                                 </a>
                             </div>
                             <div className="ami-item">
-                                <ul className="amii-list list-unstyled">
+                                <ul className="amii-list">
                                     <li>
                                         <div>Version</div>
                                         <small>{version}</small>
@@ -630,10 +630,9 @@ export default class Browse extends React.Component {
                                         <small>{runtime}</small>
                                     </li>
                                 </ul>
-                                <div style={{textAlign: 'center'}}>
-                                    <a href="" className="amii-close" onClick={this.hideAbout.bind(this)}><i
-                                        className="fa fa-check"></i></a>
-                                </div>
+                                <span className="amii-close" onClick={this.hideAbout.bind(this)}>
+                                    <i className="fa fa-check"></i>
+                                </span>
                             </div>
                         </div>
                     </Modal>

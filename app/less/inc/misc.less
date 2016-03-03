@@ -11,12 +11,11 @@
 /*--------------------------
     Alert
 ----------------------------*/
-.feb-alert {
+.alert {
 	border: 0;
 	position: fixed;
 	max-width: 500px;
 	margin: 0;
-	z-index: 10;
 	box-shadow: 0 4px 5px rgba(0, 0, 0, 0.1);
 	color: #fff;
 	width: 100%;
@@ -25,7 +24,7 @@
 	z-index: 12;
 	padding: 17px 50px 17px 17px;
 
-	&:not(.feba-progress) {
+	&:not(.progress) {
 		top: 20px;
 
 		@media(min-width: (@screen-sm-min)) {
@@ -34,7 +33,7 @@
 		}
 	}
 
-	&.feba-progress {
+	&.progress {
 		bottom: 20px;
 		right: 20px;
 	}
@@ -58,26 +57,29 @@
 	}
 
 	.progress {
-		margin: 10px 65px 10px 25px;
+		margin: 10px 10px 8px 0;
 		height: 5px;
 		box-shadow: none;
 		border-radius: 1px;
 		background-color: #1d82d2;
-
-		.close {
-			position: absolute;
-			right: 20px;
-			top: 15px;
-		}
+		border-radius: 2px;
+		overflow: hidden;
 	}
 
 	.progress-bar {
 		box-shadow: none;
 		background-color: #fff;
+		height: 100%;
+	}
+
+	.close {
+		position: absolute;
+		right: 15px;
+		top: 15px;
 	}
 }
 
-.feba-more {
+.more {
 	display: block;
 	color: rgba(255, 255, 255, 0.7);
 	font-size: 13px;
@@ -176,14 +178,17 @@
     Close
 ----------------------------*/
 .close {
-	right: 19px !important;
+	right: 19px;
 	font-weight: normal;
 	opacity: 1;
 	font-size: 18px;
-	position: absolute !important;
+	position: absolute;
 	text-align: center;
-	top: 16px !important;
+	top: 16px;
 	z-index: 1;
+	padding: 0;
+	border: 0;
+	background-color: transparent;
 
 	span {
 		width: 25px;
