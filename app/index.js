@@ -92,11 +92,11 @@ ReactDOM.render((
 ), document.getElementById('root'))
 
 //Page loader
-let delay = [1000, 850, 900]
+let delay = [10, 400]
 let i = 0
 
 function handleLoader() {
-    if(i < 3) {
+    if(i < 2) {
         setTimeout(function () {
             document.querySelector('.page-load').classList.add('pl-'+i)
             i++

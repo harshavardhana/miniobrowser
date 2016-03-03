@@ -86,21 +86,19 @@
 
 .page-load,
 .l-page {
-    -webkit-transition: all 800ms;
-    transition: all 800ms;
+    -webkit-transition: all 400ms;
+    transition: all 400ms;
 }
 
-.is-guest .pl-0, body:not(.is-guest) .pl-1 {
+.pl-0{
     opacity: 0;
 }
 
-.is-guest .pl-1, body:not(.is-guest) .pl-2 {
+.pl-1 {
     display: none;
 }
 
-body:not(.is-guest) .pl-0 {
-    width: 300px;
-}
+
 
 
 .animated {
