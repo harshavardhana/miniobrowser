@@ -265,7 +265,7 @@ export const uploadFile = (file, xhr) => {
           xhr.upload.addEventListener('error', event => {
             dispatch(showAlert({
               type: 'danger',
-              message: 'error during upload'
+              message: 'Error occurred uploading \'' + file.name +'\'.'
             }))
             dispatch(setUpload({inProgress: false}))
           })
@@ -279,7 +279,7 @@ export const uploadFile = (file, xhr) => {
                 dispatch(setUpload({inProgress: false}))
                 dispatch(showAlert({
                   type: 'success',
-                  message: 'file uploaded successfully'
+                  message: 'File \'' + file.name + '\' uploaded successfully.'
                 }))
                 dispatch(selectPrefix(currentPath))
               }
