@@ -41,11 +41,12 @@ let SideBar = ({ visibleBuckets, loadBucket, currentBucket, selectBucket, search
     let ClickOutHandler = require('react-onclickout');
 
     const list = visibleBuckets.map((bucket, i) => {
-        const liClass = classNames({
-          'active': bucket === currentBucket,
-          'fesli-loading': bucket === loadBucket
-        })
-        return <li className={liClass} key={i} onClick={(e) => selectBucket(e, bucket)}><a href="">{bucket}</a></li>
+        return <li className={classNames({'active': bucket === currentBucket})} key={i} onClick={(e) => selectBucket(e, bucket)}>
+            <a href="" className={classNames({'fesli-loading': bucket === loadBucket})}>
+                {bucket}
+                {bucket === loadBucket ? <span className="loading l-bucket"><i /></span> : ''}
+            </a>
+        </li>
     })
 
     return (
